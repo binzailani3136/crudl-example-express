@@ -401,11 +401,11 @@ var createRouter = function () {
             if (err) {
                 res.status(400)
                 res.send(err)
-            } else if (result) {
+            } else if (result && result.token) {
                 res.json({'token': result.token})
             } else {
                 res.status(400)
-                res.send({})
+                res.send({})  // FIXME: better error message
             }
         })
     })
