@@ -14,6 +14,17 @@ module.exports = [
         url: 'users/:_id/',
     },
     {
+        id: 'categories',
+        url: 'categories/',
+        transform: {
+            readResData: data => data.docs,
+        },
+    },
+    {
+        id: 'category',
+        url: 'categories/:_id/',
+    },
+    {
         id: 'entries',
         url: 'entries/',
         transform: {
