@@ -3,7 +3,7 @@ var listView = {
     path: 'users',
     title: 'Users',
     actions: {
-        list: function (req, connexes) { return connexes.users.read(req) },
+        list: function (req, cxs) { return cxs.users.read(req) },
     },
     normalize: (list) => list.map(item => {
         item.full_name = item.last_name + ', ' + item.first_name
@@ -42,10 +42,10 @@ var changeView = {
     path: 'users/:_id/',
     title: 'User',
     actions: {
-        get: function (req, connexes) { return connexes.user.read(req) },
+        get: function (req, cxs) { return cxs.user.read(req) },
         /* FIXME: delete should throw a warning with related objects (intermediary page) */
-        delete: function (req, connexes) { return connexes.user.delete(req) },
-        save: function (req, connexes) { return connexes.user.update(req) },
+        delete: function (req, cxs) { return cxs.user.delete(req) },
+        save: function (req, cxs) { return cxs.user.update(req) },
     },
     normalize: (data, error) => {
         if (error) {
@@ -107,7 +107,7 @@ var addView = {
     title: 'New User',
     fields: changeView.fields,
     actions: {
-        add: function (req, connexes) { return connexes.users.create(req) },
+        add: function (req, cxs) { return cxs.users.create(req) },
     },
 }
 
