@@ -17,12 +17,13 @@ var UserSchema = new Schema({
     date_joined: { type: Date, default: Date.now, required: false },
     token: { type: String, maxlength: 40, required: false }
 })
-UserSchema.post('save', function(doc) {
-    if (doc.is_staff && doc.is_active && !doc.token) {
-        doc.token = faker.internet.password()
+UserSchema.pre('save', function(next) {
+    if (this.is_staff && this.is_active && !this.token) {
+        this.token = faker.internet.password()
     } else {
-        doc.token = ''
+        this.token = ''
     }
+    next();
 });
 UserSchema.plugin(mongoosePaginate);
 var User = mongoose.model('User', UserSchema)
