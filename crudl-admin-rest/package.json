@@ -1,0 +1,13 @@
+{
+    "name": "crudl-admin-kit",
+    "version": "0.1.0",
+    "description": "Admin Kit for crudl",
+    "main": "index.js",
+    "scripts": {
+        "browserify": "mkdir -p ./static/crudl-admin-rest/js && browserify . > ./static/crudl-admin-rest/js/admin.js",
+        "watchify": "mkdir -p ./static/crudl-admin-rest/js && watchify . -o ./static/crudl-admin-rest/js/admin.js -v"
+    },
+    "browser": "./index.js",
+    "author": "vonautomatisch",
+    "license": "ISC"
+}
