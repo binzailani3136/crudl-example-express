@@ -3,6 +3,17 @@ var pagination = require('./pagination')
 
 module.exports = [
     {
+        id: 'users',
+        url: 'users/',
+        transform: {
+            readResData: data => data.docs,
+        },
+    },
+    {
+        id: 'user',
+        url: 'users/:_id/',
+    },
+    {
         id: 'entries',
         url: 'entries/',
         transform: {
