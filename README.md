@@ -15,13 +15,13 @@ This is a [crudl](http://crudl.io/) example with [Express](https://www.djangopro
     ```
     $ cd blog
     $ npm install
-    $ npm initdb
+    $ npm run initdb
     ```
 
 3. Start the server
 
     ```
-    $ npm start
+    $ npm run start
     ```
 
 Open your browser and go to ``http://localhost:3000/crudl-rest/`` and login with one of the users.
