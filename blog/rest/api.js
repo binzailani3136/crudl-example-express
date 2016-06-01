@@ -395,6 +395,21 @@ var createRouter = function () {
         })
     })
 
+    router.route('/api-token-auth/')
+    .post(function (req, res) {
+        db.models.User.findOne({ username: req.body.username, password: req.body.password }, function (err, result) {
+            if (err) {
+                res.status(400)
+                res.send(err)
+            } else if (result) {
+                res.json({'token': result.token})
+            } else {
+                res.status(400)
+                res.send({})
+            }
+        })
+    })
+
 
     return router;
 }

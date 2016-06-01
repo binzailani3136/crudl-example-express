@@ -14,8 +14,16 @@ var UserSchema = new Schema({
     email: { type: String, maxlength: 100 },
     is_staff: { type: Boolean, default: false },
     is_active: { type: Boolean, default: true },
-    date_joined: { type: Date, default: Date.now, required: false }
+    date_joined: { type: Date, default: Date.now, required: false },
+    token: { type: String, maxlength: 40, required: false }
 })
+UserSchema.post('save', function(doc) {
+    if (doc.is_staff && doc.is_active && !doc.token) {
+        doc.token = faker.internet.password()
+    } else {
+        doc.token = ''
+    }
+});
 UserSchema.plugin(mongoosePaginate);
 var User = mongoose.model('User', UserSchema)
 
@@ -91,9 +99,30 @@ var initModel = (modelName, objects, callback) => {
 }
 // users
 var users = [
-    new User({username: 'Patrick', password: 'crudl'}),
-    new User({username: 'Axel', password: 'crudl'}),
-    new User({username: 'Vaclav', password: 'crudl'})
+    new User({
+        username: 'patrick',
+        password: 'crudl',
+        first_name: 'Patrick',
+        last_name: 'Kranzlmueller',
+        is_staff: true,
+        is_active: true
+    }),
+    new User({
+        username: 'axel',
+        password: 'crudl',
+        first_name: 'Axel',
+        last_name: 'Swoboda',
+        is_staff: true,
+        is_active: true
+    }),
+    new User({
+        username: 'vaclav',
+        password: 'crudl',
+        first_name: 'Vaclav',
+        last_name: 'Mikolasek',
+        is_staff: true,
+        is_active: true
+    })
 ]
 // categories
 var categories = []

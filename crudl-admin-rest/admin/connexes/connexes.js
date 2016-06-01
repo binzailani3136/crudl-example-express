@@ -12,5 +12,16 @@ module.exports = [
     {
         id: 'entry',
         url: 'entries/:_id/',
+    },
+    {
+        id: 'auth_token',
+        url: 'api-token-auth/',
+        mapping: { read: 'post', },
+        transform: {
+            readResData: data => ({
+                requestHeaders: { "Authorization": `Token ${data.token}` },
+                authInfo: data,
+            })
+        }
     }
 ]
