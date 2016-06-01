@@ -1,14 +1,13 @@
 //-------------------------------------------------------------------
-var collection = {
+var listView = {
     path: 'entries',
     title: 'Blog Entries',
     actions: {
-        list: function (req, connexes) { return connexes.entries.read(req)},
+        list: function (req, cxs) { return cxs.entries.read(req)},
     },
 }
 
-//-------------------------------------------------------------------
-collection.fields = [
+listView.fields = [
     {
         name: 'title',
         label: 'Title',
@@ -20,18 +19,17 @@ collection.fields = [
 ]
 
 //-------------------------------------------------------------------
-collection.resource = {
+var changeView = {
     path: 'entries/:_id/',
     title: 'Blog Entry',
     actions: {
-        get: function (req, connexes) { return connexes.entry.read(req) },
-        delete: function (req, connexes) { return connexes.entry.delete(req) },
-        save: function (req, connexes) { return connexes.entry.update(req) },
+        get: function (req, cxs) { return cxs.entry.read(req) },
+        delete: function (req, cxs) { return cxs.entry.delete(req) },
+        save: function (req, cxs) { return cxs.entry.update(req) },
     },
 }
 
-//-------------------------------------------------------------------
-collection.resource.fields = [
+changeView.fields = [
     {
         name: 'title',
         label: 'Title',
@@ -40,13 +38,18 @@ collection.resource.fields = [
 ]
 
 //-------------------------------------------------------------------
-collection.resource.add = {
+var addView = {
     path: 'entries/new',
     title: 'New Blog Entry',
-    fields: collection.resource.fields,
+    fields: changeView.fields,
     actions: {
-        add: function (req, connexes) { return connexes.entries.create(req) },
+        add: function (req, cxs) { return cxs.entries.create(req) },
     },
-},
+}
 
-module.exports = collection
+//-------------------------------------------------------------------
+module.exports = {
+    listView,
+    addView,
+    changeView,
+}
