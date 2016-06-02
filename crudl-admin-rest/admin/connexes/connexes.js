@@ -49,6 +49,18 @@ module.exports = [
         url: 'categories/:_id/',
     },
     {
+        id: 'tags',
+        url: 'tags/',
+        pagination,
+        transform: {
+            readResData: data => data.docs,
+        },
+    },
+    {
+        id: 'tag',
+        url: 'tags/:_id/',
+    },
+    {
         id: 'entries',
         url: 'entries/',
         pagination,
