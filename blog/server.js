@@ -24,7 +24,7 @@ mongoose.connection.once('open', function () {
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(bodyParser.json())
     // rest
-    app.use(paginate.middleware(10, 50));
+    app.use(paginate.middleware(20, 50));
     app.use('/rest-api', api.router())
     // graphql
     app.use('/graphql-api', graphqlHTTP(req => ({

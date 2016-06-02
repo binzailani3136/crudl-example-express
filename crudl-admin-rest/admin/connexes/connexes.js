@@ -1,10 +1,33 @@
 
-var pagination = require('./pagination')
+function pagination(res) {
+    let nextPage = undefined
+    if (res.data.page < res.data.pages) {
+        nextPage = res.data.page + 1
+    }
+    // Return the pagination descriptor
+    return {
+        next: nextPage ? { page: nextPage } : undefined,
+    }
+}
+
+function urlQuery(req) {
+    return Object.assign({},
+        req.filters,
+        req.page,
+        {
+            ordering: req.sorting.map(field => {
+                let prefix = field.sorted == 'ascending' ? '' : '-'
+                return prefix + field.name
+            }).join(',')
+        }
+    )
+}
 
 module.exports = [
     {
         id: 'users',
         url: 'users/',
+        pagination,
         transform: {
             readResData: data => data.docs,
         },
@@ -16,6 +39,7 @@ module.exports = [
     {
         id: 'categories',
         url: 'categories/',
+        pagination,
         transform: {
             readResData: data => data.docs,
         },
@@ -27,6 +51,7 @@ module.exports = [
     {
         id: 'entries',
         url: 'entries/',
+        pagination,
         transform: {
             readResData: data => data.docs,
         },
