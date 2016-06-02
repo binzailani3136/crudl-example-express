@@ -167,10 +167,14 @@ changeView.fields = [
         },
         actions: {
             search: (req, cxs) => {
-                return cxs.tags_options.read(req)
+                return cxs.tags.read(req)
                 .then(res => res.set('data', res.data.filter(tag => {
-                    return tag.label.toLowerCase().indexOf(req.data.query.toLowerCase()) >= 0
+                    return tag.name.toLowerCase().indexOf(req.data.query.toLowerCase()) >= 0
                 })))
+                .then(res => res.set('data', res.data.map(tag => ({
+                    value: tag._id,
+                    label: tag.name,
+                }))))
             },
             select: (req, cxs) => {
                 return Promise.all(req.data.selection.map(item => {
