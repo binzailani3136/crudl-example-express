@@ -189,6 +189,34 @@ changeView.fields = [
     },
 ]
 
+changeView.tabs = [
+    {
+        title: 'Links',
+        actions: {
+            list: (req, cxs) => {
+                req.filter("entry", req.context._id)
+                req.paginate(false)
+                return cxs.links.read(req)
+            },
+        },
+        fields: [
+            {
+                name: 'url',
+                label: 'URL',
+                field: 'URL',
+                props: {
+                    link: true,
+                },
+            },
+            {
+                name: 'title',
+                label: 'Title',
+                field: 'String',
+            },
+        ]
+    },
+]
+
 //-------------------------------------------------------------------
 var addView = {
     path: 'entries/new',

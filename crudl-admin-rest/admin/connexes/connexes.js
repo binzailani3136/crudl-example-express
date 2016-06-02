@@ -73,6 +73,18 @@ module.exports = [
         url: 'entries/:_id/',
     },
     {
+        id: 'links',
+        url: 'entrylinks/',
+        pagination,
+        transform: {
+            readResData: data => data.docs,
+        },
+    },
+    {
+        id: 'link',
+        url: 'entrylinks/:_id/',
+    },
+    {
         id: 'auth_token',
         url: 'api-token-auth/',
         mapping: { read: 'post', },
