@@ -94,7 +94,7 @@ Here is the basic structure of a REST connector:
     urlQuery,
     pagination,
     transform: {
-        readResponseData: data => data.results,
+        readResponseData: data => data.docs,
     },
 },
 ```
@@ -131,7 +131,7 @@ Both the REST and GraphQL API is only accessible for logged-in users based on To
 ```javascript
 {
     id: 'login',
-    url: '/rest-api/login/',
+    url: 'login/',
     mapping: { read: 'post', },
     transform: {
         readResponseData: data => ({
