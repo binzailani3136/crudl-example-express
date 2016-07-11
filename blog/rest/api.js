@@ -19,6 +19,7 @@ var createRouter = function () {
         db.models.User.count({}, function (err, count) { counter = count });
         db.models.User.paginate(query, {
             select: "username first_name last_name email is_staff is_active date_joined",
+            sort: req.query.ordering.replace(/,/g, ' '),
             page: req.query.page,
             limit: req.query.limit,
         }, function(err, result) {
@@ -87,16 +88,96 @@ var createRouter = function () {
         })
     })
 
+    // Sections
+    router.route('/sections')
+    .get(function (req, res) {
+        const query = {}
+        let counter = 0
+        if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
+        db.models.Section.count({}, function (err, count) { counter = count });
+        db.models.Section.paginate(query, {
+            select: "name slug position",
+            sort: req.query.ordering.replace(/,/g, ' '),
+            page: req.query.page,
+            limit: req.query.limit,
+        }, function(err, result) {
+            result["counter"] = counter
+            res.json(result);
+        })
+    })
+
+    router.route('/sections/:id')
+    .get(function (req, res) {
+        console.log('Searching for ' + req.params.id);
+        db.models.Category.findById(req.params.id, "name slug position", function(err, result) {
+            res.json(result)
+        })
+    })
+    .patch(function (req, res) {
+        console.log(`Updating ${req.params.id}`);
+        db.models.Category.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
+            if (err) {
+                res.status(400)
+                if (err.name === "ValidationError") {
+                    var errors = {}
+                    var obj = Object.keys(err.errors).forEach((key) => {
+                        errors[key] = err.errors[key].message
+                    })
+                    console.log(errors);
+                    res.json(errors);
+                } else {
+                    res.json(err)
+                }
+            } else {
+                res.json(result);
+            }
+        })
+    })
+    .delete(function (req, res) {
+        console.log(`Deleting ${req.params.id}`);
+        db.models.Category.findByIdAndRemove(req.params.id, function(err) {
+            if (err) {
+                res.status(400)
+                res.send(err)
+            } else {
+                res.json({message: 'Section has been removed.'});
+            }
+        })
+    })
+
+    router.route('/sections/add/')
+    .post(function (req, res) {
+        db.models.Category.create(req.body, function (err, result) {
+            if (err) {
+                res.status(400)
+                if (err.name === "ValidationError") {
+                    var errors = {}
+                    var obj = Object.keys(err.errors).forEach((key) => {
+                        errors[key] = err.errors[key].message
+                    })
+                    console.log(errors);
+                    res.json(errors);
+                } else {
+                    res.json(err)
+                }
+            } else {
+                res.json(result);
+            }
+        })
+    })
+
     // Categories
     router.route('/categories')
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        if (req.query.user) { query["user"] = { "$eq": req.query.user }}
+        if (req.query.section) { query["section"] = { "$eq": req.query.section }}
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         db.models.Category.count({}, function (err, count) { counter = count });
         db.models.Category.paginate(query, {
-            select: "user name slug position",
+            select: "section name slug position",
+            sort: req.query.ordering.replace(/,/g, ' '),
+            populate: "section",
             page: req.query.page,
             limit: req.query.limit,
         }, function(err, result) {
@@ -108,7 +189,7 @@ var createRouter = function () {
     router.route('/categories/:id')
     .get(function (req, res) {
         console.log('Searching for ' + req.params.id);
-        db.models.Category.findById(req.params.id, "user name slug position", function(err, result) {
+        db.models.Category.findById(req.params.id, "section name slug position", function(err, result) {
             res.json(result)
         })
     })
@@ -171,11 +252,11 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        if (req.query.user) { query["user"] = { "$eq": req.query.user }}
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         db.models.Tag.count({}, function (err, count) { counter = count });
         db.models.Tag.paginate(query, {
-            select: "user name slug",
+            select: "name slug",
+            sort: req.query.ordering.replace(/,/g, ' '),
             page: req.query.page,
             limit: req.query.limit,
         }, function(err, result) {
@@ -187,7 +268,7 @@ var createRouter = function () {
     router.route('/tags/:id')
     .get(function (req, res) {
         console.log('Searching for ' + req.params.id);
-        db.models.Tag.findById(req.params.id, "user name slug", function(err, result) {
+        db.models.Tag.findById(req.params.id, "name slug", function(err, result) {
             res.json(result)
         })
     })
@@ -244,16 +325,19 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        if (req.query.user) { query["user"] = { "$eq": req.query.user }}
         if (req.query.title) { query["title"] = { "$regex": req.query.title, "$options": "i" }}
+        if (req.query.status) { query["status"] = { "$eq": req.query.status }}
         if (req.query.date) { query["date"] = { "$eq": req.query.date }}
         if (req.query.sticky) { query["sticky"] = { "$eq": req.query.sticky }}
-        if (req.query.status) { query["status"] = { "$eq": req.query.status }}
+        if (req.query.section) { query["section"] = { "$eq": req.query.section }}
         if (req.query.category) { query["category"] = { "$eq": req.query.category }}
         if (req.query.tags) { query["tags"] = { "$in": [req.query.tags] }}
+        if (req.query.owner) { query["owner"] = { "$eq": req.query.owner }}
         db.models.Entry.count({}, function (err, count) { counter = count });
         db.models.Entry.paginate(query, {
-            select: "user title date sticky status category tags body",
+            select: "title status date sticky section category tags summary body owner createdate updatedate",
+            sort: req.query.ordering.replace(/,/g, ' '),
+            populate: "section category",
             page: req.query.page,
             limit: req.query.limit,
         }, function(err, result) {
@@ -265,7 +349,7 @@ var createRouter = function () {
     router.route('/entries/:id')
     .get(function (req, res) {
         console.log('Searching for ' + req.params.id);
-        db.models.Entry.findById(req.params.id, "user title date sticky status category tags body", function(err, result) {
+        db.models.Entry.findById(req.params.id, "title status date sticky section category tags summary body owner createdate updatedate", function(err, result) {
             res.json(result);
         })
     })
@@ -395,14 +479,14 @@ var createRouter = function () {
         })
     })
 
-    router.route('/api-token-auth/')
+    router.route('/login/')
     .post(function (req, res) {
         db.models.User.findOne({ username: req.body.username, password: req.body.password }, function (err, result) {
             if (err) {
                 res.status(400)
                 res.send(err)
             } else if (result && result.token) {
-                res.json({'token': result.token})
+                res.json({'token': result.token, 'user': result._id})
             } else {
                 res.status(400)
                 res.send({})  // FIXME: better error message
@@ -410,19 +494,19 @@ var createRouter = function () {
         })
     })
 
-    router.use(function(req, res, next) {
-        // check header or url parameters or post parameters for token
-        var token = req.body.token || req.query.token || req.headers['x-access-token'];
-        // decode token
-        if (token) {
-            next();
-        } else {
-            return res.status(403).send({
-                success: false,
-                message: 'No token provided.'
-            });
-        }
-    });
+    // router.use(function(req, res, next) {
+    //     console.log("XXX")
+    //     // check header or url parameters or post parameters for token
+    //     var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    //     if (token || req.originalUrl == "/rest-api/login") {
+    //         next();
+    //     } else {
+    //         return res.status(403).send({
+    //             success: false,
+    //             message: 'No token provided.'
+    //         });
+    //     }
+    // });
 
     return router;
 }

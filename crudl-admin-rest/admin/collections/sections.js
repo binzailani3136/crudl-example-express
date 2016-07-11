@@ -2,17 +2,17 @@ import { slugify } from '../utils'
 
 //-------------------------------------------------------------------
 var listView = {
-    path: 'tags',
-    title: 'Tags',
+    path: 'sections',
+    title: 'Sections',
     actions: {
         /* counting the entries requires an additional API call per row. please note that the
         number of entries could be added at the database level, removing this additional call. */
         list: function (req, connectors) {
-            return connectors.tags.read(req)
+            return connectors.sections.read(req)
             .then(res => {
                 // The result of the following line is an array of promises, where each promise resolves
                 // to an array of entries associated with the item
-                let promises = res.data.map(item => connectors.entries.read(req.filter('tags', item._id)))
+                let promises = res.data.map(item => connectors.entries.read(req.filter('section', item._id)))
                 // We return a single promise that synchronizes on all the promises created in the previous step
                 return Promise.all(promises)
                 // And we also need to return a correct response, so we transform
@@ -25,7 +25,7 @@ var listView = {
                 })
             })
 		}
-    }
+    },
 }
 
 listView.fields = [
@@ -50,12 +50,12 @@ listView.fields = [
 
 //-------------------------------------------------------------------
 var changeView = {
-    path: 'tags/:_id',
-    title: 'Tag',
+    path: 'sections/:_id',
+    title: 'Section',
     actions: {
-        get: function (req, connectors) { return connectors.tag(req.id).read(req) },
-        delete: function (req, connectors) { return connectors.tag(req.id).delete(req) },
-        save: function (req, connectors) { return connectors.tag(req.id).update(req) },
+        get: function (req, connectors) { return connectors.section(req.id).read(req) },
+        delete: function (req, connectors) { return connectors.section(req.id).delete(req) },
+        save: function (req, connectors) { return connectors.section(req.id).update(req) },
     },
 }
 
@@ -64,29 +64,30 @@ changeView.fields = [
         name: 'name',
         label: 'Name',
         field: 'String',
+        required: true
     },
     {
         name: 'slug',
         label: 'Slug',
         field: 'String',
-        readOnly: true,
         watch: {
             for: 'name',
             setInitialValue: (name) => slugify(name),
         },
         props: {
-            helpText: `Slug is automatically generated when saving the Tag.`,
+            helpText: `If left blank, the slug will be automatically generated.
+            More about slugs <a href="http://en.wikipedia.org/wiki/Slug" target="_blank">here</a>.`,
         }
     },
 ]
 
 //-------------------------------------------------------------------
 var addView = {
-    path: 'tags/new',
-    title: 'New Tag',
+    path: 'sections/new',
+    title: 'New Section',
     fields: changeView.fields,
     actions: {
-        add: function (req, connectors) { return connectors.tags.create(req) },
+        add: function (req, connectors) { return connectors.sections.create(req) },
     },
 }
 

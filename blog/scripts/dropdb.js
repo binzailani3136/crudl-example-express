@@ -9,7 +9,9 @@ mongoose.connection.on('error', function () {
 })
 
 mongoose.connection.once('open', function () {
-    db.dropdb(mongoose.connection, function() {
+    process.stdout.write('Dropping db ... ');
+    mongoose.connection.db.dropDatabase(function() {
+        process.stdout.write('done.\n'.green)
         process.exit()
-    })
+    });
 })

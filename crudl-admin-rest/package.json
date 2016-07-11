@@ -1,13 +1,46 @@
 {
-    "name": "crudl-express-rest",
-    "version": "0.1.0",
-    "description": "crudl example express (rest)",
-    "main": "index.js",
-    "scripts": {
-        "browserify": "mkdir -p ./static/crudl-admin-rest/js && browserify . > ./static/crudl-admin-rest/js/admin.js",
-        "watchify": "mkdir -p ./static/crudl-admin-rest/js && watchify . -o ./static/crudl-admin-rest/js/admin.js -v"
-    },
-    "browser": "./index.js",
-    "author": "vonautomatisch",
-    "license": "MIT"
+  "name": "crudl-express-rest",
+  "version": "0.1.0",
+  "description": "crudl example express (rest)",
+  "main": "index.js",
+  "scripts": {
+    "browserify": "mkdir -p ./static/crudl-admin-rest/js && browserify . --extension=.jsx > ./static/crudl-admin-rest/js/admin.js",
+    "watchify": "mkdir -p ./static/crudl-admin-rest/js && watchify . --extension=.jsx -o ./static/crudl-admin-rest/js/admin.js -v"
+  },
+  "browserify": {
+    "presets": [
+      "es2015",
+      "react"
+    ],
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015",
+            "react"
+          ],
+          "plugins": [
+            "syntax-class-properties",
+            "transform-class-properties",
+            "transform-object-rest-spread"
+          ]
+        }
+      ]
+    ]
+  },
+  "browser": "./index.js",
+  "author": "vonautomatisch",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-plugin-syntax-class-properties": "^6.8.0",
+    "babel-plugin-transform-class-properties": "^6.10.2",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "babelify": "^7.3.0"
+  },
+  "dependencies": {
+    "react": "^15.1.0"
+  }
 }

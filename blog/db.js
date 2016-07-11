@@ -7,7 +7,7 @@ var _ = require('lodash')
 var Schema = mongoose.Schema
 
 var UserSchema = new Schema({
-    username: { type: String, maxlength: 30, required: true }, // unique
+    username: { type: String, maxlength: 30, required: true, unique: true },
     password: { type: String, maxlength: 128, required: true },
     first_name: { type: String, maxlength: 30 },
     last_name: { type: String, maxlength: 30 },
@@ -17,189 +17,104 @@ var UserSchema = new Schema({
     date_joined: { type: Date, default: Date.now, required: false },
     token: { type: String, maxlength: 40, required: false }
 })
-UserSchema.pre('save', function(next) {
-    if (this.is_staff && this.is_active && !this.token) {
-        this.token = faker.internet.password()
-    } else {
-        this.token = ''
-    }
-    next();
-});
+// UserSchema.pre('save', function(next) {
+//     /* Set token with is_staff/is_active */
+//     if (this.is_staff && this.is_active && !this.token) {
+//         // FIXME: create valid token
+//         this.token = faker.internet.password()
+//     } else {
+//         this.token = ''
+//     }
+//     next();
+// });
 UserSchema.plugin(mongoosePaginate);
 var User = mongoose.model('User', UserSchema)
+var opts = {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
+}
 
-var CategorySchema = new Schema({
-    user: { type: Schema.Types.ObjectId, required: true },
-    name: { type: String, maxlength: 200, required: true },
+var SectionSchema = new Schema({
+    name: { type: String, maxlength: 100, required: true, unique: true },
     slug: { type: String, maxlength: 100 },
     position: { type: Number }
 })
+SectionSchema.pre('save', function(next) {
+    /* Slug should be set with the frontend/admin. */
+    // FIXME: save slug if not given
+    next()
+})
+SectionSchema.plugin(mongoosePaginate);
+var Section = mongoose.model('Section', SectionSchema)
+
+var CategorySchema = new Schema({
+    section: { type: Schema.Types.ObjectId, ref: 'Section', required: true },
+    name: { type: String, maxlength: 100, required: true },
+    slug: { type: String, maxlength: 100 },
+    position: { type: Number }
+})
+CategorySchema.pre('save', function(next) {
+    /* Slug should be set with the frontend/admin. */
+    // FIXME: save slug if not given
+    next()
+});
 CategorySchema.plugin(mongoosePaginate);
 var Category = mongoose.model('Category', CategorySchema)
 
 var TagSchema = new Schema({
-    user: { type: Schema.Types.ObjectId, required: true },
-    name: { type: String, maxlength: 200, required: true },
+    name: { type: String, maxlength: 200, required: true, unique: true },
     slug: { type: String, maxlength: 100 }
 })
+TagSchema.pre('save', function(next) {
+    /* Slug is being set when saving the object. */
+    // FIXME: save slug
+    next();
+});
 TagSchema.plugin(mongoosePaginate);
 var Tag = mongoose.model('Tag', TagSchema)
 
 var EntrySchema = new Schema({
-    user: { type: Schema.Types.ObjectId, required: true },
     title: { type: String, maxlength: 200, required: true },
-    date: { type: Date, default: Date.now, required: true },
-    date_from: { type: Date },
-    date_until: { type: Date },
+    status: { type: String, enum: ['Draft', 'Online'], default: 'Draft', required: true },
+    date: { type: Date, required: true },
     sticky: { type: Boolean, default: false },
-    status: { type: String, enum: ['Draft', 'Online'], default: 'Draft' },
-    category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+    section: { type: Schema.Types.ObjectId, ref: 'Section', required: true },
+    category: { type: Schema.Types.ObjectId, ref: 'Category' },
     tags: [ {type : mongoose.Schema.ObjectId, ref: 'Tag'} ],
     image: { type: String, maxlength: 200 },
-    body: { type: String, maxlength: 3000 },
+    summary: { type: String, maxlength: 500 },
+    body: { type: String, maxlength: 5000 },
+    owner: { type: Schema.Types.ObjectId },
+    locked: { type: Boolean, default: false },
     createdate: { type: Date },
     updatedate: { type: Date }
 })
+EntrySchema.pre('save', function(next) {
+    now = new Date();
+    this.updatedate = now;
+    if (!this.createdate) {
+        this.createdate = now;
+    }
+    next()
+});
 EntrySchema.plugin(mongoosePaginate);
 var Entry = mongoose.model('Entry', EntrySchema)
 
 var EntryLinkSchema = new Schema({
     entry: { type: Schema.Types.ObjectId, required: true },
-    url: { type: String, maxlength: 250, required: true },
-    title: { type: String, maxlength: 250, required: true },
-    description: { type: String, maxlength: 250 },
+    url: { type: String, maxlength: 200, required: true },
+    title: { type: String, maxlength: 200, required: true },
+    description: { type: String, maxlength: 200 },
     position: { type: Number }
 })
 EntryLinkSchema.plugin(mongoosePaginate);
 var EntryLink = mongoose.model('EntryLink', EntryLinkSchema)
 
 
-// FIXTURES
-
-var initModel = (modelName, objects, callback) => {
-    process.stdout.write(`Initializing ${modelName} ... `)
-
-    var tasks = objects.map(object => (function(callback) {
-        object.save()
-        .then(function () {
-            callback(null)
-        }, function (err) {
-            callback(err)
-        })
-    }))
-
-    async.parallel(tasks, function(err, result) {
-        if (!err) {
-            process.stdout.write('done.\n'.green)
-        } else {
-            process.stdout.write('failed.\n'.red)
-            console.log(err);
-        }
-        callback(err, result)
-    })
-}
-// users
-var users = [
-    new User({
-        username: 'patrick',
-        password: 'crudl',
-        first_name: 'Patrick',
-        last_name: 'Kranzlmueller',
-        is_staff: true,
-        is_active: true
-    }),
-    new User({
-        username: 'axel',
-        password: 'crudl',
-        first_name: 'Axel',
-        last_name: 'Swoboda',
-        is_staff: true,
-        is_active: true
-    }),
-    new User({
-        username: 'vaclav',
-        password: 'crudl',
-        first_name: 'Vaclav',
-        last_name: 'Mikolasek',
-        is_staff: true,
-        is_active: true
-    })
-]
-// categories
-var categories = []
-users.map(function(u) {
-    for(var i = 0; i < _.random(300, 500); i++) {
-        var name = faker.address.city()
-        var slug = faker.helpers.slugify(name)
-        var category = new Category({
-            user: u._id,
-            name: name,
-            slug: slug,
-            position: i
-        })
-        categories.push(category)
-    }
-})
-// tags
-var tags = []
-users.map(function(u) {
-    for(var i = 0; i < _.random(100, 200); i++) {
-        var tag = new Tag({
-            user: u._id,
-            name: faker.address.state()
-        })
-        tags.push(tag)
-    }
-})
-// entries (incl tags/links)
-var entries = []
-var entrylinks = []
-users.map(function(u) {
-    for(var i = 0; i < _.random(10, 20); i++) {
-        var entrytags = _.sampleSize(tags,  _.random(0, 3))
-        var entry = new Entry({
-            user: u._id,
-            title: faker.name.findName(),
-            date: faker.date.past(),
-            sticky: faker.random.boolean(),
-            status: _.sample(['Draft', 'Online']),
-            category: _.sample(categories)._id,
-            tags: _.map(entrytags, '_id'),
-            body: faker.lorem.text()
-        })
-        entries.push(entry)
-        // entrylinks
-        for(var y = 0; y < _.random(0, 3); y++) {
-            var entrylink = new EntryLink({
-                entry: entry._id,
-                url: faker.internet.url(),
-                title: faker.address.streetName(),
-                position: y
-            })
-            entrylinks.push(entrylink)
-        }
-    }
-})
-
 module.exports = {
-    initdb: (connection, callback) => {
-        async.series([
-            (cb) => initModel('User', users, cb),
-            (cb) => initModel('Category', categories, cb),
-            (cb) => initModel('Tag', tags, cb),
-            (cb) => initModel('Entry', entries, cb),
-            (cb) => initModel('EntryLink', entrylinks, cb)
-        ], callback)
-    },
-    dropdb: (connection, callback) => {
-        process.stdout.write('Dropping db...');
-        connection.db.dropDatabase(function() {
-            process.stdout.write('done.\n'.green)
-            callback()
-        });
-    },
     models: {
         User,
+        Section,
         Category,
         Tag,
         Entry,

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+var fixtures = require('pow-mongoose-fixtures')
 var db = require('../db')
 
 /// Connect to mongodb and init the db
@@ -10,7 +11,9 @@ mongoose.connection.on('error', function () {
 })
 
 mongoose.connection.once('open', function () {
-    db.initdb(mongoose.connection, function () {
-        process.exit();
+    process.stdout.write('Loading fixtures ... ')
+    fixtures.load(__dirname + '/fixtures.js', mongoose, function(err) {
+        process.stdout.write('done.\n'.green)
+        process.exit()
     })
 })

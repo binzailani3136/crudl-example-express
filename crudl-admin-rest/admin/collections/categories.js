@@ -1,73 +1,114 @@
-
-// Credits for this function go to https://gist.github.com/mathewbyrne
-function slugify(text) {
-    return text.toString().toLowerCase()
-    .replace(/\s+/g, '-')           // Replace spaces with -
-    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-    .replace(/^-+/, '')             // Trim - from start of text
-    .replace(/-+$/, '');            // Trim - from end of text
-}
+import { slugify } from '../utils'
 
 //-------------------------------------------------------------------
 var listView = {
     path: 'categories',
     title: 'Categories',
     actions: {
-        list: function (req, cxs) { return cxs.categories.read(req) },
-    },
+        /* counting the entries requires an additional API call per row. please note that the
+        number of entries could be added at the database level, removing this additional call. */
+        list: function (req, connectors) {
+            return connectors.categories.read(req)
+            .then(res => {
+                // The result of the following line is an array of promises, where each promise resolves
+                // to an array of entries associated with the item
+                let promises = res.data.map(item => connectors.entries.read(req.filter('category', item._id)))
+                // We return a single promise that synchronizes on all the promises created in the previous step
+                return Promise.all(promises)
+                // And we also need to return a correct response, so we transform
+                // the resolved results in the `then` method of the Promise.all promise
+                .then(item_entries => {
+                    return res.set('data', res.data.map((item, index) => {
+                        item.counter_entries = item_entries[index].data.length
+                        return item
+                    }))
+                })
+            })
+		}
+    }
 }
 
 listView.fields = [
     {
+        name: 'section',
+        key: 'section.name',
+        label: 'Section',
+        sortable: true,
+        sorted: 'ascending',
+        sortpriority: '1',
+    },
+    {
         name: 'name',
         label: 'Name',
         main: true,
+        sortable: true,
+        sorted: 'ascending',
+        sortpriority: '2',
     },
     {
         name: 'slug',
         label: 'Slug',
+        sortable: true,
     },
     {
-        name: 'user',
-        label: 'User',
+        name: 'counter_entries',
+        label: 'No. Entries',
     },
 ]
 
-listView.filters = {
-    fields: [
-        {
-            name: 'user',
-            label: 'User',
-            field: 'Select',
-            actions: {
-                asyncProps: (req, cxs) => cxs.users.read(req)
-                .then(res => res.set('data', {'options': res.data.map(user => ({
-                    value: user._id,
-                    label: user.username,
-                }))}))
-            },
-            initialValue: '',
-        },
-    ]
-}
+// listView.filters = {
+//     fields: [
+//         {
+//             name: 'section',
+//             label: 'Section',
+//             field: 'Select',
+//             actions: {
+//                 asyncProps: (req, connectors) => connectors.sections.read(req)
+//                 .then(res => res.set('data', {
+//                     options: res.data.map(section => ({
+//                         value: section.id,
+//                         label: section.name,
+//                     }))
+//                 }))
+//             },
+//             initialValue: '',
+//         },
+//     ]
+// }
 
 //-------------------------------------------------------------------
 var changeView = {
-    path: 'categories/:_id/',
+    path: 'categories/:_id',
     title: 'Category',
     actions: {
-        get: function (req, cxs) { return cxs.category.read(req) },
-        delete: function (req, cxs) { return cxs.category.delete(req) },
-        save: function (req, cxs) { return cxs.category.update(req) },
+        get: function (req, connectors) { return connectors.category(req.id).read(req) },
+        delete: function (req, connectors) { return connectors.category(req.id).delete(req) },
+        save: function (req, connectors) { return connectors.category(req.id).update(req) },
     },
 }
 
 changeView.fields = [
     {
+        name: 'section',
+        label: 'Section',
+        field: 'Select',
+        required: true,
+        /* Here we build the list of possible options with an extra API call */
+        actions: {
+            asyncProps: (req, connectors) => connectors.sections.read(req)
+            .then(res => res.set('data', {
+                options: res.data.map(section => ({
+                    value: section.id,
+                    label: section.name,
+                }))
+            }))
+        }
+    },
+    {
         name: 'name',
         label: 'Name',
         field: 'String',
+        required: true,
     },
     {
         name: 'slug',
@@ -78,33 +119,8 @@ changeView.fields = [
             setInitialValue: (name) => slugify(name),
         },
         props: {
-            helpText: 'If left blank, the slug will be automatically generated.'
-        }
-    },
-    {
-        name: 'user',
-        label: 'User',
-        field: 'Autocomplete',
-        props: {
-            helpText: 'Help!'
-        },
-        actions: {
-            select: (req, cxs) => {
-                return Promise.all(req.data.selection.map(item => {
-                    return cxs.user.read(req.with('_id', item.value))
-                    .then(res => res.set('data', {
-                        value: res.data._id,
-                        label: res.data.username,
-                    }))
-                }))
-            },
-            search: (req, cxs) => {
-                return cxs.users.read(req.filter('username', req.data.query))
-                .then(res => res.set('data', res.data.map(user => ({
-                    value: user._id,
-                    label: user.username,
-                }))))
-            }
+            helpText: `If left blank, the slug will be automatically generated.
+            More about slugs <a href="http://en.wikipedia.org/wiki/Slug" target="_blank">here</a>.`,
         }
     },
 ]
@@ -115,7 +131,7 @@ var addView = {
     title: 'New Category',
     fields: changeView.fields,
     actions: {
-        add: function (req, cxs) { return cxs.categories.create(req) },
+        add: function (req, connectors) { return connectors.categories.create(req) },
     },
 }
 

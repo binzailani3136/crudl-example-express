@@ -1,5 +1,6 @@
+import options from './admin/options'
+import descriptor from './admin/descriptor'
+import SplitDateTimeField from './admin/fields/SplitDateTimeField'
 
-var options = require('./admin/options')
-var descriptor = require('./admin/descriptor')
-
+Crudl.addField('SplitDateTime', SplitDateTimeField)
 Crudl.render(descriptor, options)
