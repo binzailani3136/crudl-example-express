@@ -56,25 +56,27 @@ listView.fields = [
     },
 ]
 
-// listView.filters = {
-//     fields: [
-//         {
-//             name: 'section',
-//             label: 'Section',
-//             field: 'Select',
-//             actions: {
-//                 asyncProps: (req, connectors) => connectors.sections.read(req)
-//                 .then(res => res.set('data', {
-//                     options: res.data.map(section => ({
-//                         value: section.id,
-//                         label: section.name,
-//                     }))
-//                 }))
-//             },
-//             initialValue: '',
-//         },
-//     ]
-// }
+listView.filters = {
+    fields: [
+        {
+            name: 'section',
+            label: 'Section',
+            field: 'Select',
+            /* we manually build the available options. please note that you could also
+            use a connector, making this a one-liner */
+            actions: {
+                asyncProps: (req, connectors) => connectors.sections.read(req)
+                .then(res => res.set('data', {
+                    options: res.data.map(section => ({
+                        value: section._id,
+                        label: section.name,
+                    }))
+                }))
+            },
+            initialValue: '',
+        },
+    ]
+}
 
 //-------------------------------------------------------------------
 var changeView = {
