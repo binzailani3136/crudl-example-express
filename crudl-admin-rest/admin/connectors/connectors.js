@@ -29,6 +29,7 @@ module.exports = [
     {
         id: 'users',
         url: 'users/',
+        urlQuery,
         pagination,
         transform: { readResponseData: data => data.docs },
     },
@@ -133,7 +134,7 @@ module.exports = [
         transform: {
             readResponseData: data => ({
                 options: data.docs.map(function(item) {
-                    return { value: item.id, label: item.name }
+                    return { value: item._id, label: item.name }
                 }),
             })
         },
@@ -148,7 +149,7 @@ module.exports = [
         transform: {
             readResponseData: data => ({
                 options: data.docs.map(function(item) {
-                    return { value: item.id, label: item.name }
+                    return { value: item._id, label: item.name }
                 }),
             })
         },
