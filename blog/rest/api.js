@@ -16,10 +16,12 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
+        let sort = null
+        if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         db.models.User.count({}, function (err, count) { counter = count });
         db.models.User.paginate(query, {
             select: "username first_name last_name email is_staff is_active date_joined",
-            sort: req.query.ordering.replace(/,/g, ' '),
+            sort: sort,
             page: req.query.page,
             limit: req.query.limit,
         }, function(err, result) {
@@ -93,11 +95,13 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
+        let sort = null
+        if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         db.models.Section.count({}, function (err, count) { counter = count });
         db.models.Section.paginate(query, {
             select: "name slug position",
-            sort: req.query.ordering.replace(/,/g, ' '),
+            sort: sort,
             page: req.query.page,
             limit: req.query.limit,
         }, function(err, result) {
@@ -171,12 +175,14 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
+        let sort = null
+        if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.section) { query["section"] = { "$eq": req.query.section }}
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         db.models.Category.count({}, function (err, count) { counter = count });
         db.models.Category.paginate(query, {
             select: "section name slug position",
-            sort: req.query.ordering.replace(/,/g, ' '),
+            sort: sort,
             populate: "section",
             page: req.query.page,
             limit: req.query.limit,
@@ -252,11 +258,13 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
+        let sort = null
+        if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         db.models.Tag.count({}, function (err, count) { counter = count });
         db.models.Tag.paginate(query, {
             select: "name slug",
-            sort: req.query.ordering.replace(/,/g, ' '),
+            sort: sort,
             page: req.query.page,
             limit: req.query.limit,
         }, function(err, result) {
@@ -325,6 +333,8 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
+        let sort = null
+        if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.title) { query["title"] = { "$regex": req.query.title, "$options": "i" }}
         if (req.query.status) { query["status"] = { "$eq": req.query.status }}
         if (req.query.date) { query["date"] = { "$eq": req.query.date }}
@@ -336,7 +346,7 @@ var createRouter = function () {
         db.models.Entry.count({}, function (err, count) { counter = count });
         db.models.Entry.paginate(query, {
             select: "title status date sticky section category tags summary body owner createdate updatedate",
-            sort: req.query.ordering.replace(/,/g, ' '),
+            sort: sort,
             populate: "section category",
             page: req.query.page,
             limit: req.query.limit,
