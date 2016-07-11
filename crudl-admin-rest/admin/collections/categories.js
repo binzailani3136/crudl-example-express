@@ -100,7 +100,7 @@ changeView.fields = [
             asyncProps: (req, connectors) => connectors.sections.read(req)
             .then(res => res.set('data', {
                 options: res.data.map(section => ({
-                    value: section.id,
+                    value: section._id,
                     label: section.name,
                 }))
             }))

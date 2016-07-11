@@ -29,6 +29,25 @@ var createRouter = function () {
             res.json(result);
         })
     })
+    .post(function (req, res) {
+        db.models.User.create(req.body, function (err, result) {
+            if (err) {
+                res.status(400)
+                if (err.name === "ValidationError") {
+                    var errors = {}
+                    var obj = Object.keys(err.errors).forEach((key) => {
+                        errors[key] = err.errors[key].message
+                    })
+                    console.log(errors);
+                    res.json(errors);
+                } else {
+                    res.json(err)
+                }
+            } else {
+                res.json(result);
+            }
+        })
+    })
 
     router.route('/users/:id')
     .get(function (req, res) {
@@ -69,27 +88,6 @@ var createRouter = function () {
         })
     })
 
-    router.route('/users/add/')
-    .post(function (req, res) {
-        db.models.User.create(req.body, function (err, result) {
-            if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
-            } else {
-                res.json(result);
-            }
-        })
-    })
-
     // Sections
     router.route('/sections')
     .get(function (req, res) {
@@ -107,6 +105,25 @@ var createRouter = function () {
         }, function(err, result) {
             result["counter"] = counter
             res.json(result);
+        })
+    })
+    .post(function (req, res) {
+        db.models.Section.create(req.body, function (err, result) {
+            if (err) {
+                res.status(400)
+                if (err.name === "ValidationError") {
+                    var errors = {}
+                    var obj = Object.keys(err.errors).forEach((key) => {
+                        errors[key] = err.errors[key].message
+                    })
+                    console.log(errors);
+                    res.json(errors);
+                } else {
+                    res.json(err)
+                }
+            } else {
+                res.json(result);
+            }
         })
     })
 
@@ -149,27 +166,6 @@ var createRouter = function () {
         })
     })
 
-    router.route('/sections/add/')
-    .post(function (req, res) {
-        db.models.Category.create(req.body, function (err, result) {
-            if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
-            } else {
-                res.json(result);
-            }
-        })
-    })
-
     // Categories
     router.route('/categories')
     .get(function (req, res) {
@@ -189,6 +185,25 @@ var createRouter = function () {
         }, function(err, result) {
             result["counter"] = counter
             res.json(result);
+        })
+    })
+    .post(function (req, res) {
+        db.models.Category.create(req.body, function (err, result) {
+            if (err) {
+                res.status(400)
+                if (err.name === "ValidationError") {
+                    var errors = {}
+                    var obj = Object.keys(err.errors).forEach((key) => {
+                        errors[key] = err.errors[key].message
+                    })
+                    console.log(errors);
+                    res.json(errors);
+                } else {
+                    res.json(err)
+                }
+            } else {
+                res.json(result);
+            }
         })
     })
 
@@ -231,28 +246,6 @@ var createRouter = function () {
         })
     })
 
-    router.route('/categories/add/')
-    .post(function (req, res) {
-        db.models.Category.create(req.body, function (err, result) {
-            if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
-            } else {
-                res.json(result);
-            }
-        })
-    })
-
-
     // Tags
     router.route('/tags')
     .get(function (req, res) {
@@ -270,6 +263,25 @@ var createRouter = function () {
         }, function(err, result) {
             result["counter"] = counter
             res.json(result);
+        })
+    })
+    .post(function (req, res) {
+        db.models.Tag.create(req.body, function (err, result) {
+            if (err) {
+                res.status(400)
+                if (err.name === "ValidationError") {
+                    var errors = {}
+                    var obj = Object.keys(err.errors).forEach((key) => {
+                        errors[key] = err.errors[key].message
+                    })
+                    console.log(errors);
+                    res.json(errors);
+                } else {
+                    res.json(err)
+                }
+            } else {
+                res.json(result);
+            }
         })
     })
 
@@ -307,27 +319,6 @@ var createRouter = function () {
         })
     })
 
-    router.route('/tags/add/')
-    .post(function (req, res) {
-        db.models.Tag.create(req.body, function (err, result) {
-            if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
-            } else {
-                res.json(result);
-            }
-        })
-    })
-
     // Entries
     router.route('/entries')
     .get(function (req, res) {
@@ -353,6 +344,25 @@ var createRouter = function () {
         }, function(err, result) {
             result["counter"] = counter
             res.json(result);
+        })
+    })
+    .post(function (req, res) {
+        db.models.Entry.create(req.body, function (err, result) {
+            if (err) {
+                res.status(400)
+                if (err.name === "ValidationError") {
+                    var errors = {}
+                    var obj = Object.keys(err.errors).forEach((key) => {
+                        errors[key] = err.errors[key].message
+                    })
+                    console.log(errors);
+                    res.json(errors);
+                } else {
+                    res.json(err)
+                }
+            } else {
+                res.json(result);
+            }
         })
     })
 
@@ -395,27 +405,6 @@ var createRouter = function () {
         })
     })
 
-    router.route('/entries/add/')
-    .post(function (req, res) {
-        db.models.Entry.create(req.body, function (err, result) {
-            if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
-            } else {
-                res.json(result);
-            }
-        })
-    })
-
     // Entries > Links
     router.route('/entrylinks')
     .get(function (req, res) {
@@ -431,6 +420,25 @@ var createRouter = function () {
         }, function(err, result) {
             result["counter"] = counter
             res.json(result);
+        })
+    })
+    .post(function (req, res) {
+        db.models.EntryLink.create(req.body, function (err, result) {
+            if (err) {
+                res.status(400)
+                if (err.name === "ValidationError") {
+                    var errors = {}
+                    var obj = Object.keys(err.errors).forEach((key) => {
+                        errors[key] = err.errors[key].message
+                    })
+                    console.log(errors);
+                    res.json(errors);
+                } else {
+                    res.json(err)
+                }
+            } else {
+                res.json(result);
+            }
         })
     })
 
@@ -464,27 +472,6 @@ var createRouter = function () {
                 res.send(err)
             } else {
                 res.json({message: 'Entrylink has been removed.'});
-            }
-        })
-    })
-
-    router.route('/entrylinks/add/')
-    .post(function (req, res) {
-        db.models.EntryLink.create(req.body, function (err, result) {
-            if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
-            } else {
-                res.json(result);
             }
         })
     })
