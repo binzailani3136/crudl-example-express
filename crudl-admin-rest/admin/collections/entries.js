@@ -222,7 +222,7 @@ changeView.fieldsets = [
                     asyncProps: (req, connectors) => connectors.sections.read(req)
                     .then(res => res.set('data', {
                         options: res.data.map(section => ({
-                            value: section.id,
+                            value: section._id,
                             label: section.name,
                         }))
                     }))
@@ -254,7 +254,7 @@ changeView.fieldsets = [
                         return Promise.all(req.data.selection.map(item => {
                             return connectors.category(item.value).read(req)
                             .then(res => res.set('data', {
-                                value: res.data.id,
+                                value: res.data._id,
                                 label: res.data.name,
                             }))
                         }))
@@ -267,7 +267,7 @@ changeView.fieldsets = [
                                 .filter('name', req.data.query)
                                 .filter('section', req.context.section))
                             .then(res => res.set('data', res.data.map(d => ({
-                                value: d.id,
+                                value: d._id,
                                 label: `<b>${d.name}</b> (${d.slug})`,
                             }))))
                         }
@@ -333,7 +333,7 @@ changeView.fieldsets = [
                         return Promise.all(req.data.selection.map(item => {
                             return connectors.tag(item.value).read(req)
                             .then(res => res.set('data', {
-                                value: res.data.id,
+                                value: res.data._id,
                                 label: res.data.name,
                             }))
                         }))
@@ -400,7 +400,7 @@ changeView.tabs = [
             {
                 name: 'entry',
                 field: 'hidden',
-                initialValue: (context) => context.data.id,
+                initialValue: (context) => context.data._id,
             },
         ],
     },
