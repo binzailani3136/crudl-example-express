@@ -86,93 +86,83 @@ listView.fields = [
         render: 'number',
     },
 ]
-//
-// listView.filters = {
-//     fields: [
-//         {
-//             name: 'section',
-//             label: 'Section',
-//             field: 'Select',
-//             actions: {
-//                 asyncProps: (req, connectors) => connectors.sections_options.read(req),
-//             },
-//         },
-//         {
-//             name: 'category',
-//             label: 'Category',
-//             field: 'Select',
-//             watch: [
-//                 {
-//                     for: 'section',
-//                     setValue: '',
-//                     setProps: section => ({
-//                         readOnly: !section,
-//                         helpText: !section ? 'In order to select a category, you have to select a section first' : 'Select a category',
-//                     }),
-//                 }
-//             ],
-//             actions: {
-//                 asyncProps: (req, connectors) => {
-//                     return connectors.categories_options.read(req)
-//                     // console.log(req.context)
-//                     // if (!req.context.section) {
-//                     //     return Promise.resolve({data: []})
-//                     // } else {
-//                     //     return connectors.categories_options.read(req)
-//                     // }
-//                 }
-//             },
-//         },
-//         {
-//             name: 'status',
-//             label: 'Status',
-//             field: 'Select',
-//             props: {
-//                 options: [
-//                     {value: '0', label: 'Draft'},
-//                     {value: '1', label: 'Online'}
-//                 ]
-//             },
-//         },
-//         {
-//             name: 'date_gt',
-//             label: 'Published after',
-//             field: 'Date',
-//             /* simple date validation (please note that this is just a showcase,
-//             we know that it does not check for real dates) */
-//             validate: (value, allValues) => {
-//                 const dateReg = /^\d{4}-\d{2}-\d{2}$/
-//                 if (value && !value.match(dateReg)) {
-//                     return 'Please enter a date (YYYY-MM-DD).'
-//                 }
-//             }
-//         },
-//         {
-//             name: 'sticky',
-//             label: 'Sticky',
-//             field: 'Select',
-//             props: {
-//                 options: [
-//                     {value: 'true', label: 'True'},
-//                     {value: 'false', label: 'False'}
-//                 ]
-//             },
-//             props: {
-//                 helpText: 'Note: We use Select in order to distinguish false and none.'
-//             }
-//         },
-//         {
-//             name: 'search',
-//             label: 'Search',
-//             field: 'Search',
-//         },
-//         {
-//             name: 'title',
-//             label: 'Search (Title)',
-//             field: 'Search',
-//         },
-//     ]
-// }
+
+listView.filters = {
+    fields: [
+        {
+            name: 'section',
+            label: 'Section',
+            field: 'Select',
+            actions: {
+                asyncProps: (req, connectors) => connectors.sections_options.read(req),
+            },
+        },
+        {
+            name: 'category',
+            label: 'Category',
+            field: 'Select',
+            watch: [
+                {
+                    for: 'section',
+                    setValue: '',
+                    setProps: section => ({
+                        readOnly: !section,
+                        helpText: !section ? 'In order to select a category, you have to select a section first' : 'Select a category',
+                    }),
+                }
+            ],
+            actions: {
+                asyncProps: (req, connectors) => {
+                    return connectors.categories_options.read(req)
+                    // console.log(req.context)
+                    // if (!req.context.section) {
+                    //     return Promise.resolve({data: []})
+                    // } else {
+                    //     return connectors.categories_options.read(req)
+                    // }
+                }
+            },
+        },
+        {
+            name: 'status',
+            label: 'Status',
+            field: 'Select',
+            props: {
+                options: [
+                    {value: '0', label: 'Draft'},
+                    {value: '1', label: 'Online'}
+                ]
+            },
+        },
+        {
+            name: 'date_gt',
+            label: 'Published after',
+            field: 'Date',
+            /* simple date validation (please note that this is just a showcase,
+            we know that it does not check for real dates) */
+            validate: (value, allValues) => {
+                const dateReg = /^\d{4}-\d{2}-\d{2}$/
+                if (value && !value.match(dateReg)) {
+                    return 'Please enter a date (YYYY-MM-DD).'
+                }
+            }
+        },
+        {
+            name: 'sticky',
+            label: 'Sticky',
+            field: 'Select',
+            props: {
+                options: [
+                    {value: 'true', label: 'True'},
+                    {value: 'false', label: 'False'}
+                ]
+            },
+            props: {
+                helpText: 'Note: We use Select in order to distinguish false and none.'
+            }
+        }
+    ]
+}
 
 listView.search = {
     name: 'search',
