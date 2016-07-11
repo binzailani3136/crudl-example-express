@@ -114,10 +114,11 @@ module.exports = [
     {
         id: 'sections_options',
         url: 'sections/',
+        urlQuery,
         transform: {
             readResponseData: data => ({
                 options: data.docs.map(function(item) {
-                    return { value: item.id, label: item.name }
+                    return { value: item._id, label: item.name }
                 }),
             })
         },
@@ -128,6 +129,7 @@ module.exports = [
     {
         id: 'categories_options',
         url: 'categories/',
+        urlQuery,
         transform: {
             readResponseData: data => ({
                 options: data.docs.map(function(item) {
@@ -142,6 +144,7 @@ module.exports = [
     {
         id: 'tags_options',
         url: 'tags/',
+        urlQuery,
         transform: {
             readResponseData: data => ({
                 options: data.docs.map(function(item) {
