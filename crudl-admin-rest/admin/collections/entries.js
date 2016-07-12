@@ -113,7 +113,7 @@ listView.filters = {
             actions: {
                 asyncProps: (req, connectors) => {
                     return connectors.categories_options.read(req)
-                    // console.log(req.context)
+                    // console.log("XXX", req.context)
                     // if (!req.context.section) {
                     //     return Promise.resolve({data: []})
                     // } else {
@@ -128,8 +128,8 @@ listView.filters = {
             field: 'Select',
             props: {
                 options: [
-                    {value: '0', label: 'Draft'},
-                    {value: '1', label: 'Online'}
+                    {value: 'Draft', label: 'Draft'},
+                    {value: 'Online', label: 'Online'}
                 ]
             },
         },
