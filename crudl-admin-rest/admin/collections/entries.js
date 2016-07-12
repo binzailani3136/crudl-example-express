@@ -157,7 +157,12 @@ listView.filters = {
                 ],
                 helpText: 'Note: We use Select in order to distinguish false and none.'
             }
-        }
+        },
+        {
+            name: 'search_summary',
+            label: 'Search (Summary)',
+            field: 'Search',
+        },
     ]
 }
 

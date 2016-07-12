@@ -338,6 +338,7 @@ var createRouter = function () {
         if (req.query.tags) { query["tags"] = { "$in": [req.query.tags] }}
         if (req.query.owner) { query["owner"] = { "$eq": req.query.owner }}
         if (req.query.search) { query["title"] = { "$regex": req.query.search, "$options": "i" }}
+        if (req.query.search_summary) { query["summary"] = { "$regex": req.query.search_summary, "$options": "i" }}
         db.models.Entry.count({}, function (err, count) { counter = count });
         db.models.Entry.paginate(query, {
             select: "title status date sticky section category tags summary body owner createdate updatedate",
