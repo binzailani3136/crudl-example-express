@@ -1,10 +1,4 @@
-import { formatDate } from '../utils'
-
-function transform(p, func) {
-    return p.then(response => {
-        return response.set('data', response.data.map(func))
-    })
-}
+import { formatDate, formatStringToDate } from '../utils'
 
 //-------------------------------------------------------------------
 var listView = {
@@ -29,6 +23,10 @@ var listView = {
             })
         }
     },
+    normalize: (list) => list.map(item => {
+        item.date = formatStringToDate(item.date)
+        return item
+    })
 }
 
 listView.fields = [
@@ -41,6 +39,7 @@ listView.fields = [
     {
         name: 'category',
         key: 'category.name',
+        defaultValue: '',  // defaultValue makes sense if the key is not given
         label: 'Category',
         sortable: true,
     },
@@ -177,6 +176,10 @@ var changeView = {
         delete: function (req, connectors) { return connectors.entry(req.id).delete(req) },
         save: function (req, connectors) { return connectors.entry(req.id).update(req) },
     },
+    normalize: (get) => {
+        get.date = formatStringToDate(get.date)
+        return get
+    }
 }
 
 changeView.fieldsets = [
