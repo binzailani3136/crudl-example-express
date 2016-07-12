@@ -96,6 +96,7 @@ var createRouter = function () {
         let sort = null
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
+        if (req.query.search) { query["name"] = { "$regex": req.query.search, "$options": "i" }}
         db.models.Section.count({}, function (err, count) { counter = count });
         db.models.Section.paginate(query, {
             select: "name slug position",
@@ -175,6 +176,7 @@ var createRouter = function () {
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.section) { query["section"] = { "$eq": req.query.section }}
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
+        if (req.query.search) { query["name"] = { "$regex": req.query.search, "$options": "i" }}
         db.models.Category.count({}, function (err, count) { counter = count });
         db.models.Category.paginate(query, {
             select: "section name slug position",
@@ -254,6 +256,7 @@ var createRouter = function () {
         let sort = null
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
+        if (req.query.search) { query["name"] = { "$regex": req.query.search, "$options": "i" }}
         db.models.Tag.count({}, function (err, count) { counter = count });
         db.models.Tag.paginate(query, {
             select: "name slug",

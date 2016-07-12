@@ -127,6 +127,10 @@ changeView.fields = [
     },
 ]
 
+listView.search = {
+    name: 'search',
+}
+
 //-------------------------------------------------------------------
 var addView = {
     path: 'categories/new',

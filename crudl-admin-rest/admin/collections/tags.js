@@ -48,6 +48,10 @@ listView.fields = [
     },
 ]
 
+listView.search = {
+    name: 'search',
+}
+
 //-------------------------------------------------------------------
 var changeView = {
     path: 'tags/:_id',
