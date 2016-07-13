@@ -340,6 +340,21 @@ Validation should usually be handled with the API. That said, it sometimes makes
 },
 ```
 
+In order to validate the complete form, you define a function validate with the changeView or addView:
+
+```javascript
+var changeView = {
+    path: 'entries/:id',
+    title: 'Blog Entry',
+    actions: { ... },
+    validate: function (values) {
+        if (!values.category && !values.tags) {
+            return { _error: 'Either `Category` or `Tags` is required.' }
+        }
+    }
+}
+```
+
 ### Custom column with listView
 With _Entries_, we added a custom column to the _listView_ based on the currently logged-in user.
 
@@ -380,7 +395,7 @@ Filtering is done by defining fields with _listView.filters_ (see entries.js). Y
 You can only change the password of the currently logged-in _User_ (see collections/users.js)
 
 ## Limitations
-XXX
+* Sorting with MongoDB is case sensitive. With aggregation, it is possible to implement case-insensitive sorting.
 
 ## Development
 This example mainly shows how to use crudl. It is not intended for development on crudl itself.
