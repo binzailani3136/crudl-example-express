@@ -182,6 +182,11 @@ var changeView = {
     normalize: (get) => {
         get.date = formatStringToDate(get.date)
         return get
+    },
+    validate: function (values) {
+        if ((!values.category || values.category == "") && (!values.tags || values.tags.length == 0)) {
+            return { _error: 'Either `Category` or `Tags` is required.' }
+        }
     }
 }
 
@@ -203,12 +208,12 @@ changeView.fieldsets = [
                 label: 'Status',
                 field: 'Select',
                 required: true,
-                initialValue: '0',
+                initialValue: 'Draft',
                 /* set options manually */
                 props: {
                     options: [
-                        {value: '0', label: 'Draft'},
-                        {value: '1', label: 'Online'}
+                        {value: 'Draft', label: 'Draft'},
+                        {value: 'Online', label: 'Online'}
                     ]
                 },
             },
@@ -406,7 +411,7 @@ changeView.tabs = [
             {
                 name: 'entry',
                 field: 'hidden',
-                initialValue: (context) => context.data._id,
+                initialValue: (context) => context.data.id,
             },
         ],
     },
@@ -417,6 +422,7 @@ var addView = {
     path: 'entries/new',
     title: 'New Blog Entry',
     fieldsets: changeView.fieldsets,
+    validate: changeView.validate,
     actions: {
         add: function (req, connectors) { return connectors.entries.create(req) },
     },

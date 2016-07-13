@@ -79,8 +79,8 @@ var EntrySchema = new Schema({
     date: { type: Date, required: true },
     sticky: { type: Boolean, default: false },
     section: { type: Schema.Types.ObjectId, ref: 'Section', required: true },
-    category: { type: Schema.Types.ObjectId, ref: 'Category' },
-    tags: [ {type : mongoose.Schema.ObjectId, ref: 'Tag'} ],
+    category: { type: Schema.Types.ObjectId, ref: 'Category', null: true, default: null },
+    tags: [ {type : Schema.Types.ObjectId, ref: 'Tag'} ],
     image: { type: String, maxlength: 200 },
     summary: { type: String, maxlength: 500 },
     body: { type: String, maxlength: 5000 },
@@ -90,10 +90,9 @@ var EntrySchema = new Schema({
     updatedate: { type: Date }
 })
 EntrySchema.pre('save', function(next) {
-    now = new Date();
-    this.updatedate = now;
+    this.updatedate = Date.now();
     if (!this.createdate) {
-        this.createdate = now;
+        this.createdate = Date.now();
     }
     next()
 });

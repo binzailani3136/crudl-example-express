@@ -352,6 +352,7 @@ var createRouter = function () {
         })
     })
     .post(function (req, res) {
+        if (req.body.category == "") req.body.category = null
         db.models.Entry.create(req.body, function (err, result) {
             if (err) {
                 res.status(400)
@@ -380,6 +381,7 @@ var createRouter = function () {
     })
     .patch(function (req, res) {
         console.log(`Updating ${req.params.id}`);
+        if (req.body.category == "") req.body.category = null
         db.models.Entry.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
             if (err) {
                 res.status(400)

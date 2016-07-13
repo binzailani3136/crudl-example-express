@@ -1,10 +1,9 @@
 
 export function pagination(res) {
-    function url2page(url) {
-        let match = /page=(\d+)/.exec(url)
-        return match ? parseInt(match[1]) : 1
+    let nextPage = undefined
+    if (res.data.page < res.data.pages) {
+        nextPage = res.data.page + 1
     }
-    let nextPage = res.data.next && url2page(res.data.next)
     // Return the pagination descriptor
     return {
         next: nextPage ? { page: nextPage } : undefined,
@@ -51,4 +50,9 @@ export function formatDate(date) {
 export function formatStringToDate(dateStr) {
     let date = new Date(dateStr)
     return date.toJSON().slice(0, 10)
+}
+
+export function transformErrors(error) {
+    error._error = error.non_field_errors
+    return error
 }
