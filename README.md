@@ -340,7 +340,7 @@ Validation should usually be handled with the API. That said, it sometimes makes
 },
 ```
 
-In order to validate the complete form, you define a function validate with the changeView or addView:
+In order to validate the complete form, you define a function _validate_ with the _changeView_ or _addView_:
 
 ```javascript
 var changeView = {
