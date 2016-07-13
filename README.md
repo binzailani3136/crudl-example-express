@@ -188,7 +188,8 @@ There are a couple of foreign keys being used (e.g. _Section_ or _Category_ with
     label: 'Category',
     field: 'Autocomplete',
     actions: {
-        /* return the value and label when selecting a category */
+        /* return the value and label when selecting a category.
+        please note that this is easier solved with a custom connector */
         select: (req, connectors) => {
             return Promise.all(req.data.selection.map(item => {
                 return connectors.category(item.value).read(req)
