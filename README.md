@@ -152,9 +152,9 @@ With _Entries_, the _Categories_ depend on the selected _Section_. If you change
 {
     name: 'category',
     field: 'Autocomplete',
-    watch: [
+    onChange: [
         {
-            for: 'section',
+            in: 'section',
             setProps: section => ({
                 disabled: !section,
                 helpText: !section ? "In order to select a category, you have to select a section first" : "Select a category",

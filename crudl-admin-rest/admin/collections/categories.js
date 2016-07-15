@@ -116,8 +116,8 @@ changeView.fields = [
         name: 'slug',
         label: 'Slug',
         field: 'String',
-        watch: {
-            for: 'name',
+        onChange: {
+            in: 'name',
             setInitialValue: (name) => slugify(name),
         },
         props: {
