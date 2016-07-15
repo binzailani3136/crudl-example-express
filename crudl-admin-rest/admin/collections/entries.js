@@ -194,7 +194,7 @@ changeView.fieldsets = [
     {
         fields: [
             {
-                name: 'id',
+                name: '_id',
                 field: 'hidden',
             },
             {
@@ -386,8 +386,8 @@ changeView.tabs = [
         actions: {
             list: (req, connectors) => connectors.links.read(req.filter('entry', req.id)),
             add: (req, connectors) => connectors.links.create(req),
-            save: (req, connectors) => connectors.link(req.data.id).update(req),
-            delete: (req, connectors) => connectors.link(req.data.id).delete(req)
+            save: (req, connectors) => connectors.link(req.id).update(req),
+            delete: (req, connectors) => connectors.link(req.id).delete(req)
         },
         itemTitle: '{url}',
         fields: [
@@ -411,7 +411,7 @@ changeView.tabs = [
             {
                 name: 'entry',
                 field: 'hidden',
-                initialValue: (context) => context.data.id,
+                initialValue: (context) => context.data._id,
             },
         ],
     },
