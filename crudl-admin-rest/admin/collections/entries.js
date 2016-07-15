@@ -386,8 +386,8 @@ changeView.tabs = [
         actions: {
             list: (req, connectors) => connectors.links.read(req.filter('entry', req.id)),
             add: (req, connectors) => connectors.links.create(req),
-            save: (req, connectors) => connectors.link(req.id).update(req),
-            delete: (req, connectors) => connectors.link(req.id).delete(req)
+            save: (req, connectors) => connectors.link(req.data._id).update(req),
+            delete: (req, connectors) => connectors.link(req.data._id).delete(req)
         },
         itemTitle: '{url}',
         fields: [
@@ -405,7 +405,7 @@ changeView.tabs = [
                 field: 'String',
             },
             {
-                name: 'id',
+                name: '_id',
                 field: 'hidden',
             },
             {
