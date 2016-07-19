@@ -80,6 +80,9 @@ let EntryType = new GraphQLObjectType({
 let EntryInputType = new GraphQLInputObjectType({
     name: 'EntryInput',
     fields: () => ({
+        clientMutationId: {
+            type: GraphQLString
+        },
         title: {
             type: GraphQLString
         },

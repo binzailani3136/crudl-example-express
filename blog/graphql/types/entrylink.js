@@ -39,6 +39,9 @@ let EntryLinkType = new GraphQLObjectType({
 let EntryLinkInputType = new GraphQLInputObjectType({
     name: 'EntryLinkInput',
     fields: () => ({
+        clientMutationId: {
+            type: GraphQLString
+        },
         entry: {
             type: GraphQLString
         },
