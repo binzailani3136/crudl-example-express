@@ -318,7 +318,7 @@ changeView.fieldsets = [
                 label: 'Summary',
                 field: 'Textarea',
                 validate: (value, allValues) => {
-                    if (!value && allValues.status == '1') {
+                    if (!value && allValues.status == 'Online') {
                         return 'The summary is required with status "Online".'
                     }
                 }
@@ -328,8 +328,8 @@ changeView.fieldsets = [
                 label: 'Body',
                 field: 'Textarea',
                 validate: (value, allValues) => {
-                    if (!value && allValues.status == '1') {
-                        return 'The summary is required with status "Online".'
+                    if (!value && allValues.status == 'Online') {
+                        return 'The body is required with status "Online".'
                     }
                 }
             },
