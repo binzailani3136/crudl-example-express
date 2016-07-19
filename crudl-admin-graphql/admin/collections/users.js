@@ -21,10 +21,6 @@ var listView = {
 
 listView.fields = [
     {
-        name: 'originalId',
-        label: 'ID',
-    },
-    {
         name: 'username',
         label: 'Username',
         main: true,
@@ -51,7 +47,7 @@ listView.fields = [
 
 //-------------------------------------------------------------------
 var changeView = {
-    path: 'users/:id',
+    path: 'users/:_id',
     title: 'User',
     actions: {
         get: function (req, connectors) { return connectors.user(req.id).read(req) },
@@ -87,7 +83,7 @@ changeView.fieldsets = [
     {
         fields: [
             {
-                name: 'id',
+                name: '_id',
                 field: 'hidden',
             },
             {

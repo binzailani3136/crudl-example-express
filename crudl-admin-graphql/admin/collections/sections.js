@@ -5,15 +5,16 @@ var listView = {
     path: 'sections',
     title: 'Sections',
     actions: {
-        list: function (req, connectors) { return connectors.sections.read(req) }
+        // list: function (req, connectors) { return connectors.sections.read(req) }
+        list: function (req, connectors) {
+            let res = connectors.sections.read(req)
+            console.log("YYY", res)
+            return res
+        }
     }
 }
 
 listView.fields = [
-    {
-        name: 'originalId',
-        label: 'ID',
-    },
     {
         name: 'name',
         label: 'Name',
@@ -26,15 +27,15 @@ listView.fields = [
         name: 'slug',
         label: 'Slug',
     },
-    {
-        name: 'counterEntries',
-        label: 'No. Entries',
-    },
+    // {
+    //     name: 'counterEntries',
+    //     label: 'No. Entries',
+    // },
 ]
 
 //-------------------------------------------------------------------
 var changeView = {
-    path: 'sections/:id',
+    path: 'sections/:_id',
     title: 'Section',
     actions: {
         get: function (req, connectors) { return connectors.section(req.id).read(req) },
@@ -45,7 +46,7 @@ var changeView = {
 
 changeView.fields = [
     {
-        name: 'id',
+        name: '_id',
         field: 'hidden',
     },
     {

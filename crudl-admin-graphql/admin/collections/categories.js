@@ -11,12 +11,8 @@ var listView = {
 
 listView.fields = [
     {
-        name: 'originalId',
-        label: 'ID',
-    },
-    {
         name: 'section',
-        key: 'section.name',  // see actions for listView
+        key: 'section',  // see actions for listView
         label: 'Section',
     },
     {
@@ -31,34 +27,34 @@ listView.fields = [
         name: 'slug',
         label: 'Slug',
     },
-    {
-        name: 'counterEntries',
-        label: 'No. Entries',
-    },
+    // {
+    //     name: 'counterEntries',
+    //     label: 'No. Entries',
+    // },
 ]
 
-listView.filters = {
-    fields: [
-        {
-            name: 'section',
-            label: 'Section',
-            field: 'Select',
-            actions: {
-                asyncProps: (req, connectors) => connectors.sections_options.read(req)
-            },
-            initialValue: '',
-        },
-        {
-            name: 'name_Icontains',  // Graphene required syntax
-            label: 'Name Contains',
-            field: 'String',
-        },
-    ]
-}
+// listView.filters = {
+//     fields: [
+//         {
+//             name: 'section',
+//             label: 'Section',
+//             field: 'Select',
+//             actions: {
+//                 asyncProps: (req, connectors) => connectors.sections_options.read(req)
+//             },
+//             initialValue: '',
+//         },
+//         {
+//             name: 'name_Icontains',  // Graphene required syntax
+//             label: 'Name Contains',
+//             field: 'String',
+//         },
+//     ]
+// }
 
 //-------------------------------------------------------------------
 var changeView = {
-    path: 'categories/:id',
+    path: 'categories/:_id',
     title: 'Category',
     actions: {
         get: function (req, connectors) { return connectors.category(req.id).read(req) },
@@ -69,12 +65,12 @@ var changeView = {
 
 changeView.fields = [
     {
-        name: 'id',
+        name: '_id',
         field: 'hidden',
     },
     {
         name: 'section',
-        key: 'section.id',
+        key: 'section._id',
         label: 'Section',
         field: 'Select',
         required: true,

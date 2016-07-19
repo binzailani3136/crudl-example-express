@@ -14,24 +14,21 @@ var listView = {
         list: function (req, connectors) {
             let entries = connectors.entries.read(req)
             /* here we add a custom column based on the currently logged-in user */
-            let entriesWithCustomColumn = transform(entries, (item) => {
-                if (item.owner) {
-                    item.is_owner = req.authInfo.user == item.owner.originalId
-                } else {
-                    item.is_owner = false
-                }
-                return item
-            })
-            return entriesWithCustomColumn
+            // let entriesWithCustomColumn = transform(entries, (item) => {
+            //     if (item.owner) {
+            //         item.is_owner = req.authInfo.user == item.owner.originalId
+            //     } else {
+            //         item.is_owner = false
+            //     }
+            //     return item
+            // })
+            // return entriesWithCustomColumn
+            return entries
         }
     },
 }
 
 listView.fields = [
-    {
-        name: 'originalId',
-        label: 'ID',
-    },
     {
         name: 'section',
         key: 'section.name',
@@ -40,6 +37,7 @@ listView.fields = [
     {
         name: 'category',
         key: 'category.name',
+        defaultValue: '',
         label: 'Category',
     },
     {
@@ -80,85 +78,85 @@ listView.fields = [
     },
 ]
 
-listView.filters = {
-    fields: [
-        {
-            name: 'section',
-            label: 'Section',
-            field: 'Select',
-            actions: {
-                asyncProps: (req, connectors) => connectors.sections_options.read(req),
-            },
-        },
-        {
-            name: 'category',
-            label: 'Category',
-            field: 'Select',
-            onChange: [
-                {
-                    in: 'section',
-                    setValue: '',
-                    setProps: section => ({
-                        readOnly: !section,
-                        helpText: !section ? 'In order to select a category, you have to select a section first' : 'Select a category',
-                    }),
-                }
-            ],
-            actions: {
-                asyncProps: (req, connectors) => {
-                    return connectors.categories_options.read(req)
-                    // console.log(req.context)
-                    // if (!req.context.section) {
-                    //     return Promise.resolve({data: []})
-                    // } else {
-                    //     return connectors.categories_options.read(req)
-                    // }
-                }
-            },
-        },
-        {
-            name: 'status',
-            label: 'Status',
-            field: 'Select',
-            props: {
-                options: [
-                    {value: '0', label: 'Draft'},
-                    {value: '1', label: 'Online'}
-                ]
-            },
-        },
-        {
-            name: 'date',
-            label: 'Published on',
-            field: 'Date',
-            /* simple date validation (please note that this is just a showcase,
-            we know that it does not check for real dates) */
-            validate: (value, allValues) => {
-                const dateReg = /^\d{4}-\d{2}-\d{2}$/
-                if (value && !value.match(dateReg)) {
-                    return 'Please enter a date (YYYY-MM-DD).'
-                }
-            }
-        },
-        {
-            name: 'sticky',
-            label: 'Sticky',
-            field: 'Select',
-            props: {
-                options: [
-                    {value: 'true', label: 'True'},
-                    {value: 'false', label: 'False'}
-                ],
-                helpText: 'Note: We use Select in order to distinguish false and none.'
-            }
-        },
-        {
-            name: 'summary_Icontains',
-            label: 'Search (Summary)',
-            field: 'Search',
-        },
-    ]
-}
+// listView.filters = {
+//     fields: [
+//         {
+//             name: 'section',
+//             label: 'Section',
+//             field: 'Select',
+//             actions: {
+//                 asyncProps: (req, connectors) => connectors.sections_options.read(req),
+//             },
+//         },
+//         {
+//             name: 'category',
+//             label: 'Category',
+//             field: 'Select',
+//             onChange: [
+//                 {
+//                     in: 'section',
+//                     setValue: '',
+//                     setProps: section => ({
+//                         readOnly: !section,
+//                         helpText: !section ? 'In order to select a category, you have to select a section first' : 'Select a category',
+//                     }),
+//                 }
+//             ],
+//             actions: {
+//                 asyncProps: (req, connectors) => {
+//                     return connectors.categories_options.read(req)
+//                     // console.log(req.context)
+//                     // if (!req.context.section) {
+//                     //     return Promise.resolve({data: []})
+//                     // } else {
+//                     //     return connectors.categories_options.read(req)
+//                     // }
+//                 }
+//             },
+//         },
+//         {
+//             name: 'status',
+//             label: 'Status',
+//             field: 'Select',
+//             props: {
+//                 options: [
+//                     {value: '0', label: 'Draft'},
+//                     {value: '1', label: 'Online'}
+//                 ]
+//             },
+//         },
+//         {
+//             name: 'date',
+//             label: 'Published on',
+//             field: 'Date',
+//             /* simple date validation (please note that this is just a showcase,
+//             we know that it does not check for real dates) */
+//             validate: (value, allValues) => {
+//                 const dateReg = /^\d{4}-\d{2}-\d{2}$/
+//                 if (value && !value.match(dateReg)) {
+//                     return 'Please enter a date (YYYY-MM-DD).'
+//                 }
+//             }
+//         },
+//         {
+//             name: 'sticky',
+//             label: 'Sticky',
+//             field: 'Select',
+//             props: {
+//                 options: [
+//                     {value: 'true', label: 'True'},
+//                     {value: 'false', label: 'False'}
+//                 ],
+//                 helpText: 'Note: We use Select in order to distinguish false and none.'
+//             }
+//         },
+//         {
+//             name: 'summary_Icontains',
+//             label: 'Search (Summary)',
+//             field: 'Search',
+//         },
+//     ]
+// }
 
 listView.search = {
     name: 'title_Icontains',
@@ -166,7 +164,7 @@ listView.search = {
 
 //-------------------------------------------------------------------
 var changeView = {
-    path: 'entries/:id',
+    path: 'entries/:_id',
     title: 'Blog Entry',
     actions: {
         get: function (req, connectors) { return connectors.entry(req.id).read(req) },
@@ -184,7 +182,7 @@ changeView.fieldsets = [
     {
         fields: [
             {
-                name: 'id',
+                name: '_id',
                 field: 'hidden',
             },
             {
@@ -209,7 +207,7 @@ changeView.fieldsets = [
             },
             {
                 name: 'section',
-                key: 'section.id',
+                key: 'section._id',
                 label: 'Section',
                 field: 'Select',
                 /* we set required to false, although this field is actually
@@ -224,7 +222,7 @@ changeView.fieldsets = [
                     asyncProps: (req, connectors) => connectors.sections.read(req)
                     .then(res => res.set('data', {
                         options: res.data.map(section => ({
-                            value: section.id,
+                            value: section._id,
                             label: section.name,
                         }))
                     }))
@@ -232,7 +230,7 @@ changeView.fieldsets = [
             },
             {
                 name: 'category',
-                key: 'category.id',
+                key: 'category._id',
                 label: 'Category',
                 field: 'Autocomplete',
                 required: false,
@@ -257,7 +255,7 @@ changeView.fieldsets = [
                         return Promise.all(req.data.selection.map(item => {
                             return connectors.category(item.value).read(req)
                             .then(res => res.set('data', {
-                                value: res.data.id,
+                                value: res.data._id,
                                 label: res.data.name,
                             }))
                         }))
@@ -270,7 +268,7 @@ changeView.fieldsets = [
                                 .filter('name', req.data.query)
                                 .filter('section', req.context.section))
                             .then(res => res.set('data', res.data.map(d => ({
-                                value: d.id,
+                                value: d._id,
                                 label: `<b>${d.name}</b> (${d.slug})`,
                             }))))
                         }
@@ -336,7 +334,7 @@ changeView.fieldsets = [
                         return Promise.all(req.data.selection.map(item => {
                             return connectors.tag(item.value).read(req)
                             .then(res => res.set('data', {
-                                value: res.data.id,
+                                value: res.data._id,
                                 label: res.data.name,
                             }))
                         }))
@@ -398,7 +396,7 @@ changeView.tabs = [
                 field: 'String',
             },
             {
-                name: 'id',
+                name: '_id',
                 field: 'hidden',
             },
             {

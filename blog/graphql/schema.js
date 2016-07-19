@@ -24,28 +24,32 @@ let schema = new GraphQLSchema({
         name: 'Query',
         fields: () => ({
             users: {
-                type: UserListType,
-                args: { limit: { type: GraphQLInt }, page: { type: GraphQLInt }, filters: { type: UserListFilter } },
-                resolve: (root, {limit, page, filters}) => {
-                    const query = {}
-                    let counter = 0
-                    if (filters.is_staff) { query["is_staff"] = { "$eq": filters.is_staff }}
-                    db.models.User.count({}, function (err, count) { counter = count });
-                    return db.models.User.paginate(query, { page: page, limit: limit, })
-                    .then(function(result) {
-                        return {
-                            "users": result.docs,
-                            "pageInfo": {
-                                "total": result.total,
-                                "limit": result.limit,
-                                "page": result.page,
-                                "pages": result.pages,
-                                "counter": counter
-                            }
-                        }
-                    });
-                }
+                type: new GraphQLList(UserType),
+                resolve: () => db.models.User.find()
             },
+            // users: {
+            //     type: UserListType,
+            //     args: { limit: { type: GraphQLInt }, page: { type: GraphQLInt }, filters: { type: UserListFilter } },
+            //     resolve: (root, {limit, page, filters}) => {
+            //         const query = {}
+            //         let counter = 0
+            //         if (filters.is_staff) { query["is_staff"] = { "$eq": filters.is_staff }}
+            //         db.models.User.count({}, function (err, count) { counter = count });
+            //         return db.models.User.paginate(query, { page: page, limit: limit, })
+            //         .then(function(result) {
+            //             return {
+            //                 "users": result.docs,
+            //                 "pageInfo": {
+            //                     "total": result.total,
+            //                     "limit": result.limit,
+            //                     "page": result.page,
+            //                     "pages": result.pages,
+            //                     "counter": counter
+            //                 }
+            //             }
+            //         });
+            //     }
+            // },
             user: {
                 type: UserType,
                 args: { id: { type: GraphQLID } },

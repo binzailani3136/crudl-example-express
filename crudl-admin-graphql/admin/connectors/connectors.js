@@ -32,20 +32,21 @@ module.exports = [
     {
         id: 'users',
         query: {
-            read: listQuery({
-                name: 'allUsers',
-                fields: 'id, originalId, username, firstName, lastName, email, isActive, isStaff, dateJoined'
-            }),
+            read: `{users{_id, username, first_name, last_name, email, is_active, is_staff, date_joined}}`,
+            // read: listQuery({
+            //     name: 'users',
+            //     fields: 'id, originalId, username, firstName, lastName, email, isActive, isStaff, dateJoined'
+            // }),
         },
-        pagination,
+        // pagination,
         transform: {
-            readResponseData: data => data.data.allUsers.edges.map(e => e.node)
+            readResponseData: data => data.data.users
         },
     },
     {
         id: 'user',
         query: {
-            read: `{user(id: "%id"){id, username, firstName, lastName, email, isStaff, isActive, dateJoined}}`,
+            read: `{user(id: "%_id"){_id, username, first_name, last_name, email, is_active, is_staff, date_joined}}`,
             update: `mutation ($input: ChangeSectionInput!) {
                 changeSection(input: $input) {
                     errors
@@ -75,33 +76,32 @@ module.exports = [
     {
         id: 'sections',
         query: {
-            read: listQuery({
-                name: 'allSections',
-                fields: 'id, originalId, name, slug, position, counterEntries',
-                args: { first: 20, orderBy: "name" }
-            }),
+            read: `{sections{_id, name, slug, position}}`,
             create: `mutation ($input: CreateSectionInput!) {
                 createSection(input: $input) {
                     errors
-                    section {id, name, slug, position}
+                    section {_id, name, slug, position}
                 }
             }`,
         },
-        pagination,
+        // pagination,
         transform: {
-            readResponseData: data => data.data.allSections.edges.map(e => e.node),
-            createResponseData: data => {
-                if (data.data.createSection.errors) {
-                    throw data.data.createSection.errors
-                }
-                return data.data.createSection.section
-            },
+            readResponseData: data => {
+                console.log("XXX", data)
+                return data.data.sections
+            }
+            // createResponseData: data => {
+            //     if (data.data.createSection.errors) {
+            //         throw data.data.createSection.errors
+            //     }
+            //     return data.data.createSection.section
+            // },
         },
     },
     {
         id: 'section',
         query: {
-            read: `{section(id: "%id"){id, name, slug, position}}`,
+            read: `{section(id: "%_id"){_id, name, slug, position}}`,
             update: `mutation ($input: ChangeSectionInput!) {
                 changeSection(input: $input) {
                     errors
@@ -131,11 +131,12 @@ module.exports = [
     {
         id: 'categories',
         query: {
-            read: listQuery({
-                name: 'allCategories',
-                fields: 'id, originalId, section{id,name}, name, slug, position, counterEntries',
-                args: { first: 20, orderBy: "name" }
-            }),
+            read: `{categories{_id, section, name, slug, position}}`,
+            // read: listQuery({
+            //     name: 'categories',
+            //     fields: 'id, originalId, section{id,name}, name, slug, position, counterEntries',
+            //     args: { first: 20, orderBy: "name" }
+            // }),
             create: `mutation ($input: CreateCategoryInput!) {
                 createCategory(input: $input) {
                     errors
@@ -143,9 +144,9 @@ module.exports = [
                 }
             }`,
         },
-        pagination,
+        // pagination,
         transform: {
-            readResponseData: data => data.data.allCategories.edges.map(e => e.node),
+            readResponseData: data => data.data.categories,
             createResponseData: data => {
                 if (data.data.createCategory.errors) {
                     throw data.data.createCategory.errors
@@ -157,7 +158,7 @@ module.exports = [
     {
         id: 'category',
         query: {
-            read: `{category(id: "%id"){id, section{id,name}, name, slug, position}}`,
+            read: `{category(id: "%_id"){_id, section, name, slug, position}}`,
             update: `mutation ($input: ChangeCategoryInput!) {
                 changeCategory(input: $input) {
                     errors
@@ -187,11 +188,12 @@ module.exports = [
     {
         id: 'tags',
         query: {
-            read: listQuery({
-                name: 'allTags',
-                fields: 'id, originalId, name, slug, counterEntries',
-                args: { first: 20, orderBy: "name" }
-            }),
+            read: `{tags{_id, name, slug}}`,
+            // read: listQuery({
+            //     name: 'tags',
+            //     fields: 'id, originalId, name, slug, counterEntries',
+            //     args: { first: 20, orderBy: "name" }
+            // }),
             create: `mutation ($input: CreateTagInput!) {
                 createTag(input: $input) {
                     errors
@@ -199,9 +201,9 @@ module.exports = [
                 }
             }`,
         },
-        pagination,
+        // pagination,
         transform: {
-            readResponseData: data => data.data.allTags.edges.map(e => e.node),
+            readResponseData: data => data.data.tags,
             createResponseData: data => {
                 if (data.data.createTag.errors) {
                     throw data.data.createTag.errors
@@ -213,7 +215,7 @@ module.exports = [
     {
         id: 'tag',
         query: {
-            read: `{tag(id: "%id"){id, name, slug}}`,
+            read: `{tag(id: "%_id"){_id, name, slug}}`,
             update: `mutation ($input: ChangeTagInput!) {
                 changeTag(input: $input) {
                     errors
@@ -243,11 +245,12 @@ module.exports = [
     {
         id: 'entries',
         query: {
-            read: listQuery({
-                name: 'allEntries',
-                fields: 'id, originalId, title, status, date, sticky, section{id, name}, category{id, name}, owner{id, originalId, username}, counterLinks, counterTags',
-                args: { first: 20, orderBy: "title" }
-            }),
+            read: `{entries{_id, title, status, date, sticky, section{_id, name}, category{_id, name}, owner{_id, username}}}`,
+            // read: listQuery({
+            //     name: 'entries',
+            //     fields: 'id, originalId, title, status, date, sticky, section{id, name}, category{id, name}, owner{id, originalId, username}, counterLinks, counterTags',
+            //     args: { first: 20, orderBy: "title" }
+            // }),
             create: `mutation ($input: CreateEntryInput!) {
                 createEntry(input: $input) {
                     errors
@@ -255,9 +258,9 @@ module.exports = [
                 }
             }`,
         },
-        pagination,
+        // pagination,
         transform: {
-            readResponseData: data => data.data.allEntries.edges.map(e => e.node),
+            readResponseData: data => data.data.entries,
             createResponseData: data => {
                 if (data.data.createEntry.errors) {
                     throw data.data.createEntry.errors
@@ -269,7 +272,7 @@ module.exports = [
     {
         id: 'entry',
         query: {
-            read: `{entry(id: "%id"){id, title, status, date, sticky, section{id, name}, category{id, name}, tags{id, name}, summary, body, owner{id, username}, createdate, updatedate}}`,
+            read: `{entry(id: "%_id"){_id, title, status, date, sticky, section{_id, name}, category{_id, name}, tags{_id, name}, summary, body, owner{_id, username}}}`,
             update: `mutation ($input: ChangeEntryInput!) {
                 changeEntry(input: $input) {
                     errors
@@ -300,7 +303,7 @@ module.exports = [
         id: 'links',
         query: {
             read: listQuery({
-                name: 'allLinks',
+                name: 'links',
                 fields: 'id, entry{id}, url, title, description, position',
             }),
             create: `mutation ($input: CreateEntrylinkInput!) {
@@ -311,7 +314,7 @@ module.exports = [
             }`,
         },
         transform: {
-            readResponseData: data => data.data.allLinks.edges.map(e => e.node),
+            readResponseData: data => data.data.links.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.createEntrylink.errors) {
                     throw data.data.createEntrylink.errors
@@ -356,11 +359,11 @@ module.exports = [
     {
         id: 'sections_options',
         query: {
-            read: `{allSections{edges{node{id, name}}}}`,
+            read: `{sections{edges{node{id, name}}}}`,
         },
         transform: {
             readResponseData: data => ({
-                options: data.data.allSections.edges.map(function(item) {
+                options: data.data.sections.edges.map(function(item) {
                     return { value: item.node.id, label: item.node.name }
                 }),
             })
@@ -372,11 +375,11 @@ module.exports = [
     {
         id: 'categories_options',
         query: {
-            read: `{allCategories{edges{node{id, name}}}}`,
+            read: `{categories{edges{node{id, name}}}}`,
         },
         transform: {
             readResponseData: data => ({
-                options: data.data.allCategories.edges.map(function(item) {
+                options: data.data.categories.edges.map(function(item) {
                     return { value: item.node.id, label: item.node.name }
                 }),
             })
@@ -388,11 +391,11 @@ module.exports = [
     {
         id: 'tags_options',
         query: {
-            read: `{allTags{edges{node{id, name}}}}`,
+            read: `{tags{edges{node{id, name}}}}`,
         },
         transform: {
             readResponseData: data => ({
-                options: data.data.allTags.edges.map(function(item) {
+                options: data.data.tags.edges.map(function(item) {
                     return { value: item.node.id, label: item.node.name }
                 }),
             })

@@ -11,10 +11,6 @@ var listView = {
 
 listView.fields = [
     {
-        name: 'originalId',
-        label: 'ID',
-    },
-    {
         name: 'name',
         label: 'Name',
         main: true,
@@ -34,7 +30,7 @@ listView.fields = [
 
 //-------------------------------------------------------------------
 var changeView = {
-    path: 'tags/:id',
+    path: 'tags/:_id',
     title: 'Tag',
     actions: {
         get: function (req, connectors) { return connectors.tag(req.id).read(req) },
@@ -45,7 +41,7 @@ var changeView = {
 
 changeView.fields = [
     {
-        name: 'id',
+        name: '_id',
         field: 'hidden',
     },
     {
