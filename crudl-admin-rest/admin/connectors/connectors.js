@@ -5,28 +5,28 @@ module.exports = [
     // USERS
     {
         id: 'users',
-        url: 'users/',
+        url: 'users',
         urlQuery,
         pagination,
         transform: { readResponseData: data => data.docs },
     },
     {
         id: 'user',
-        url: 'users/:id/',
+        url: 'users/:id',
         transformErrors,
     },
 
     // SECTIONS
     {
         id: 'sections',
-        url: 'sections/',
+        url: 'sections',
         urlQuery,
         pagination,
         transform: { readResponseData: data => data.docs },
     },
     {
         id: 'section',
-        url: 'sections/:id/',
+        url: 'sections/:id',
         transformErrors,
     },
 
@@ -52,42 +52,42 @@ module.exports = [
     // TAGS
     {
         id: 'tags',
-        url: 'tags/',
+        url: 'tags',
         urlQuery,
         pagination,
         transform: { readResponseData: data => data.docs },
     },
     {
         id: 'tag',
-        url: 'tags/:id/',
+        url: 'tags/:id',
         transformErrors,
     },
 
     // ENTRIES
     {
         id: 'entries',
-        url: 'entries/',
+        url: 'entries',
         urlQuery,
         pagination,
         transform: { readResponseData: data => data.docs },
     },
     {
         id: 'entry',
-        url: 'entries/:id/',
+        url: 'entries/:id',
         transformErrors,
     },
 
     // ENTRIELINKS
     {
         id: 'links',
-        url: 'entrylinks/',
+        url: 'entrylinks',
         pagination,
         enableDepagination: true,
         transform: { readResponseData: data => data.docs },
     },
     {
         id: 'link',
-        url: 'entrylinks/:id/',
+        url: 'entrylinks/:id',
         transformErrors,
     },
 
@@ -97,7 +97,7 @@ module.exports = [
     // a helper for retrieving the sections used with select fields
     {
         id: 'sections_options',
-        url: 'sections/',
+        url: 'sections',
         urlQuery,
         transform: {
             readResponseData: data => ({
@@ -112,7 +112,7 @@ module.exports = [
     // a helper for retrieving the categories used with select fields
     {
         id: 'categories_options',
-        url: 'categories/',
+        url: 'categories',
         urlQuery,
         transform: {
             readResponseData: data => ({
@@ -127,7 +127,7 @@ module.exports = [
     // a helper for retrieving the tags used with select fields
     {
         id: 'tags_options',
-        url: 'tags/',
+        url: 'tags',
         urlQuery,
         transform: {
             readResponseData: data => ({
@@ -141,7 +141,7 @@ module.exports = [
     // AUTHENTICATION
     {
         id: 'login',
-        url: 'login/',
+        url: 'login',
         mapping: { read: 'post', },
         transform: {
             readResponseData: data => ({

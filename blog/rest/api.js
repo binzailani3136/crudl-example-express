@@ -2,6 +2,20 @@ var express = require('express');
 var paginate = require('express-paginate');
 var db = require('../db');
 
+// Credits for this function go to https://gist.github.com/mathewbyrne
+function slugify(text) {
+    if (text) {
+        return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+    } else {
+        return ""
+    }
+}
+
 var createRouter = function () {
     var router = express.Router();
 
@@ -109,6 +123,7 @@ var createRouter = function () {
         })
     })
     .post(function (req, res) {
+        if (!req.body.slug) req.body.slug = slugify(req.body.name)
         db.models.Section.create(req.body, function (err, result) {
             if (err) {
                 res.status(400)
@@ -131,13 +146,14 @@ var createRouter = function () {
     router.route('/sections/:id')
     .get(function (req, res) {
         console.log('Searching for ' + req.params.id);
-        db.models.Category.findById(req.params.id, "name slug position", function(err, result) {
+        db.models.Section.findById(req.params.id, "name slug position", function(err, result) {
             res.json(result)
         })
     })
     .patch(function (req, res) {
         console.log(`Updating ${req.params.id}`);
-        db.models.Category.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
+        if (!req.body.slug) req.body.slug = slugify(req.body.name)
+        db.models.Section.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
             if (err) {
                 res.status(400)
                 if (err.name === "ValidationError") {
@@ -157,7 +173,7 @@ var createRouter = function () {
     })
     .delete(function (req, res) {
         console.log(`Deleting ${req.params.id}`);
-        db.models.Category.findByIdAndRemove(req.params.id, function(err) {
+        db.models.Section.findByIdAndRemove(req.params.id, function(err) {
             if (err) {
                 res.status(400)
                 res.send(err)
@@ -190,6 +206,7 @@ var createRouter = function () {
         })
     })
     .post(function (req, res) {
+        if (!req.body.slug) req.body.slug = slugify(req.body.name)
         db.models.Category.create(req.body, function (err, result) {
             if (err) {
                 res.status(400)
@@ -218,6 +235,7 @@ var createRouter = function () {
     })
     .patch(function (req, res) {
         console.log(`Updating ${req.params.id}`);
+        if (!req.body.slug) req.body.slug = slugify(req.body.name)
         db.models.Category.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
             if (err) {
                 res.status(400)
@@ -269,6 +287,7 @@ var createRouter = function () {
         })
     })
     .post(function (req, res) {
+        req.body.slug = slugify(req.body.name)
         db.models.Tag.create(req.body, function (err, result) {
             if (err) {
                 res.status(400)
@@ -297,11 +316,17 @@ var createRouter = function () {
     })
     .patch(function (req, res) {
         console.log(`Updating ${req.params.id}`);
+        req.body.slug = slugify(req.body.name)
         db.models.Tag.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
             if (err) {
                 res.status(400)
                 if (err.name === "ValidationError") {
-                    res.json(err.errors);
+                    var errors = {}
+                    var obj = Object.keys(err.errors).forEach((key) => {
+                        errors[key] = err.errors[key].message
+                    })
+                    console.log(errors);
+                    res.json(errors);
                 } else {
                     res.json(err)
                 }
@@ -462,7 +487,12 @@ var createRouter = function () {
             if (err) {
                 res.status(400)
                 if (err.name === "ValidationError") {
-                    res.json(err.errors);
+                    var errors = {}
+                    var obj = Object.keys(err.errors).forEach((key) => {
+                        errors[key] = err.errors[key].message
+                    })
+                    console.log(errors);
+                    res.json(errors);
                 } else {
                     res.json(err)
                 }
@@ -483,7 +513,7 @@ var createRouter = function () {
         })
     })
 
-    router.route('/login/')
+    router.route('/login')
     .post(function (req, res) {
         db.models.User.findOne({ username: req.body.username, password: req.body.password }, function (err, result) {
             if (err) {

@@ -6,6 +6,7 @@ var faker = require('faker')
 var _ = require('lodash')
 var Schema = mongoose.Schema
 
+
 var UserSchema = new Schema({
     username: { type: String, maxlength: 30, required: true, unique: true },
     password: { type: String, maxlength: 128, required: true },
@@ -39,11 +40,6 @@ var SectionSchema = new Schema({
     slug: { type: String, maxlength: 100 },
     position: { type: Number }
 })
-SectionSchema.pre('save', function(next) {
-    /* Slug should be set with the frontend/admin. */
-    // FIXME: save slug if not given
-    next()
-})
 SectionSchema.plugin(mongoosePaginate);
 var Section = mongoose.model('Section', SectionSchema)
 
@@ -53,11 +49,6 @@ var CategorySchema = new Schema({
     slug: { type: String, maxlength: 100 },
     position: { type: Number }
 })
-CategorySchema.pre('save', function(next) {
-    /* Slug should be set with the frontend/admin. */
-    // FIXME: save slug if not given
-    next()
-});
 CategorySchema.plugin(mongoosePaginate);
 var Category = mongoose.model('Category', CategorySchema)
 
@@ -65,11 +56,6 @@ var TagSchema = new Schema({
     name: { type: String, maxlength: 200, required: true, unique: true },
     slug: { type: String, maxlength: 100 }
 })
-TagSchema.pre('save', function(next) {
-    /* Slug is being set when saving the object. */
-    // FIXME: save slug
-    next();
-});
 TagSchema.plugin(mongoosePaginate);
 var Tag = mongoose.model('Tag', TagSchema)
 
