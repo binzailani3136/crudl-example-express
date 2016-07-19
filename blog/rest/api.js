@@ -378,6 +378,7 @@ var createRouter = function () {
     })
     .post(function (req, res) {
         if (req.body.category == "") req.body.category = null
+        // if (req.authInfo) req.body.owner = req.authInfo.user
         db.models.Entry.create(req.body, function (err, result) {
             if (err) {
                 res.status(400)
