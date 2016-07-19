@@ -38,6 +38,10 @@ mongoose.connection.once('open', function () {
         response.sendFile(path.resolve(__dirname, '../crudl-admin-rest/templates/', 'index.html'))
     })
     // crudl-graphql
+    app.use('/crudl-admin-graphql/', express.static(__dirname + '/../crudl-admin-graphql/static/crudl-admin-graphql/'))
+    app.get('/crudl-graphql/*', function (request, response){
+        response.sendFile(path.resolve(__dirname, '../crudl-admin-graphql/templates/', 'index.html'))
+    })
 
     // start server
     var port = process.env.PORT || 3000
