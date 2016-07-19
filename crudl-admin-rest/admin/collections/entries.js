@@ -277,10 +277,17 @@ changeView.fieldsets = [
                             return connectors.categories.read(req
                                 .filter('name', req.data.query)
                                 .filter('section', req.context.section))
-                            .then(res => res.set('data', res.data.map(d => ({
-                                value: d._id,
-                                label: `<b>${d.name}</b> (${d.slug})`,
-                            }))))
+                            .then(res => {
+                                if (!res.data || res.data.length == 0) {
+                                    // FIXME: set category to readonly and apply necessary help text
+                                    return Promise.resolve({data: []})
+                                } else {
+                                    return res.set('data', res.data.map(d => ({
+                                        value: d._id,
+                                        label: `<b>${d.name}</b> (${d.slug})`,
+                                    })))
+                                }
+                            })
                         }
                     },
                 },
