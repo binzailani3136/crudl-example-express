@@ -11,6 +11,7 @@ import {
 } from 'graphql';
 
 import { UserType, UserInputType, UserListType, UserListFilter } from './types/user';
+import { SectionType, SectionInputType } from './types/section';
 import { CategoryType, CategoryInputType } from './types/category';
 import { TagType, TagInputType } from './types/tag';
 import { EntryType, EntryInputType } from './types/entry';
@@ -49,6 +50,15 @@ let schema = new GraphQLSchema({
                 type: UserType,
                 args: { id: { type: GraphQLID } },
                 resolve: (root, {id}) => db.models.User.findById(id)
+            },
+            sections: {
+                type: new GraphQLList(SectionType),
+                resolve: () => db.models.Section.find()
+            },
+            section: {
+                type: SectionType,
+                args: { id: { type: GraphQLID } },
+                resolve: (root, {id}) => db.models.Section.findById(id)
             },
             categories: {
                 type: new GraphQLList(CategoryType),
@@ -113,6 +123,30 @@ let schema = new GraphQLSchema({
                 args: { id: { name: 'id', type: new GraphQLNonNull(GraphQLID) }},
                 resolve: (root, {id}) => {
                     return db.models.User.findByIdAndRemove(id)
+                }
+            },
+            addSection: {
+                type: SectionType,
+                args: { data: { name: 'data', type: new GraphQLNonNull(SectionInputType) }},
+                resolve: (root, {data}) => {
+                    return new db.models.Section(data).save()
+                }
+            },
+            changeSection: {
+                type: SectionType,
+                args: {
+                    id: { name: 'id', type: new GraphQLNonNull(GraphQLID) },
+                    data: { name: 'data', type: new GraphQLNonNull(UserInputType) }
+                },
+                resolve: (root, {id, data}) => {
+                    return db.models.Section.findByIdAndUpdate(id, data)
+                }
+            },
+            deleteSection: {
+                type: SectionType,
+                args: { id: { name: 'id', type: new GraphQLNonNull(GraphQLID) }},
+                resolve: (root, {id}) => {
+                    return db.models.Section.findByIdAndRemove(id)
                 }
             },
             addCategory: {

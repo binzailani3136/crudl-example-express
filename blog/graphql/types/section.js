@@ -3,11 +3,12 @@ import {
     GraphQLInputObjectType,
     GraphQLNonNull,
     GraphQLString,
+    GraphQLInt,
     GraphQLID
 } from 'graphql';
 
-let TagType = new GraphQLObjectType({
-    name: 'Tag',
+let SectionType = new GraphQLObjectType({
+    name: 'Section',
     fields: () => ({
         _id: {
             type: new GraphQLNonNull(GraphQLID)
@@ -17,23 +18,29 @@ let TagType = new GraphQLObjectType({
         },
         slug: {
             type: GraphQLString
+        },
+        position: {
+            type: GraphQLInt
         }
     })
 });
 
-let TagInputType = new GraphQLInputObjectType({
-    name: 'TagInput',
+let SectionInputType = new GraphQLInputObjectType({
+    name: 'SectionInput',
     fields: () => ({
         name: {
             type: GraphQLString
         },
         slug: {
             type: GraphQLString
+        },
+        position: {
+            type: GraphQLInt
         }
     })
 });
 
 module.exports = {
-    TagType: TagType,
-    TagInputType: TagInputType
+    SectionType: SectionType,
+    SectionInputType: SectionInputType
 }

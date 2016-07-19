@@ -13,8 +13,8 @@ let CategoryType = new GraphQLObjectType({
         _id: {
             type: new GraphQLNonNull(GraphQLID)
         },
-        user: {
-            type: new GraphQLNonNull(GraphQLID) // Note: GraphQLID instead of UserType
+        section: {
+            type: new GraphQLNonNull(GraphQLID) // Note: GraphQLID instead of SectionType
         },
         name: {
             type: GraphQLString
@@ -31,7 +31,7 @@ let CategoryType = new GraphQLObjectType({
 let CategoryInputType = new GraphQLInputObjectType({
     name: 'CategoryInput',
     fields: () => ({
-        user: {
+        section: {
             type: GraphQLString
         },
         name: {

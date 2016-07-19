@@ -19,26 +19,8 @@ let EntryType = new GraphQLObjectType({
         _id: {
             type: new GraphQLNonNull(GraphQLID)
         },
-        user: {
-            type: UserType,
-            resolve(parent, args) {
-                return db.models.User.findById(parent.user);
-            }
-        },
         title: {
             type: GraphQLString
-        },
-        date: {
-            type: GraphQLString
-        },
-        date_from: {
-            type: GraphQLString
-        },
-        date_until: {
-            type: GraphQLString
-        },
-        sticky: {
-            type: GraphQLBoolean
         },
         status: {
             type: new GraphQLEnumType({
@@ -48,6 +30,18 @@ let EntryType = new GraphQLObjectType({
                     Online: { value: 'Online' }
                 }
             })
+        },
+        date: {
+            type: GraphQLString
+        },
+        sticky: {
+            type: GraphQLBoolean
+        },
+        section: {
+            type: SectionType,
+            resolve(parent, args) {
+                return db.models.Section.findById(parent.section);
+            }
         },
         category: {
             type: CategoryType,
@@ -61,37 +55,43 @@ let EntryType = new GraphQLObjectType({
                 return db.models.Tag.find({_id: {$in: parent.tags}});
             }
         },
-        image: {
+        summary: {
             type: GraphQLString
         },
         body: {
             type: GraphQLString
-        }
+        },
+        owner: {
+            type: UserType,
+            resolve(parent, args) {
+                return db.models.User.findById(parent.user);
+            }
+        },
+        createdate: {
+            type: GraphQLString
+        },
+        updatedate: {
+            type: GraphQLString
+        },
     })
 });
 
 let EntryInputType = new GraphQLInputObjectType({
     name: 'EntryInput',
     fields: () => ({
-        user: {
+        title: {
             type: GraphQLString
         },
-        title: {
+        status: {
             type: GraphQLString
         },
         date: {
             type: GraphQLString
         },
-        date_from: {
-            type: GraphQLString
-        },
-        date_until: {
-            type: GraphQLString
-        },
         sticky: {
             type: GraphQLBoolean
         },
-        status: {
+        section: {
             type: GraphQLString
         },
         category: {
@@ -100,12 +100,15 @@ let EntryInputType = new GraphQLInputObjectType({
         tags: {
             type: GraphQLString
         },
-        image: {
+        summary: {
             type: GraphQLString
         },
         body: {
             type: GraphQLString
-        }
+        },
+        owner: {
+            type: GraphQLString
+        },
     })
 });
 
