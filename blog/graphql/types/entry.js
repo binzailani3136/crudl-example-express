@@ -9,6 +9,7 @@ import {
     GraphQLID
 } from 'graphql';
 import { UserType, UserInputType } from './user';
+import { SectionType, SectionInputType } from './section';
 import { CategoryType, CategoryInputType } from './category';
 import { TagType, TagInputType } from './tag';
 var db = require('../../db');
