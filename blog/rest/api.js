@@ -521,7 +521,7 @@ var createRouter = function () {
                 res.status(400)
                 res.send(err)
             } else if (result && result.token) {
-                res.json({'token': result.token, 'user': result._id})
+                res.json({'token': result.token, 'user': result._id, 'username': result.username})
             } else {
                 res.status(400)
                 res.send({})  // FIXME: better error message
