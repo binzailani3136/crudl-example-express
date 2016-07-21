@@ -224,20 +224,24 @@ changeView.fieldsets = [
                 /* we set required to false, although this field is actually
                 required with the API. */
                 required: false,
-                props: {
-                    helpText: 'Select a section'
-                },
+                // props: {
+                //     helpText: 'Select a section'
+                // },
                 /* get options via an API call: instead we could use
                 connectors.sections_options (see listView.filters) */
-                actions: {
-                    asyncProps: (req, connectors) => connectors.sections.read(req)
-                    .then(res => res.set('data', {
-                        options: res.data.map(section => ({
-                            value: section._id,
-                            label: section.name,
-                        }))
-                    }))
-                },
+                props: (req, connectors) => connectors.sections_options.read(req).then(res => ({
+                    helpText: 'Select a section',
+                    ...res.data
+                }))
+                // actions: {
+                //     asyncProps: (req, connectors) => connectors.sections.read(req)
+                //     .then(res => res.set('data', {
+                //         options: res.data.map(section => ({
+                //             value: section._id,
+                //             label: section.name,
+                //         }))
+                //     }))
+                // },
             },
             {
                 name: 'category',

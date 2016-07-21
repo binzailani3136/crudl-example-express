@@ -14,17 +14,38 @@ function objectToArgs(object) {
     return args ? `(${args})` : ''
 }
 
+function sorting(req) {
+    if (req.sorting && req.sorting.length > 0) {
+        return {
+            orderBy: req.sorting.map(field => {
+                let prefix = field.sorted == 'ascending' ? '' : '-'
+                return prefix + field.name
+            }).join(',')
+        }
+    }
+    return {}
+}
+
 function listQuery(options) {
+    if (Object.prototype.toString.call(options.fields) === '[object Array]') {
+        options.fields = options.fields.join(', ')
+    }
     return (req) => {
-        let args = objectToArgs(Object.assign({}, options.args, req.page, req.filters))
+        let args = objectToArgs(Object.assign({},
+            options.args,
+            //req.page,
+            req.filters
+            //sorting(req)
+        ))
+        console.log("ARGS", args)
         return `{
             ${options.name} ${args} {
-                pageInfo { hasNextPage, hasPreviousPage, startCursor, endCursor }
-                edges { node { ${options.fields} }}
+                ${options.fields}
             }
         }`
     }
 }
+
 
 module.exports = [
 
@@ -72,7 +93,10 @@ module.exports = [
     {
         id: 'sections',
         query: {
-            read: `{sections{_id, name, slug, position}}`,
+            read: listQuery({
+                name: 'sections',
+                fields: '_id, name, slug, position'
+            }),
             create: `mutation ($input: SectionInput!) {
                 addSection(data: $input) {
                     errors
@@ -124,11 +148,14 @@ module.exports = [
     {
         id: 'categories',
         query: {
-            read: `{categories{_id, section, name, slug, position}}`,
+            read: listQuery({
+                name: 'categories',
+                fields: '_id, section{_id, name}, name, slug, position'
+            }),
             create: `mutation ($input: CategoryInput!) {
                 addCategory(data: $input) {
                     errors
-                    category {_id, section, name, slug, position}
+                    category {_id, section{_id, name}, name, slug, position}
                 }
             }`,
         },
@@ -176,7 +203,10 @@ module.exports = [
     {
         id: 'tags',
         query: {
-            read: `{tags{_id, name, slug}}`,
+            read: listQuery({
+                name: 'tags',
+                fields: '_id, name, slug'
+            }),
             create: `mutation ($input: TagInput!) {
                 addTag(data: $input) {
                     errors
@@ -228,7 +258,10 @@ module.exports = [
     {
         id: 'entries',
         query: {
-            read: `{entries{_id, title, status, date, sticky, section{_id, name}, category{_id, name}, owner{_id, username}}}`,
+            read: listQuery({
+                name: 'entries',
+                fields: '_id, title, status, date, sticky, section{_id, name}, category{_id, name}, owner{_id, username}'
+            }),
             create: `mutation ($input: EntryInput!) {
                 addEntry(data: $input) {
                     errors
@@ -264,7 +297,10 @@ module.exports = [
             }`,
         },
         transform: {
-            readResponseData: data => data.data.entry,
+            readResponseData: data => {
+                console.log("readResponseData", data)
+                return data.data.entry
+            },
             updateResponseData: data => {
                 console.log("updateResponseData", data)
                 if (data.data.changeEntry.errors) {
@@ -338,12 +374,12 @@ module.exports = [
     {
         id: 'sections_options',
         query: {
-            read: `{sections{edges{node{id, name}}}}`,
+            read: `{sections{_id, name}}`,
         },
         transform: {
             readResponseData: data => ({
-                options: data.data.sections.edges.map(function(item) {
-                    return { value: item.node.id, label: item.node.name }
+                options: data.data.sections.map(function(item) {
+                    return { value: item._id, label: item.name }
                 }),
             })
         },
@@ -354,12 +390,12 @@ module.exports = [
     {
         id: 'categories_options',
         query: {
-            read: `{categories{edges{node{id, name}}}}`,
+            read: `{categories{_id, name}}`,
         },
         transform: {
             readResponseData: data => ({
-                options: data.data.categories.edges.map(function(item) {
-                    return { value: item.node.id, label: item.node.name }
+                options: data.data.categories.map(function(item) {
+                    return { value: item._id, label: item.name }
                 }),
             })
         },
@@ -370,12 +406,12 @@ module.exports = [
     {
         id: 'tags_options',
         query: {
-            read: `{tags{edges{node{id, name}}}}`,
+            read: `{tags{_id, name}}`,
         },
         transform: {
             readResponseData: data => ({
-                options: data.data.tags.edges.map(function(item) {
-                    return { value: item.node.id, label: item.node.name }
+                options: data.data.tags.map(function(item) {
+                    return { value: item._id, label: item.name }
                 }),
             })
         },

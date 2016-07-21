@@ -81,7 +81,18 @@ let schema = new GraphQLSchema({
             },
             categories: {
                 type: new GraphQLList(CategoryType),
-                resolve: () => db.models.Category.find()
+                args: {
+                    section: { type: GraphQLString },
+                    name: { type: GraphQLString },
+                    search: { type: GraphQLString }
+                },
+                resolve: (root, {section, name, search}) => {
+                    const query = {}
+                    if (section) { query["section"] = { "$eq": section }}
+                    if (name) { query["name"] = { "$regex": name, "$options": "i" }}
+                    if (search) { query["name"] = { "$regex": search, "$options": "i" }}
+                    return db.models.Category.find(query)
+                }
             },
             category: {
                 type: CategoryType,
@@ -99,7 +110,32 @@ let schema = new GraphQLSchema({
             },
             entries: {
                 type: new GraphQLList(EntryType),
-                resolve: () => db.models.Entry.find()
+                args: {
+                    title: { type: GraphQLString },
+                    status: { type: GraphQLString },
+                    date_gt: { type: GraphQLString },
+                    sticky: { type: GraphQLString },
+                    section: { type: GraphQLString },
+                    category: { type: GraphQLString },
+                    tags: { type: GraphQLString },
+                    owner: { type: GraphQLString },
+                    search: { type: GraphQLString },
+                    search_summary: { type: GraphQLString },
+                },
+                resolve: (root, {title, status, date_gt, sticky, section, category, tags, owner, search, search_summary}) => {
+                    const query = {}
+                    if (title) { query["title"] = { "$regex": title, "$options": "i" }}
+                    if (status) { query["status"] = { "$eq": status }}
+                    if (date_gt) { query["date"] = { "$gt": date_gt }}
+                    if (sticky) { query["sticky"] = { "$eq": sticky }}
+                    if (section) { query["section"] = { "$eq": section }}
+                    if (category) { query["category"] = { "$eq": category }}
+                    if (tags) { query["tags"] = { "$in": [tags] }}
+                    if (owner) { query["owner"] = { "$eq": owner }}
+                    if (search) { query["title"] = { "$regex": search, "$options": "i" }}
+                    if (search_summary) { query["summary"] = { "$regex": search_summary, "$options": "i" }}
+                    return db.models.Entry.find(query)
+                }
             },
             entry: {
                 type: EntryType,

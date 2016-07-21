@@ -12,7 +12,7 @@ var listView = {
 listView.fields = [
     {
         name: 'section',
-        key: 'section',  // see actions for listView
+        key: 'section.name',
         label: 'Section',
     },
     {
@@ -33,24 +33,22 @@ listView.fields = [
     // },
 ]
 
-// listView.filters = {
-//     fields: [
-//         {
-//             name: 'section',
-//             label: 'Section',
-//             field: 'Select',
-//             actions: {
-//                 asyncProps: (req, connectors) => connectors.sections_options.read(req)
-//             },
-//             initialValue: '',
-//         },
-//         {
-//             name: 'name_Icontains',  // Graphene required syntax
-//             label: 'Name Contains',
-//             field: 'String',
-//         },
-//     ]
-// }
+listView.filters = {
+    fields: [
+        {
+            name: 'section',
+            label: 'Section',
+            field: 'Select',
+            props: (req, connectors) => connectors.sections_options.read(req).then(res => res.data),
+            initialValue: '',
+        },
+        {
+            name: 'name',
+            label: 'Name Contains',
+            field: 'String',
+        },
+    ]
+}
 
 //-------------------------------------------------------------------
 var changeView = {

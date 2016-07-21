@@ -7,6 +7,8 @@ import {
     GraphQLInt,
     GraphQLID
 } from 'graphql';
+import { SectionType, SectionInputType } from './section';
+var db = require('../../db');
 
 let CategoryType = new GraphQLObjectType({
     name: 'Category',
@@ -15,7 +17,10 @@ let CategoryType = new GraphQLObjectType({
             type: new GraphQLNonNull(GraphQLID)
         },
         section: {
-            type: new GraphQLNonNull(GraphQLID) // Note: GraphQLID instead of SectionType
+            type: SectionType,
+            resolve(parent, args) {
+                return db.models.Section.findById(parent.section);
+            }
         },
         name: {
             type: GraphQLString
