@@ -10,14 +10,29 @@ import {
     GraphQLInt
 } from 'graphql';
 
-import { UserType, UserInputType, UserListType, UserListFilter } from './types/user';
-import { SectionType, SectionInputType } from './types/section';
-import { CategoryType, CategoryInputType } from './types/category';
-import { TagType, TagInputType } from './types/tag';
-import { EntryType, EntryInputType } from './types/entry';
-import { EntryLinkType, EntryLinkInputType } from './types/entrylink';
+import { UserType, UserInputType, UserResultType, UserListType, UserListFilter } from './types/user';
+import { SectionType, SectionInputType, SectionResultType } from './types/section';
+import { CategoryType, CategoryInputType, CategoryResultType } from './types/category';
+import { TagType, TagInputType, TagResultType } from './types/tag';
+import { EntryType, EntryInputType, EntryResultType } from './types/entry';
+import { EntryLinkType, EntryLinkInputType, EntryLinkResultType } from './types/entrylink';
 var paginate = require('express-paginate');
 import db from '../db';
+
+function getErrors(err) {
+    let errors = null
+    if (err.name === "ValidationError") {
+        errors = []
+        Object.keys(err.errors).forEach((key) => {
+            errors.push(key)
+            errors.push(err.errors[key].message)
+        })
+    } else {
+        errors = err
+    }
+    return errors
+}
+let nores = null
 
 let schema = new GraphQLSchema({
     query: new GraphQLObjectType({
@@ -130,20 +145,28 @@ let schema = new GraphQLSchema({
                 }
             },
             addSection: {
-                type: SectionType,
+                type: SectionResultType,
                 args: { data: { name: 'data', type: new GraphQLNonNull(SectionInputType) }},
                 resolve: (root, {data}) => {
-                    return new db.models.Section(data).save()
+                    return db.models.Section.create(data)
+                    .then((function(object) { return { nores, object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             changeSection: {
-                type: SectionType,
+                type: SectionResultType,
                 args: {
                     id: { name: 'id', type: new GraphQLNonNull(GraphQLID) },
-                    data: { name: 'data', type: new GraphQLNonNull(UserInputType) }
+                    data: { name: 'data', type: new GraphQLNonNull(SectionInputType) }
                 },
                 resolve: (root, {id, data}) => {
-                    return db.models.Section.findByIdAndUpdate(id, data)
+                    return db.models.Section.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
+                    .then((function(object) { return { nores, object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             deleteSection: {
@@ -154,20 +177,28 @@ let schema = new GraphQLSchema({
                 }
             },
             addCategory: {
-                type: CategoryType,
+                type: CategoryResultType,
                 args: { data: { name: 'data', type: new GraphQLNonNull(CategoryInputType) }},
                 resolve: (root, {data}) => {
-                    return new db.models.Category(data).save()
+                    return db.models.Category.create(data)
+                    .then((function(object) { return { nores, object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             changeCategory: {
-                type: CategoryType,
+                type: CategoryResultType,
                 args: {
                     id: { name: 'id', type: new GraphQLNonNull(GraphQLID) },
-                    data: { name: 'data', type: new GraphQLNonNull(UserInputType) }
+                    data: { name: 'data', type: new GraphQLNonNull(CategoryInputType) }
                 },
                 resolve: (root, {id, data}) => {
-                    return db.models.Category.findByIdAndUpdate(id, data)
+                    return db.models.Category.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
+                    .then((function(object) { return { nores, object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             deleteCategory: {
@@ -178,20 +209,28 @@ let schema = new GraphQLSchema({
                 }
             },
             addTag: {
-                type: TagType,
-                args: { data: { name: 'data', type: new GraphQLNonNull(UserInputType) }},
+                type: TagResultType,
+                args: { data: { name: 'data', type: new GraphQLNonNull(TagInputType) }},
                 resolve: (root, {data}) => {
-                    return new db.models.Tag(data).save()
+                    return db.models.Tag.create(data)
+                    .then((function(object) { return { nores, object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             changeTag: {
-                type: TagType,
+                type: TagResultType,
                 args: {
                     id: { name: 'id', type: new GraphQLNonNull(GraphQLID) },
-                    data: { name: 'data', type: new GraphQLNonNull(UserInputType) }
+                    data: { name: 'data', type: new GraphQLNonNull(TagInputType) }
                 },
                 resolve: (root, {id, data}) => {
-                    return db.models.Tag.findByIdAndUpdate(id, data)
+                    return db.models.Tag.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
+                    .then((function(object) { return { nores, object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             deleteTag: {
@@ -202,20 +241,29 @@ let schema = new GraphQLSchema({
                 }
             },
             addEntry: {
-                type: EntryType,
-                args: { data: { name: 'data', type: new GraphQLNonNull(UserInputType) }},
+                type: EntryResultType,
+                args: { data: { name: 'data', type: new GraphQLNonNull(EntryInputType) }},
                 resolve: (root, {data}) => {
-                    return new db.models.Entry(data).save()
+                    return db.models.Entry.create(data)
+                    .then((function(object) { return { nores, object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             changeEntry: {
-                type: EntryType,
+                type: EntryResultType,
                 args: {
                     id: { name: 'id', type: new GraphQLNonNull(GraphQLID) },
-                    data: { name: 'data', type: new GraphQLNonNull(UserInputType) }
+                    data: { name: 'data', type: new GraphQLNonNull(EntryInputType) }
                 },
                 resolve: (root, {id, data}) => {
-                    return db.models.Entry.findByIdAndUpdate(id, data)
+                    if (data.category == "") data.category = null
+                    return db.models.Entry.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
+                    .then((function(object) { return { nores, object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             deleteEntry: {
@@ -226,10 +274,14 @@ let schema = new GraphQLSchema({
                 }
             },
             addEntryLink: {
-                type: EntryLinkType,
-                args: { data: { name: 'data', type: new GraphQLNonNull(UserInputType) }},
+                type: EntryLinkResultType,
+                args: { data: { name: 'data', type: new GraphQLNonNull(EntryLinkInputType) }},
                 resolve: (root, {data}) => {
-                    return new db.models.EntryLink(data).save()
+                    return db.models.EntryLink.create(data)
+                    .then((function(object) { return { nores, object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             changeEntryLink: {

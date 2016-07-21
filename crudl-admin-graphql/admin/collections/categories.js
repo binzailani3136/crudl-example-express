@@ -65,10 +65,6 @@ var changeView = {
 
 changeView.fields = [
     {
-        name: '_id',
-        field: 'hidden',
-    },
-    {
         name: 'section',
         key: 'section._id',
         label: 'Section',

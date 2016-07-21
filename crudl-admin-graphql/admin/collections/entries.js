@@ -171,20 +171,16 @@ var changeView = {
         delete: function (req, connectors) { return connectors.entry(req.id).delete(req) },
         save: function (req, connectors) { return connectors.entry(req.id).update(req) },
     },
-    validate: function (values) {
-        if ((!values.category || values.category == "") && (!values.tags || values.tags.length == 0)) {
-            return { _error: 'Either `Category` or `Tags` is required.' }
-        }
-    }
+    // validate: function (values) {
+    //     if ((!values.category || values.category == "") && (!values.tags || values.tags.length == 0)) {
+    //         return { _error: 'Either `Category` or `Tags` is required.' }
+    //     }
+    // }
 }
 
 changeView.fieldsets = [
     {
         fields: [
-            {
-                name: '_id',
-                field: 'hidden',
-            },
             {
                 name: 'title',
                 label: 'Title',
@@ -208,6 +204,7 @@ changeView.fieldsets = [
             {
                 name: 'section',
                 key: 'section._id',
+                defaultValue: '',  // defaultValue makes sense if the key is not given
                 label: 'Section',
                 field: 'Select',
                 /* we set required to false, although this field is actually
@@ -230,7 +227,8 @@ changeView.fieldsets = [
             },
             {
                 name: 'category',
-                key: 'category._id',
+                // key: 'category._id',
+                // defaultValue: '',  // defaultValue makes sense if the key is not given
                 label: 'Category',
                 field: 'Autocomplete',
                 required: false,
@@ -316,31 +314,32 @@ changeView.fieldsets = [
                     }
                 }
             },
-            {
-                name: 'tags',
-                label: 'Tags',
-                field: 'AutocompleteMultiple',
-                required: false,
-                props: {
-                    showAll: false,
-                    helpText: 'Select a tag',
-                },
-                actions: {
-                    search: (req, connectors) => {
-                        return connectors.tags_options.read(req.filter('name', req.data.query.toLowerCase()))
-                        .then(res => res.set('data', res.data.options))
-                    },
-                    select: (req, connectors) => {
-                        return Promise.all(req.data.selection.map(item => {
-                            return connectors.tag(item.value).read(req)
-                            .then(res => res.set('data', {
-                                value: res.data._id,
-                                label: res.data.name,
-                            }))
-                        }))
-                    },
-                },
-            }
+            // {
+            //     name: 'tags',
+            //     key: 'tags[*]._id',
+            //     label: 'Tags',
+            //     field: 'AutocompleteMultiple',
+            //     required: false,
+            //     props: {
+            //         showAll: false,
+            //         helpText: 'Select a tag',
+            //     },
+            //     actions: {
+            //         search: (req, connectors) => {
+            //             return connectors.tags_options.read(req.filter('name_Icontains', req.data.query.toLowerCase()))
+            //             .then(res => res.set('data', res.data.options))
+            //         },
+            //         select: (req, connectors) => {
+            //             return Promise.all(req.data.selection.map(item => {
+            //                 return connectors.tag(item.value).read(req)
+            //                 .then(res => res.set('data', {
+            //                     value: res.data.id,
+            //                     label: res.data.name,
+            //                 }))
+            //             }))
+            //         },
+            //     },
+            // }
         ]
     },
     {
@@ -358,62 +357,54 @@ changeView.fieldsets = [
                 label: 'Date (Update)',
                 field: 'Datetime',
                 readOnly: true
-            },
-            {
-                name: 'owner',
-                key: 'owner.username',
-                defaultValue: '',
-                label: 'Owner',
-                field: 'String',
-                readOnly: true
-            },
+            }
         ]
     }
 ]
 
-changeView.tabs = [
-    {
-        title: 'Links',
-        actions: {
-            list: (req, connectors) => connectors.links.read(req.filter('entry', req.id)),
-            add: (req, connectors) => connectors.links.create(req),
-            save: (req, connectors) => connectors.link(req.data.id).update(req),
-            delete: (req, connectors) => connectors.link(req.data.id).delete(req)
-        },
-        itemTitle: '{url}',
-        fields: [
-            {
-                name: 'url',
-                label: 'URL',
-                field: 'URL',
-                props: {
-                    link: true,
-                },
-            },
-            {
-                name: 'title',
-                label: 'Title',
-                field: 'String',
-            },
-            {
-                name: '_id',
-                field: 'hidden',
-            },
-            {
-                name: 'entry',
-                field: 'hidden',
-                initialValue: (context) => context.data.id,
-            },
-        ],
-    },
-]
+// changeView.tabs = [
+//     {
+//         title: 'Links',
+//         actions: {
+//             list: (req, connectors) => connectors.links.read(req.filter('entry', req.id)),
+//             add: (req, connectors) => connectors.links.create(req),
+//             save: (req, connectors) => connectors.link(req.data.id).update(req),
+//             delete: (req, connectors) => connectors.link(req.data.id).delete(req)
+//         },
+//         itemTitle: '{url}',
+//         fields: [
+//             {
+//                 name: 'url',
+//                 label: 'URL',
+//                 field: 'URL',
+//                 props: {
+//                     link: true,
+//                 },
+//             },
+//             {
+//                 name: 'title',
+//                 label: 'Title',
+//                 field: 'String',
+//             },
+//             {
+//                 name: '_id',
+//                 field: 'hidden',
+//             },
+//             {
+//                 name: 'entry',
+//                 field: 'hidden',
+//                 initialValue: (context) => context.data.id,
+//             },
+//         ],
+//     },
+// ]
 
 //-------------------------------------------------------------------
 var addView = {
     path: 'entries/new',
     title: 'New Blog Entry',
     fieldsets: changeView.fieldsets,
-    validate: changeView.validate,
+    // validate: changeView.validate,
     actions: {
         add: function (req, connectors) { return connectors.entries.create(req) },
     },

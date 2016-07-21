@@ -46,10 +46,6 @@ var changeView = {
 
 changeView.fields = [
     {
-        name: '_id',
-        field: 'hidden',
-    },
-    {
         name: 'name',
         label: 'Name',
         field: 'String',
@@ -59,10 +55,10 @@ changeView.fields = [
         name: 'slug',
         label: 'Slug',
         field: 'String',
-        onChange: {
-            in: 'name',
-            setInitialValue: (name) => slugify(name),
-        },
+        // onChange: {
+        //     in: 'name',
+        //     setInitialValue: (name) => slugify(name),
+        // },
         props: {
             helpText: `If left blank, the slug will be automatically generated.
             More about slugs <a href="http://en.wikipedia.org/wiki/Slug" target="_blank">here</a>.`,
