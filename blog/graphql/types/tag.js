@@ -3,6 +3,7 @@ import {
     GraphQLInputObjectType,
     GraphQLNonNull,
     GraphQLString,
+    GraphQLList,
     GraphQLID
 } from 'graphql';
 
@@ -36,7 +37,20 @@ let TagInputType = new GraphQLInputObjectType({
     })
 });
 
+let TagResultType = new GraphQLObjectType({
+    name: 'TagResult',
+    fields: () => ({
+        errors: {
+            type: new GraphQLList(GraphQLString),
+        },
+        tag: {
+            type: TagType
+        }
+    })
+});
+
 module.exports = {
     TagType: TagType,
-    TagInputType: TagInputType
+    TagInputType: TagInputType,
+    TagResultType: TagResultType
 }

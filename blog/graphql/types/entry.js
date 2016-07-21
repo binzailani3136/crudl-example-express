@@ -116,7 +116,20 @@ let EntryInputType = new GraphQLInputObjectType({
     })
 });
 
+let EntryResultType = new GraphQLObjectType({
+    name: 'EntryResult',
+    fields: () => ({
+        errors: {
+            type: new GraphQLList(GraphQLString),
+        },
+        entry: {
+            type: EntryType
+        }
+    })
+});
+
 module.exports = {
     EntryType: EntryType,
-    EntryInputType: EntryInputType
+    EntryInputType: EntryInputType,
+    EntryResultType: EntryResultType
 }

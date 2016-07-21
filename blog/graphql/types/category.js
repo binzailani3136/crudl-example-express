@@ -3,6 +3,7 @@ import {
     GraphQLInputObjectType,
     GraphQLNonNull,
     GraphQLString,
+    GraphQLList,
     GraphQLInt,
     GraphQLID
 } from 'graphql';
@@ -49,7 +50,20 @@ let CategoryInputType = new GraphQLInputObjectType({
     })
 });
 
+let CategoryResultType = new GraphQLObjectType({
+    name: 'CategoryResult',
+    fields: () => ({
+        errors: {
+            type: new GraphQLList(GraphQLString),
+        },
+        category: {
+            type: CategoryType
+        }
+    })
+});
+
 module.exports = {
     CategoryType: CategoryType,
-    CategoryInputType: CategoryInputType
+    CategoryInputType: CategoryInputType,
+    CategoryResultType: CategoryResultType
 }

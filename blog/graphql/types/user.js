@@ -69,6 +69,18 @@ let UserInputType = new GraphQLInputObjectType({
     })
 })
 
+let UserResultType = new GraphQLObjectType({
+    name: 'UserResult',
+    fields: () => ({
+        errors: {
+            type: new GraphQLList(GraphQLString),
+        },
+        user: {
+            type: UserType
+        }
+    })
+});
+
 let PageInfo = new GraphQLObjectType({
     name: 'PageInfo',
     fields: () => ({
@@ -105,5 +117,6 @@ module.exports = {
     UserType: UserType,
     UserInputType: UserInputType,
     UserListType: UserListType,
-    UserListFilter: UserListFilter
+    UserListFilter: UserListFilter,
+    UserResultType: UserResultType
 }

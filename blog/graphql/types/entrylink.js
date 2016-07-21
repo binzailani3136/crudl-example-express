@@ -3,6 +3,7 @@ import {
     GraphQLInputObjectType,
     GraphQLNonNull,
     GraphQLString,
+    GraphQLList,
     GraphQLInt,
     GraphQLID
 } from 'graphql';
@@ -60,7 +61,20 @@ let EntryLinkInputType = new GraphQLInputObjectType({
     })
 });
 
+let EntryLinkResultType = new GraphQLObjectType({
+    name: 'EntryLinkResult',
+    fields: () => ({
+        errors: {
+            type: new GraphQLList(GraphQLString),
+        },
+        link: {
+            type: EntryLinkType
+        }
+    })
+});
+
 module.exports = {
     EntryLinkType: EntryLinkType,
-    EntryLinkInputType: EntryLinkInputType
+    EntryLinkInputType: EntryLinkInputType,
+    EntryLinkResultType: EntryLinkResultType
 }

@@ -3,6 +3,7 @@ import {
     GraphQLInputObjectType,
     GraphQLNonNull,
     GraphQLString,
+    GraphQLList,
     GraphQLInt,
     GraphQLID
 } from 'graphql';
@@ -43,7 +44,20 @@ let SectionInputType = new GraphQLInputObjectType({
     })
 });
 
+let SectionResultType = new GraphQLObjectType({
+    name: 'SectionResult',
+    fields: () => ({
+        errors: {
+            type: new GraphQLList(GraphQLString),
+        },
+        section: {
+            type: SectionType
+        }
+    })
+});
+
 module.exports = {
     SectionType: SectionType,
-    SectionInputType: SectionInputType
+    SectionInputType: SectionInputType,
+    SectionResultType: SectionResultType
 }
