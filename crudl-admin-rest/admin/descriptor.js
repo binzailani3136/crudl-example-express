@@ -7,7 +7,11 @@ var entries = require('./collections/entries')
 var connectors = require('./connectors/connectors')
 var auth = require('./auth')
 
+import dashboard from './dashboard'
+
 var descriptor = {
+    title: 'crudl.io Express REST Example',
+    dashboard,
     connectors,
     collections: [],
     auth,
