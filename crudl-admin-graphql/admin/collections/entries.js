@@ -396,7 +396,7 @@ var addView = {
     },
     // denormalize: (data) => {
     //     /* set owner on add */
-    //     if (Crudl.authInfo.user) data.owner = Crudl.authInfo.user
+    //     if (crudl.authInfo.user) data.owner = crudl.authInfo.user
     //     return data
     // }
 }

@@ -33,4 +33,4 @@ class SplitDateTimeField extends React.Component {
     }
 }
 
-export default Crudl.BaseField(SplitDateTimeField)
+export default crudl.BaseField(SplitDateTimeField)
