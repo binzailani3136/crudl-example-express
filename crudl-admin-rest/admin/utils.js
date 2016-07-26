@@ -1,12 +1,17 @@
 
 export function continuousPagination(res) {
     let nextPage = undefined
+    let resultsTotal = undefined
     if (res.data.page < res.data.pages) {
         nextPage = res.data.page + 1
+    }
+    if (res.data.counter) {
+        resultsTotal = res.data.counter
     }
     // Return the pagination descriptor
     return {
         type: 'continuous',
+        resultsTotal: resultsTotal,
         next: nextPage ? { page: nextPage } : undefined,
     }
 }
