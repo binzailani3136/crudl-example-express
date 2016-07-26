@@ -1,11 +1,12 @@
 
-export function pagination(res) {
+export function continuousPagination(res) {
     let nextPage = undefined
     if (res.data.page < res.data.pages) {
         nextPage = res.data.page + 1
     }
     // Return the pagination descriptor
     return {
+        type: 'continuous',
         next: nextPage ? { page: nextPage } : undefined,
     }
 }

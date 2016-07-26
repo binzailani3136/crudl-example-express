@@ -1,5 +1,5 @@
 
-export function pagination(res) {
+export function continuousPagination(res) {
     function url2page(url) {
         let match = /page=(\d+)/.exec(url)
         return match ? parseInt(match[1]) : 1
@@ -7,6 +7,7 @@ export function pagination(res) {
     let nextPage = res.data.next && url2page(res.data.next)
     // Return the pagination descriptor
     return {
+        type: 'continuous',
         next: nextPage ? { page: nextPage } : undefined,
     }
 }
