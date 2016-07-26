@@ -298,10 +298,7 @@ module.exports = [
             }`,
         },
         transform: {
-            readResponseData: data => {
-                console.log("readResponseData", data)
-                return data.data.entry
-            },
+            readResponseData: data => data.data.entry,
             updateResponseData: data => {
                 console.log("updateResponseData", data)
                 if (data.data.changeEntry.errors) {
@@ -330,10 +327,7 @@ module.exports = [
             }`,
         },
         transform: {
-            readResponseData: data => {
-                console.log("XXX", data)
-                return data.data.entrylinks
-            },
+            readResponseData: data => data.data.entrylinks,
             createResponseData: data => {
                 if (data.data.addLink.errors) {
                     throw data.data.addLink.errors
@@ -345,11 +339,11 @@ module.exports = [
     {
         id: 'link',
         query: {
-            read: `{link(id: "%id"){id, entry{id}, url, title, description, position}}`,
-            update: `mutation ($input: ChangeEntrylinkInput!) {
-                changeEntrylink(input: $input) {
+            read: `{entrylink(id: "%_id"){_id, entry{_id}, url, title, description, position}}`,
+            update: `mutation ($input: LinkInput!) {
+                changeLink(input: $input) {
                     errors
-                    entrylink {id, entry{id}, url, title, description, position}
+                    entrylink {_id, entry{_id}, url, title, description, position}
                 }
             }`,
             delete: `mutation ($input: DeleteEntrylinkInput!) {

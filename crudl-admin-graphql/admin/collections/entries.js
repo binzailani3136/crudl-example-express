@@ -362,7 +362,7 @@ changeView.tabs = [
     {
         title: 'Links',
         actions: {
-            list: (req, connectors) => connectors.links.read(req.filter('entry', req._id)),
+            list: (req, connectors) => connectors.links.read(req.filter('entry', req.id)),
             add: (req, connectors) => connectors.links.create(req),
             save: (req, connectors) => connectors.link(req.data.id).update(req),
             delete: (req, connectors) => connectors.link(req.data.id).delete(req)
