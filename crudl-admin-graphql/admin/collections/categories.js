@@ -14,6 +14,9 @@ listView.fields = [
         name: 'section',
         key: 'section.name',
         label: 'Section',
+        sortable: true,
+        sorted: 'ascending',
+        sortpriority: '1',
     },
     {
         name: 'name',
@@ -21,11 +24,12 @@ listView.fields = [
         main: true,
         sortable: true,
         sorted: 'ascending',
-        sortpriority: '1',
+        sortpriority: '2',
     },
     {
         name: 'slug',
         label: 'Slug',
+        sortable: true,
     },
     // {
     //     name: 'counterEntries',

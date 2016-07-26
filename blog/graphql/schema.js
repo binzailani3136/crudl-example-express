@@ -76,7 +76,7 @@ let schema = new GraphQLSchema({
                     orderBy: { type: GraphQLString }
                 },
                 resolve: (root, {orderBy}) => {
-                    let sort = ""
+                    let sort = "-slug"
                     if (orderBy) { sort = orderBy.replace(/,/g, ' ') }
                     return db.models.Section.find().sort(sort)
                 }
