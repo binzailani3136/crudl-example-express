@@ -52,7 +52,7 @@ changeView.fields = [
         readOnly: true,
         onChange: {
             in: 'name',
-            setInitialValue: (name) => slugify(name),
+            setInitialValue: (name) => slugify(name.value),
         },
         props: {
             helpText: `Slug is automatically generated when saving the Tag.`,

@@ -103,7 +103,7 @@ listView.filters = {
             onChange: [
                 {
                     in: 'section',
-                    setValue: '',
+                    setValue: (section) => section.dirty || !section.value ? '' : undefined,
                     setProps: section => ({
                         readOnly: !section,
                         helpText: !section ? 'In order to select a category, you have to select a section first' : 'Select a category',

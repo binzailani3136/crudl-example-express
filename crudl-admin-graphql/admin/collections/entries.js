@@ -95,16 +95,16 @@ listView.filters = {
             onChange: [
                 {
                     in: 'section',
-                    setValue: '',
+                    setValue: (section) => section.dirty || !section.value ? '' : undefined,
                     setProps: (section, req, connectors) => {
-                        if (!section) {
+                        if (!section.value) {
                             return {
-                                readOnly: !section,
-                                helpText: !section ? 'In order to select a category, you have to select a section first' : 'Select a category',
+                                readOnly: true,
+                                helpText: 'In order to select a category, you have to select a section first'
                             }
                         }
                         // Get the catogories options filtered by section
-                        return connectors.categories_options.read(req.filter('section', section))
+                        return connectors.categories_options.read(req.filter('section', section.value))
                         .then(res => {
                             if (res.data.options.length > 0) {
                                 return {
