@@ -98,27 +98,40 @@ listView.filters = {
             name: 'category',
             label: 'Category',
             field: 'Select',
+            /* this field depends on section (so we add a watch function in
+            order to react to any changes on the field section). */
             onChange: [
                 {
                     in: 'section',
+                    // set the value to '' if the user changed the section or the section is not set
                     setValue: (section) => section.dirty || !section.value ? '' : undefined,
-                    setProps: section => ({
-                        readOnly: !section,
-                        helpText: !section ? 'In order to select a category, you have to select a section first' : 'Select a category',
-                    }),
+                    setProps: (section, req, connectors) => {
+                        if (!section.value) {
+                            return {
+                                readOnly: true,
+                                helpText: 'In order to select a category, you have to select a section first',
+                            }
+                        }
+                        // Get the catogories options filtered by section
+                        return connectors.categories_options.read(req.filter('section', section.value))
+                        .then(res => {
+                            if (res.data.options.length > 0) {
+                                return {
+                                    readOnly: false,
+                                    helpText: 'Select a category',
+                                    ...res.data,
+                                }
+                            } else {
+                                return {
+                                    readOnly: true,
+                                    helpText: 'No categories available for the selected section.'
+                                }
+                            }
+                        })
+                    }
                 }
             ],
-            actions: {
-                asyncProps: (req, connectors) => {
-                    return connectors.categories_options.read(req)
-                    // console.log("XXX", req.context)
-                    // if (!req.context.section) {
-                    //     return Promise.resolve({data: []})
-                    // } else {
-                    //     return connectors.categories_options.read(req)
-                    // }
-                }
-            },
+            props: (req, connectors) => connectors.categories_options.read(req).then(res => res.data)
         },
         {
             name: 'status',
@@ -222,24 +235,10 @@ changeView.fieldsets = [
                 /* we set required to false, although this field is actually
                 required with the API. */
                 required: false,
-                // props: {
-                //     helpText: 'Select a section'
-                // },
-                /* get options via an API call: instead we could use
-                connectors.sections_options (see listView.filters) */
                 props: (req, connectors) => connectors.sections_options.read(req).then(res => ({
                     helpText: 'Select a section',
                     ...res.data
                 }))
-                // actions: {
-                //     asyncProps: (req, connectors) => connectors.sections.read(req)
-                //     .then(res => res.set('data', {
-                //         options: res.data.map(section => ({
-                //             value: section._id,
-                //             label: section.name,
-                //         }))
-                //     }))
-                // },
             },
             {
                 name: 'category',
@@ -250,18 +249,7 @@ changeView.fieldsets = [
                     showAll: true,
                     helpText: 'Select a category',
                 },
-                /* this field depends on section (so we add a watch function in
-                order to react to any changes on the field section). */
-                onChange: [
-                    {
-                        in: 'section',
-                        setValue: '',
-                        setProps: section => ({
-                            readOnly: !section,
-                            helpText: !section ? 'In order to select a category, you have to select a section first' : 'Select a category',
-                        }),
-                    }
-                ],
+                onChange: listView.filters.fields[1].onChange,
                 actions: {
                     select: (req, connectors) => {
                         return Promise.all(req.data.selection.map(item => {
@@ -273,23 +261,16 @@ changeView.fieldsets = [
                         }))
                     },
                     search: (req, connectors) => {
-                        if (!req.context.section) {
+                        if (!req.context.section.value) {
                             return Promise.resolve({data: []})
                         } else {
                             return connectors.categories.read(req
                                 .filter('name', req.data.query)
-                                .filter('section', req.context.section))
-                            .then(res => {
-                                if (!res.data || res.data.length == 0) {
-                                    // FIXME: set category to readonly and apply necessary help text
-                                    return Promise.resolve({data: []})
-                                } else {
-                                    return res.set('data', res.data.map(d => ({
-                                        value: d._id,
-                                        label: `<b>${d.name}</b> (${d.slug})`,
-                                    })))
-                                }
-                            })
+                                .filter('section', req.context.section.value))
+                            .then(res => res.set('data', res.data.map(d => ({
+                                value: d._id,
+                                label: `<b>${d.name}</b> (${d.slug})`,
+                            }))))
                         }
                     },
                 },
