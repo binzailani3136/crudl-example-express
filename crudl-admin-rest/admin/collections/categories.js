@@ -62,17 +62,7 @@ listView.filters = {
             name: 'section',
             label: 'Section',
             field: 'Select',
-            /* we manually build the available options. please note that you could also
-            use a connector, making this a one-liner */
-            actions: {
-                asyncProps: (req, connectors) => connectors.sections.read(req)
-                .then(res => res.set('data', {
-                    options: res.data.map(section => ({
-                        value: section._id,
-                        label: section.name,
-                    }))
-                }))
-            },
+            props: (req, connectors) => connectors.sections_options.read(req).then(res => res.data),
             initialValue: '',
         },
     ]
@@ -95,16 +85,7 @@ changeView.fields = [
         label: 'Section',
         field: 'Select',
         required: true,
-        /* Here we build the list of possible options with an extra API call */
-        actions: {
-            asyncProps: (req, connectors) => connectors.sections.read(req)
-            .then(res => res.set('data', {
-                options: res.data.map(section => ({
-                    value: section._id,
-                    label: section.name,
-                }))
-            }))
-        }
+        props: (req, connectors) => connectors.sections_options.read(req).then(res => res.data),
     },
     {
         name: 'name',
