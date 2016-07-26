@@ -12,18 +12,21 @@ var listView = {
     title: 'Blog Entries',
     actions: {
         list: function (req, connectors) {
-            let entries = connectors.entries.read(req)
-            /* here we add a custom column based on the currently logged-in user */
-            // let entriesWithCustomColumn = transform(entries, (item) => {
-            //     if (item.owner) {
-            //         item.is_owner = req.authInfo.user == item.owner.originalId
-            //     } else {
-            //         item.is_owner = false
-            //     }
-            //     return item
-            // })
-            // return entriesWithCustomColumn
-            return entries
+            return connectors.entries.read(req)
+            .then(res => {
+                /* counting the links requires an additional API call per row. please note that the
+                number of links could be added at the database level, removing this additional call. */
+                let promises = res.data.map(item => connectors.links.read(req.filter('entry', item._id)))
+                return Promise.all(promises)
+                .then(item_entrylinks => {
+                    return res.set('data', res.data.map((item, index) => {
+                        item.isOwner = req.authInfo.user == item.owner
+                        item.counterTags = item.tags.length
+                        item.counterLinks = item_entrylinks[index].data.length
+                        return item
+                    }))
+                })
+            })
         }
     },
 }
@@ -69,7 +72,7 @@ listView.fields = [
         sortpriority: '1',
     },
     {
-        name: 'is_owner',
+        name: 'isOwner',
         label: 'Owner',
         render: 'boolean',
     },
@@ -355,42 +358,42 @@ changeView.fieldsets = [
     }
 ]
 
-// changeView.tabs = [
-//     {
-//         title: 'Links',
-//         actions: {
-//             list: (req, connectors) => connectors.links.read(req.filter('entry', req.id)),
-//             add: (req, connectors) => connectors.links.create(req),
-//             save: (req, connectors) => connectors.link(req.data.id).update(req),
-//             delete: (req, connectors) => connectors.link(req.data.id).delete(req)
-//         },
-//         itemTitle: '{url}',
-//         fields: [
-//             {
-//                 name: 'url',
-//                 label: 'URL',
-//                 field: 'URL',
-//                 props: {
-//                     link: true,
-//                 },
-//             },
-//             {
-//                 name: 'title',
-//                 label: 'Title',
-//                 field: 'String',
-//             },
-//             {
-//                 name: '_id',
-//                 field: 'hidden',
-//             },
-//             {
-//                 name: 'entry',
-//                 field: 'hidden',
-//                 initialValue: (context) => context.data.id,
-//             },
-//         ],
-//     },
-// ]
+changeView.tabs = [
+    {
+        title: 'Links',
+        actions: {
+            list: (req, connectors) => connectors.links.read(req.filter('entry', req._id)),
+            add: (req, connectors) => connectors.links.create(req),
+            save: (req, connectors) => connectors.link(req.data.id).update(req),
+            delete: (req, connectors) => connectors.link(req.data.id).delete(req)
+        },
+        itemTitle: '{url}',
+        fields: [
+            {
+                name: 'url',
+                label: 'URL',
+                field: 'URL',
+                props: {
+                    link: true,
+                },
+            },
+            {
+                name: 'title',
+                label: 'Title',
+                field: 'String',
+            },
+            {
+                name: '_id',
+                field: 'hidden',
+            },
+            {
+                name: 'entry',
+                field: 'hidden',
+                initialValue: (context) => context.data.id,
+            },
+        ],
+    },
+]
 
 //-------------------------------------------------------------------
 var addView = {

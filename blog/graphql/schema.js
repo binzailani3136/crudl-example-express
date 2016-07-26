@@ -164,7 +164,16 @@ let schema = new GraphQLSchema({
             },
             entrylinks: {
                 type: new GraphQLList(EntryLinkType),
-                resolve: () => db.models.EntryLink.find()
+                args: {
+                    orderBy: { type: GraphQLString },
+                    entry: { type: GraphQLString }
+                },
+                resolve: (root, {orderBy, entry}) => {
+                    const query = {}
+                    let sort = ""
+                    if (entry) { query["entry"] = { "$eq": entry }}
+                    return db.models.EntryLink.find(query).sort(sort)
+                }
             },
             entrylink: {
                 type: EntryLinkType,

@@ -39,7 +39,6 @@ function listQuery(options) {
             req.filters,
             sorting(req)
         ))
-        console.log("ARGS", args)
         return `{
             ${options.name} ${args} {
                 ${options.fields}
@@ -262,7 +261,7 @@ module.exports = [
         query: {
             read: listQuery({
                 name: 'entries',
-                fields: '_id, title, status, date, sticky, section{_id, name}, category{_id, name}, owner{_id, username}'
+                fields: '_id, title, status, date, sticky, section{_id, name}, category{_id, name}, owner{_id, username}, tags{_id}'
             }),
             create: `mutation ($input: EntryInput!) {
                 addEntry(data: $input) {
@@ -320,23 +319,26 @@ module.exports = [
         id: 'links',
         query: {
             read: listQuery({
-                name: 'links',
-                fields: 'id, entry{id}, url, title, description, position',
+                name: 'entrylinks',
+                fields: '_id, entry{_id}, url, title, description, position',
             }),
-            create: `mutation ($input: CreateEntrylinkInput!) {
-                createEntrylink(input: $input) {
+            create: `mutation ($input: LinkInput!) {
+                addLink(input: $input) {
                     errors
-                    entrylink {id, entry{id}, url, title, description, position}
+                    link {_id, entry{_id}, url, title, description, position}
                 }
             }`,
         },
         transform: {
-            readResponseData: data => data.data.links.edges.map(e => e.node),
+            readResponseData: data => {
+                console.log("XXX", data)
+                return data.data.entrylinks
+            },
             createResponseData: data => {
-                if (data.data.createEntrylink.errors) {
-                    throw data.data.createEntrylink.errors
+                if (data.data.addLink.errors) {
+                    throw data.data.addLink.errors
                 }
-                return data.data.createEntrylink.entrylink
+                return data.data.addLink.entry
             },
         },
     },
