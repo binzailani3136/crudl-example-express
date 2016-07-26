@@ -1,3 +1,5 @@
+
+
 function pagination(res) {
     let key = Object.keys(res.data.data)[0]
     let hasNext = res.data.data[key].pageInfo.hasNextPage
@@ -34,8 +36,8 @@ function listQuery(options) {
         let args = objectToArgs(Object.assign({},
             options.args,
             //req.page,
-            req.filters
-            //sorting(req)
+            req.filters,
+            sorting(req)
         ))
         console.log("ARGS", args)
         return `{

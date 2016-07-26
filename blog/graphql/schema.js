@@ -72,7 +72,14 @@ let schema = new GraphQLSchema({
             },
             sections: {
                 type: new GraphQLList(SectionType),
-                resolve: () => db.models.Section.find()
+                args: {
+                    orderBy: { type: GraphQLString }
+                },
+                resolve: (root, {orderBy}) => {
+                    let sort = ""
+                    if (orderBy) { sort = orderBy.replace(/,/g, ' ') }
+                    return db.models.Section.find().sort(sort)
+                }
             },
             section: {
                 type: SectionType,
@@ -82,16 +89,19 @@ let schema = new GraphQLSchema({
             categories: {
                 type: new GraphQLList(CategoryType),
                 args: {
+                    orderBy: { type: GraphQLString },
                     section: { type: GraphQLString },
                     name: { type: GraphQLString },
                     search: { type: GraphQLString }
                 },
-                resolve: (root, {section, name, search}) => {
+                resolve: (root, {orderBy, section, name, search}) => {
                     const query = {}
+                    let sort = ""
+                    if (orderBy) { sort = orderBy.replace(/,/g, ' ') }
                     if (section) { query["section"] = { "$eq": section }}
                     if (name) { query["name"] = { "$regex": name, "$options": "i" }}
                     if (search) { query["name"] = { "$regex": search, "$options": "i" }}
-                    return db.models.Category.find(query)
+                    return db.models.Category.find(query).sort(sort)
                 }
             },
             category: {
@@ -101,7 +111,14 @@ let schema = new GraphQLSchema({
             },
             tags: {
                 type: new GraphQLList(TagType),
-                resolve: () => db.models.Tag.find()
+                args: {
+                    orderBy: { type: GraphQLString }
+                },
+                resolve: (root, {orderBy}) => {
+                    let sort = ""
+                    if (orderBy) { sort = orderBy.replace(/,/g, ' ') }
+                    return db.models.Tag.find().sort(sort)
+                }
             },
             tag: {
                 type: TagType,
@@ -111,6 +128,7 @@ let schema = new GraphQLSchema({
             entries: {
                 type: new GraphQLList(EntryType),
                 args: {
+                    orderBy: { type: GraphQLString },
                     title: { type: GraphQLString },
                     status: { type: GraphQLString },
                     date_gt: { type: GraphQLString },
@@ -122,8 +140,10 @@ let schema = new GraphQLSchema({
                     search: { type: GraphQLString },
                     search_summary: { type: GraphQLString },
                 },
-                resolve: (root, {title, status, date_gt, sticky, section, category, tags, owner, search, search_summary}) => {
+                resolve: (root, {orderBy, title, status, date_gt, sticky, section, category, tags, owner, search, search_summary}) => {
                     const query = {}
+                    let sort = ""
+                    if (orderBy) { sort = orderBy.replace(/,/g, ' ') }
                     if (title) { query["title"] = { "$regex": title, "$options": "i" }}
                     if (status) { query["status"] = { "$eq": status }}
                     if (date_gt) { query["date"] = { "$gt": date_gt }}
@@ -134,7 +154,7 @@ let schema = new GraphQLSchema({
                     if (owner) { query["owner"] = { "$eq": owner }}
                     if (search) { query["title"] = { "$regex": search, "$options": "i" }}
                     if (search_summary) { query["summary"] = { "$regex": search_summary, "$options": "i" }}
-                    return db.models.Entry.find(query)
+                    return db.models.Entry.find(query).sort(sort)
                 }
             },
             entry: {
