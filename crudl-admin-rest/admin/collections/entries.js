@@ -261,12 +261,12 @@ changeView.fieldsets = [
                         }))
                     },
                     search: (req, connectors) => {
-                        if (!req.context.section.value) {
+                        if (!crudl.context.data.section) {
                             return Promise.resolve({data: []})
                         } else {
                             return connectors.categories.read(req
                                 .filter('name', req.data.query)
-                                .filter('section', req.context.section.value))
+                                .filter('section', crudl.context.data.section))
                             .then(res => res.set('data', res.data.map(d => ({
                                 value: d._id,
                                 label: `<b>${d.name}</b> (${d.slug})`,
