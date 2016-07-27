@@ -105,7 +105,7 @@ listView.filters = {
                     in: 'section',
                     // set the value to '' if the user changed the section or the section is not set
                     setValue: (section) => section.dirty || !section.value ? '' : undefined,
-                    setProps: (section, req) => {
+                    setProps: (section) => {
                         if (!section.value) {
                             return {
                                 readOnly: true,
@@ -113,7 +113,7 @@ listView.filters = {
                             }
                         }
                         // Get the catogories options filtered by section
-                        return crudl.connectors.categories_options.read(req.filter('section', section.value))
+                        return crudl.connectors.categories_options.read(crudl.req().filter('section', section.value))
                         .then(res => {
                             if (res.data.options.length > 0) {
                                 return {
