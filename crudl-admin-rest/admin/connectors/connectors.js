@@ -146,7 +146,7 @@ module.exports = [
         transform: {
             readResponseData: data => ({
                 requestHeaders: { "Authorization": `Token ${data.token}` },
-                authInfo: data,
+                info: data,
             })
         },
         transformErrors,

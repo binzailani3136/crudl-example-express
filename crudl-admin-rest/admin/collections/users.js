@@ -5,7 +5,7 @@ var listView = {
     actions: {
         list: function (req) {
             return crudl.connectors.users.read(req)
-            // return crudl.connectors.users.read(req.filter('id', req.authInfo.user))
+            // return crudl.connectors.users.read(req.filter('id', crudl.auth.user))
         },
     },
     normalize: (list) => list.map(item => {

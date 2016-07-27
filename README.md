@@ -129,7 +129,7 @@ var addView = {}
 ```
 
 ### Authentication
-Both the REST and GraphQL API is only accessible for logged-in users based on TokenAuthentication. Besides the Token, we also return an attribute _authInfo_ in order to subsequently have access to the currently logged-in user (e.g. for filtering).
+Both the REST and GraphQL API is only accessible for logged-in users based on TokenAuthentication. Besides the Token, we also return an attribute _info_ in order to subsequently have access to the currently logged-in user (e.g. for filtering). The _info_ is exposed in the global variable `crudl.auth`.
 
 ```javascript
 {
@@ -139,7 +139,7 @@ Both the REST and GraphQL API is only accessible for logged-in users based on To
     transform: {
         readResponseData: data => ({
             requestHeaders: { 'Authorization': `Token ${data.token}` },
-            authInfo: data,
+            info: data,
         })
     }
 }
@@ -368,7 +368,7 @@ var listView = {
             let entries = crudl.connectors.entries.read(req)
             /* here we add a custom column based on the currently logged-in user */
             let entriesWithCustomColumn = transform(entries, (item) => {
-                item.is_owner = req.authInfo.user == item.owner
+                item.is_owner = crudl.auth.user == item.owner
                 return item
             })
             return entriesWithCustomColumn
