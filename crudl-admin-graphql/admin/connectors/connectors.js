@@ -66,13 +66,13 @@ module.exports = [
         query: {
             read: `{user(id: "%_id"){_id, username, first_name, last_name, email, is_active, is_staff, date_joined}}`,
             update: `mutation ($input: ChangeSectionInput!) {
-                changeSection(input: $input) {
+                changeSection(data: $input) {
                     errors
                     section {id, name, slug, position}
                 }
             }`,
             delete: `mutation ($input: DeleteSectionInput!) {
-                deleteSection(input: $input) {
+                deleteSection(data: $input) {
                     deleted
                 }
             }`,
@@ -182,7 +182,7 @@ module.exports = [
                 }
             }`,
             delete: `mutation ($input: DeleteCategoryInput!) {
-                deleteCategory(input: $input) {
+                deleteCategory(data: $input) {
                     deleted
                 }
             }`,
@@ -237,7 +237,7 @@ module.exports = [
                 }
             }`,
             delete: `mutation ($input: DeleteTagInput!) {
-                deleteTag(input: $input) {
+                deleteTag(data: $input) {
                     deleted
                 }
             }`,
@@ -292,7 +292,7 @@ module.exports = [
                 }
             }`,
             delete: `mutation ($input: DeleteEntryInput!) {
-                deleteEntry(input: $input) {
+                deleteEntry(data: $input) {
                     deleted
                 }
             }`,
@@ -319,8 +319,8 @@ module.exports = [
                 name: 'entrylinks',
                 fields: '_id, entry{_id}, url, title, description, position',
             }),
-            create: `mutation ($input: LinkInput!) {
-                addLink(input: $input) {
+            create: `mutation ($input: EntryLinkInput!) {
+                addEntryLink(data: $input) {
                     errors
                     link {_id, entry{_id}, url, title, description, position}
                 }
@@ -329,10 +329,10 @@ module.exports = [
         transform: {
             readResponseData: data => data.data.entrylinks,
             createResponseData: data => {
-                if (data.data.addLink.errors) {
-                    throw data.data.addLink.errors
+                if (data.data.addEntryLink.errors) {
+                    throw data.data.addEntryLink.errors
                 }
-                return data.data.addLink.entry
+                return data.data.addEntryLink.entry
             },
         },
     },
@@ -340,14 +340,14 @@ module.exports = [
         id: 'link',
         query: {
             read: `{entrylink(id: "%_id"){_id, entry{_id}, url, title, description, position}}`,
-            update: `mutation ($input: LinkInput!) {
-                changeLink(input: $input) {
+            update: `mutation ($input: EntryLinkInput!) {
+                changeEntryLink(id: "%_id", data: $input) {
                     errors
                     entrylink {_id, entry{_id}, url, title, description, position}
                 }
             }`,
             delete: `mutation ($input: DeleteEntrylinkInput!) {
-                deleteEntrylink(input: $input) {
+                deleteEntrylink(data: $input) {
                     deleted
                 }
             }`,

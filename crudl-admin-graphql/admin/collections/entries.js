@@ -201,6 +201,10 @@ changeView.fieldsets = [
     {
         fields: [
             {
+                name: '_id',
+                field: 'hidden',
+            },
+            {
                 name: 'title',
                 label: 'Title',
                 field: 'Text',
@@ -364,8 +368,8 @@ changeView.tabs = [
         actions: {
             list: (req, connectors) => connectors.links.read(req.filter('entry', req.id)),
             add: (req, connectors) => connectors.links.create(req),
-            save: (req, connectors) => connectors.link(req.data.id).update(req),
-            delete: (req, connectors) => connectors.link(req.data.id).delete(req)
+            save: (req, connectors) => connectors.link(req.data._id).update(req),
+            delete: (req, connectors) => connectors.link(req.data._id).delete(req)
         },
         itemTitle: '{url}',
         fields: [
@@ -388,8 +392,9 @@ changeView.tabs = [
             },
             {
                 name: 'entry',
+                key: 'entry._id',  // key because we get an object
                 field: 'hidden',
-                initialValue: (context) => context.data.id,
+                initialValue: (context) => context.data._id
             },
         ],
     },
@@ -400,15 +405,10 @@ var addView = {
     path: 'entries/new',
     title: 'New Blog Entry',
     fieldsets: changeView.fieldsets,
-    // validate: changeView.validate,
+    validate: changeView.validate,
     actions: {
         add: function (req, connectors) { return connectors.entries.create(req) },
-    },
-    // denormalize: (data) => {
-    //     /* set owner on add */
-    //     if (crudl.authInfo.user) data.owner = crudl.authInfo.user
-    //     return data
-    // }
+    }
 }
 
 //-------------------------------------------------------------------

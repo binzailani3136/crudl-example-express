@@ -353,10 +353,14 @@ let schema = new GraphQLSchema({
                 type: EntryLinkType,
                 args: {
                     id: { name: 'id', type: new GraphQLNonNull(GraphQLID) },
-                    data: { name: 'data', type: new GraphQLNonNull(UserInputType) }
+                    data: { name: 'data', type: new GraphQLNonNull(EntryLinkInputType) }
                 },
                 resolve: (root, {id, data}) => {
-                    return db.models.EntryLink.findByIdAndUpdate(id, data)
+                    return db.models.EntryLink.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
+                    .then((function(object) { return { nores, object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             deleteEntryLink: {
