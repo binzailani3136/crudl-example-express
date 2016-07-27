@@ -162,7 +162,7 @@ With _Entries_, the _Categories_ depend on the selected _Section_. If you change
         }
     ],
     actions: {
-        asyncProps: (req, connectors) => {
+        asyncProps: (req) => {
             /* return the filtered categories based on crudl.context.data.section */
         }
     },
@@ -180,7 +180,7 @@ There are a couple of foreign keys being used (e.g. _Section_ or _Category_ with
     label: 'Section',
     field: 'Select',
     actions: {
-        asyncProps: (req, connectors) => connectors.sections_options.read(req),
+        asyncProps: (req) => crudl.connectors.sections_options.read(req),
     },
 },
 {
@@ -190,9 +190,9 @@ There are a couple of foreign keys being used (e.g. _Section_ or _Category_ with
     actions: {
         /* return the value and label when selecting a category.
         please note that this is easier solved with a custom connector */
-        select: (req, connectors) => {
+        select: (req) => {
             return Promise.all(req.data.selection.map(item => {
-                return connectors.category(item.value).read(req)
+                return crudl.connectors.category(item.value).read(req)
                 .then(res => res.set('data', {
                     value: res.data.id,
                     label: res.data.name,
@@ -200,8 +200,8 @@ There are a couple of foreign keys being used (e.g. _Section_ or _Category_ with
             }))
         },
         /* return the value and a custom label when searching for a category */
-        search: (req, connectors) => {
-            return connectors.categories.read(req.filter('name', req.data.query)
+        search: (req) => {
+            return crudl.connectors.categories.read(req.filter('name', req.data.query)
             .then(res => res.set('data', res.data.map(d => ({
                 value: d.id,
                 label: `<b>${d.name}</b> (${d.slug})`,
@@ -225,10 +225,10 @@ changeView.tabs = [
     {
         title: 'Links',
         actions: {
-            list: (req, connectors) => connectors.links.read(req.filter('entry', req.id)),
-            add: (req, connectors) => connectors.links.create(req),
-            save: (req, connectors) => connectors.link(req.data.id).update(req),
-            delete: (req, connectors) => connectors.link(req.data.id).delete(req)
+            list: (req) => crudl.connectors.links.read(req.filter('entry', req.id)),
+            add: (req) => crudl.connectors.links.create(req),
+            save: (req) => crudl.connectors.link(req.data.id).update(req),
+            delete: (req) => crudl.connectors.link(req.data.id).delete(req)
         },
         itemTitle: '{url}',
         fields: [
@@ -364,8 +364,8 @@ var listView = {
     path: 'entries',
     title: 'Blog Entries',
     actions: {
-        list: function (req, connectors) {
-            let entries = connectors.entries.read(req)
+        list: function (req) {
+            let entries = crudl.connectors.entries.read(req)
             /* here we add a custom column based on the currently logged-in user */
             let entriesWithCustomColumn = transform(entries, (item) => {
                 item.is_owner = req.authInfo.user == item.owner

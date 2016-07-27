@@ -7,10 +7,10 @@ var listView = {
     actions: {
         /* counting the entries requires an additional API call per row. please note that the
         number of entries could be added at the database level, removing this additional call. */
-        list: function (req, connectors) {
-            return connectors.sections.read(req)
+        list: function (req) {
+            return crudl.connectors.sections.read(req)
             .then(res => {
-                let promises = res.data.map(item => connectors.entries.read(req.filter('section', item._id)))
+                let promises = res.data.map(item => crudl.connectors.entries.read(req.filter('section', item._id)))
                 return Promise.all(promises)
                 .then(item_entries => {
                     return res.set('data', res.data.map((item, index) => {
@@ -48,9 +48,9 @@ var changeView = {
     path: 'sections/:_id',
     title: 'Section',
     actions: {
-        get: function (req, connectors) { return connectors.section(req.id).read(req) },
-        delete: function (req, connectors) { return connectors.section(req.id).delete(req) },
-        save: function (req, connectors) { return connectors.section(req.id).update(req) },
+        get: function (req) { return crudl.connectors.section(req.id).read(req) },
+        delete: function (req) { return crudl.connectors.section(req.id).delete(req) },
+        save: function (req) { return crudl.connectors.section(req.id).update(req) },
     },
 }
 
@@ -82,7 +82,7 @@ var addView = {
     title: 'New Section',
     fields: changeView.fields,
     actions: {
-        add: function (req, connectors) { return connectors.sections.create(req) },
+        add: function (req) { return crudl.connectors.sections.create(req) },
     },
 }
 

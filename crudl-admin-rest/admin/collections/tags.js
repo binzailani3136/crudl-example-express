@@ -7,12 +7,12 @@ var listView = {
     actions: {
         /* counting the entries requires an additional API call per row. please note that the
         number of entries could be added at the database level, removing this additional call. */
-        list: function (req, connectors) {
-            return connectors.tags.read(req)
+        list: function (req) {
+            return crudl.connectors.tags.read(req)
             .then(res => {
                 // The result of the following line is an array of promises, where each promise resolves
                 // to an array of entries associated with the item
-                let promises = res.data.map(item => connectors.entries.read(req.filter('tags', item._id)))
+                let promises = res.data.map(item => crudl.connectors.entries.read(req.filter('tags', item._id)))
                 // We return a single promise that synchronizes on all the promises created in the previous step
                 return Promise.all(promises)
                 // And we also need to return a correct response, so we transform
@@ -57,9 +57,9 @@ var changeView = {
     path: 'tags/:_id',
     title: 'Tag',
     actions: {
-        get: function (req, connectors) { return connectors.tag(req.id).read(req) },
-        delete: function (req, connectors) { return connectors.tag(req.id).delete(req) },
-        save: function (req, connectors) { return connectors.tag(req.id).update(req) },
+        get: function (req) { return crudl.connectors.tag(req.id).read(req) },
+        delete: function (req) { return crudl.connectors.tag(req.id).delete(req) },
+        save: function (req) { return crudl.connectors.tag(req.id).update(req) },
     },
 }
 
@@ -90,7 +90,7 @@ var addView = {
     title: 'New Tag',
     fields: changeView.fields,
     actions: {
-        add: function (req, connectors) { return connectors.tags.create(req) },
+        add: function (req) { return crudl.connectors.tags.create(req) },
     },
 }
 

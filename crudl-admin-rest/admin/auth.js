@@ -3,7 +3,7 @@ var login = {
     // path: 'login', // optional
     // title: 'Login', // optional
     actions: {
-        login: function (req, connectors) { return connectors.login.read(req) },
+        login: function (req) { return crudl.connectors.login.read(req) },
     },
 }
 

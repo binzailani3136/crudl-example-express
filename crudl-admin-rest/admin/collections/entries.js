@@ -5,12 +5,12 @@ var listView = {
     path: 'entries',
     title: 'Blog Entries',
     actions: {
-        list: function (req, connectors) {
-            return connectors.entries.read(req)
+        list: function (req) {
+            return crudl.connectors.entries.read(req)
             .then(res => {
                 /* counting the links requires an additional API call per row. please note that the
                 number of links could be added at the database level, removing this additional call. */
-                let promises = res.data.map(item => connectors.links.read(req.filter('entry', item._id)))
+                let promises = res.data.map(item => crudl.connectors.links.read(req.filter('entry', item._id)))
                 return Promise.all(promises)
                 .then(item_entrylinks => {
                     return res.set('data', res.data.map((item, index) => {
@@ -92,7 +92,7 @@ listView.filters = {
             name: 'section',
             label: 'Section',
             field: 'Select',
-            props: (req, connectors) => connectors.sections_options.read(req).then(res => res.data),
+            props: (req) => crudl.connectors.sections_options.read(req).then(res => res.data),
         },
         {
             name: 'category',
@@ -105,7 +105,7 @@ listView.filters = {
                     in: 'section',
                     // set the value to '' if the user changed the section or the section is not set
                     setValue: (section) => section.dirty || !section.value ? '' : undefined,
-                    setProps: (section, req, connectors) => {
+                    setProps: (section, req) => {
                         if (!section.value) {
                             return {
                                 readOnly: true,
@@ -113,7 +113,7 @@ listView.filters = {
                             }
                         }
                         // Get the catogories options filtered by section
-                        return connectors.categories_options.read(req.filter('section', section.value))
+                        return crudl.connectors.categories_options.read(req.filter('section', section.value))
                         .then(res => {
                             if (res.data.options.length > 0) {
                                 return {
@@ -131,7 +131,7 @@ listView.filters = {
                     }
                 }
             ],
-            props: (req, connectors) => connectors.categories_options.read(req).then(res => res.data)
+            props: (req) => crudl.connectors.categories_options.read(req).then(res => res.data)
         },
         {
             name: 'status',
@@ -186,9 +186,9 @@ var changeView = {
     path: 'entries/:_id',
     title: 'Blog Entry',
     actions: {
-        get: function (req, connectors) { return connectors.entry(req.id).read(req) },
-        delete: function (req, connectors) { return connectors.entry(req.id).delete(req) },
-        save: function (req, connectors) { return connectors.entry(req.id).update(req) },
+        get: function (req) { return crudl.connectors.entry(req.id).read(req) },
+        delete: function (req) { return crudl.connectors.entry(req.id).delete(req) },
+        save: function (req) { return crudl.connectors.entry(req.id).update(req) },
     },
     normalize: (get) => {
         get.date = formatStringToDate(get.date)
@@ -235,7 +235,7 @@ changeView.fieldsets = [
                 /* we set required to false, although this field is actually
                 required with the API. */
                 required: false,
-                props: (req, connectors) => connectors.sections_options.read(req).then(res => ({
+                props: (req) => crudl.connectors.sections_options.read(req).then(res => ({
                     helpText: 'Select a section',
                     ...res.data
                 }))
@@ -251,20 +251,20 @@ changeView.fieldsets = [
                 },
                 onChange: listView.filters.fields[1].onChange,
                 actions: {
-                    select: (req, connectors) => {
+                    select: (req) => {
                         return Promise.all(req.data.selection.map(item => {
-                            return connectors.category(item.value).read(req)
+                            return crudl.connectors.category(item.value).read(req)
                             .then(res => res.set('data', {
                                 value: res.data._id,
                                 label: res.data.name,
                             }))
                         }))
                     },
-                    search: (req, connectors) => {
+                    search: (req) => {
                         if (!crudl.context.data.section) {
                             return Promise.resolve({data: []})
                         } else {
-                            return connectors.categories.read(req
+                            return crudl.connectors.categories.read(req
                                 .filter('name', req.data.query)
                                 .filter('section', crudl.context.data.section))
                             .then(res => res.set('data', res.data.map(d => ({
@@ -326,13 +326,13 @@ changeView.fieldsets = [
                     helpText: 'Select a tag',
                 },
                 actions: {
-                    search: (req, connectors) => {
-                        return connectors.tags_options.read(req.filter('name', req.data.query.toLowerCase()))
+                    search: (req) => {
+                        return crudl.connectors.tags_options.read(req.filter('name', req.data.query.toLowerCase()))
                         .then(res => res.set('data', res.data.options))
                     },
-                    select: (req, connectors) => {
+                    select: (req) => {
                         return Promise.all(req.data.selection.map(item => {
-                            return connectors.tag(item.value).read(req)
+                            return crudl.connectors.tag(item.value).read(req)
                             .then(res => res.set('data', {
                                 value: res.data._id,
                                 label: res.data.name,
@@ -374,10 +374,10 @@ changeView.tabs = [
     {
         title: 'Links',
         actions: {
-            list: (req, connectors) => connectors.links.read(req.filter('entry', req.id)),
-            add: (req, connectors) => connectors.links.create(req),
-            save: (req, connectors) => connectors.link(req.data._id).update(req),
-            delete: (req, connectors) => connectors.link(req.data._id).delete(req)
+            list: (req) => crudl.connectors.links.read(req.filter('entry', req.id)),
+            add: (req) => crudl.connectors.links.create(req),
+            save: (req) => crudl.connectors.link(req.data._id).update(req),
+            delete: (req) => crudl.connectors.link(req.data._id).delete(req)
         },
         itemTitle: '{url}',
         fields: [
@@ -414,7 +414,7 @@ var addView = {
     fieldsets: changeView.fieldsets,
     validate: changeView.validate,
     actions: {
-        add: function (req, connectors) { return connectors.entries.create(req) },
+        add: function (req) { return crudl.connectors.entries.create(req) },
     },
 }
 

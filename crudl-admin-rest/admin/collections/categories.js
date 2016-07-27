@@ -7,12 +7,12 @@ var listView = {
     actions: {
         /* counting the entries requires an additional API call per row. please note that the
         number of entries could be added at the database level, removing this additional call. */
-        list: function (req, connectors) {
-            return connectors.categories.read(req)
+        list: function (req) {
+            return crudl.connectors.categories.read(req)
             .then(res => {
                 // The result of the following line is an array of promises, where each promise resolves
                 // to an array of entries associated with the item
-                let promises = res.data.map(item => connectors.entries.read(req.filter('category', item._id)))
+                let promises = res.data.map(item => crudl.connectors.entries.read(req.filter('category', item._id)))
                 // We return a single promise that synchronizes on all the promises created in the previous step
                 return Promise.all(promises)
                 // And we also need to return a correct response, so we transform
@@ -62,7 +62,7 @@ listView.filters = {
             name: 'section',
             label: 'Section',
             field: 'Select',
-            props: (req, connectors) => connectors.sections_options.read(req).then(res => res.data),
+            props: (req) => crudl.connectors.sections_options.read(req).then(res => res.data),
             initialValue: '',
         },
     ]
@@ -73,9 +73,9 @@ var changeView = {
     path: 'categories/:_id',
     title: 'Category',
     actions: {
-        get: function (req, connectors) { return connectors.category(req.id).read(req) },
-        delete: function (req, connectors) { return connectors.category(req.id).delete(req) },
-        save: function (req, connectors) { return connectors.category(req.id).update(req) },
+        get: function (req) { return crudl.connectors.category(req.id).read(req) },
+        delete: function (req) { return crudl.connectors.category(req.id).delete(req) },
+        save: function (req) { return crudl.connectors.category(req.id).update(req) },
     },
 }
 
@@ -85,7 +85,7 @@ changeView.fields = [
         label: 'Section',
         field: 'Select',
         required: true,
-        props: (req, connectors) => connectors.sections_options.read(req).then(res => res.data),
+        props: (req) => crudl.connectors.sections_options.read(req).then(res => res.data),
     },
     {
         name: 'name',
@@ -118,7 +118,7 @@ var addView = {
     title: 'New Category',
     fields: changeView.fields,
     actions: {
-        add: function (req, connectors) { return connectors.categories.create(req) },
+        add: function (req) { return crudl.connectors.categories.create(req) },
     },
 }
 

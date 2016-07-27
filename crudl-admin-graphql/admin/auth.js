@@ -2,7 +2,7 @@
 //-------------------------------------------------------------------
 var login = {
     actions: {
-        login: function (req, connectors) { return connectors.login.read(req) },
+        login: function (req) { return crudl.connectors.login.read(req) },
     },
 }
 

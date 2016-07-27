@@ -3,8 +3,8 @@ var listView = {
     path: 'users',
     title: 'Users',
     actions: {
-        list: function (req, connectors) {
-            return connectors.users.read(req)
+        list: function (req) {
+            return crudl.connectors.users.read(req)
         },
     },
     normalize: (list) => list.map(item => {
@@ -50,8 +50,8 @@ var changeView = {
     path: 'users/:_id',
     title: 'User',
     actions: {
-        get: function (req, connectors) { return connectors.user(req.id).read(req) },
-        save: function (req, connectors) { return connectors.user(req.id).update(req) },
+        get: function (req) { return crudl.connectors.user(req.id).read(req) },
+        save: function (req) { return crudl.connectors.user(req.id).update(req) },
     },
     normalize: (data, error) => {
         if (error) {
@@ -184,7 +184,7 @@ var addView = {
     title: 'New User',
     fieldsets: changeView.fieldsets,
     actions: {
-        add: function (req, connectors) { return connectors.users.create(req) },
+        add: function (req) { return crudl.connectors.users.create(req) },
     },
 }
 
