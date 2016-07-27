@@ -50,8 +50,8 @@ var changeView = {
     path: 'users/:_id',
     title: 'User',
     actions: {
-        get: function (req) { return crudl.connectors.user(req.id).read(req) },
-        save: function (req) { return crudl.connectors.user(req.id).update(req) },
+        get: function (req) { return crudl.connectors.user(crudl.path.id).read(req) },
+        save: function (req) { return crudl.connectors.user(crudl.path.id).update(req) },
     },
     normalize: (data, error) => {
         if (error) {

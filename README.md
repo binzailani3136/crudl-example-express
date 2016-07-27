@@ -225,7 +225,7 @@ changeView.tabs = [
     {
         title: 'Links',
         actions: {
-            list: (req) => crudl.connectors.links.read(req.filter('entry', req.id)),
+            list: (req) => crudl.connectors.links.read(req.filter('entry', crudl.path.id)),
             add: (req) => crudl.connectors.links.create(req),
             save: (req) => crudl.connectors.link(req.data.id).update(req),
             delete: (req) => crudl.connectors.link(req.data.id).delete(req)
