@@ -396,27 +396,264 @@ exports.Tag = {
 exports.Entry = {
     entry_1: {
         _id: mongoose.Types.ObjectId(),
-        title: "crudl.io launched",
-        status: "Online",
-        date: "2016-05-07",
-        sticky: true,
-        section: exports.Section.section_news._id,
+        title: "Customizing the dashboard and menu",
+        status: "Draft",
+        date: "2016-05-02",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_customization._id,
+        tags: [
+            exports.Tag.tag_customization._id,
+            exports.Tag.tag_dashboard._id,
+            exports.Tag.tag_ui._id
+        ],
         summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
         body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
         owner: exports.User.user_demo._id
     },
     entry_2: {
         _id: mongoose.Types.ObjectId(),
-        title: "Upcoming development (Autumn 2016)",
-        status: "Online",
-        date: "2016-04-02",
-        sticky: true,
-        section: exports.Section.section_news._id,
+        title: "Authentication and permissions",
+        status: "Draft",
+        date: "2016-05-27",
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_usage._id,
+        tags: [
+            exports.Tag.tag_authentication._id,
+            exports.Tag.tag_backend._id,
+            exports.Tag.tag_permissions._id
+        ],
         summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
         body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
         owner: exports.User.user_demo._id
     },
     entry_3: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Deploying crudl is easy",
+        status: "Online",
+        date: "2016-03-27",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_general._id,
+        tags: [
+            exports.Tag.tag_deployment._id,
+            exports.Tag.tag_server._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_4: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Serving crudl with Nginx/Apache",
+        status: "Draft",
+        date: "2016-01-27",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_installation._id,
+        tags: [
+            exports.Tag.tag_apache._id,
+            exports.Tag.tag_nginx._id,
+            exports.Tag.tag_server._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_5: {
+        _id: mongoose.Types.ObjectId(),
+        title: "A guide to building admin.js",
+        status: "Online",
+        date: "2016-02-12",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_usage._id,
+        tags: [
+            exports.Tag.tag_browserify._id,
+            exports.Tag.tag_react._id,
+            exports.Tag.tag_webpack._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_6: {
+        _id: mongoose.Types.ObjectId(),
+        title: "The team behind crudl",
+        status: "Online",
+        date: "2016-03-12",
+        sticky: false,
+        section: exports.Section.section_news._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_7: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Follow us",
+        status: "Online",
+        date: "2016-06-17",
+        sticky: false,
+        section: exports.Section.section_faq._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_8: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Authentication with Stormpath",
+        status: "Draft",
+        date: "2016-03-02",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_usage._id,
+        tags: [
+            exports.Tag.tag_advanced._id,
+            exports.Tag.tag_authentication._id,
+            exports.Tag.tag_permissions._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_9: {
+        _id: mongoose.Types.ObjectId(),
+        title: "crudl 0.2",
+        status: "Online",
+        date: "2016-03-07",
+        sticky: false,
+        section: exports.Section.section_updates._id,
+        category: exports.Category.category_updates_core._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_10: {
+        _id: mongoose.Types.ObjectId(),
+        title: "API best practices (REST)",
+        status: "Draft",
+        date: "2016-02-22",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_api._id,
+        tags: [
+            exports.Tag.tag_api._id,
+            exports.Tag.tag_rest._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_11: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Separation of concerns",
+        status: "Online",
+        date: "2016-05-22",
+        section: exports.Section.section_faq._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_12: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Installation",
+        status: "Online",
+        date: "2016-04-17",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_installation._id,
+        tags: [
+            exports.Tag.tag_connector._id,
+            exports.Tag.tag_deployment._id,
+            exports.Tag.tag_descriptor._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_13: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Writing a custom component",
+        status: "Online",
+        date: "2016-06-02",
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_customization._id,
+        tags: [
+            exports.Tag.tag_advanced._id,
+            exports.Tag.tag_component._id,
+            exports.Tag.tag_customization._id,
+            exports.Tag.tag_react._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_14: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Backend agnostic",
+        status: "Online",
+        date: "2016-01-22",
+        sticky: false,
+        section: exports.Section.section_faq._id,
+        tags: [
+            exports.Tag.tag_django._id,
+            exports.Tag.tag_express._id,
+            exports.Tag.tag_flask._id,
+            exports.Tag.tag_hapi._id,
+            exports.Tag.tag_koa._id,
+            exports.Tag.tag_laravel._id,
+            exports.Tag.tag_node._id,
+            exports.Tag.tag_rails._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_15: {
+        _id: mongoose.Types.ObjectId(),
+        title: "API best practices (GraphQL)",
+        status: "Draft",
+        date: "2016-02-27",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_api._id,
+        tags: [
+            exports.Tag.tag_api._id,
+            exports.Tag.tag_graphql._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_16: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Roadmap",
+        status: "Online",
+        date: "2016-03-22",
+        sticky: false,
+        section: exports.Section.section_news._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_17: {
+        _id: mongoose.Types.ObjectId(),
+        title: "How to write connectors & descriptors",
+        status: "Draft",
+        date: "2016-02-02",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_usage._id,
+        tags: [
+            exports.Tag.tag_beginner._id,
+            exports.Tag.tag_connector._id,
+            exports.Tag.tag_descriptor._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_18: {
         _id: mongoose.Types.ObjectId(),
         title: "Python/Django example",
         status: "Draft",
@@ -434,45 +671,169 @@ exports.Entry = {
         body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
         owner: exports.User.user_demo._id
     },
-    entry_4: {
+    entry_19: {
         _id: mongoose.Types.ObjectId(),
-        title: "Writing a custom component",
+        title: "The crudl ecosystem",
         status: "Online",
-        date: "2016-06-02",
+        date: "2016-04-27",
+        sticky: false,
         section: exports.Section.section_help._id,
-        category: exports.Category.category_help_customization._id,
+        category: exports.Category.category_help_general._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_20: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Node/Express example",
+        status: "Draft",
+        date: "2016-02-17",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_examples._id,
         tags: [
-            exports.Tag.tag_advanced._id,
-            exports.Tag.tag_component._id,
-            exports.Tag.tag_customization._id,
-            exports.Tag.tag_react._id
+            exports.Tag.tag_express._id,
+            exports.Tag.tag_graphql._id,
+            exports.Tag.tag_mongodb._id,
+            exports.Tag.tag_node._id,
+            exports.Tag.tag_rest._id
         ],
         summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
         body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
         owner: exports.User.user_demo._id
     },
-    entry_5: {
+    entry_21: {
         _id: mongoose.Types.ObjectId(),
-        title: "Authentication and permissions",
+        title: "GraphQL with Python/Graphene",
         status: "Draft",
-        date: "2016-05-27",
+        date: "2016-04-12",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_api._id,
+        tags: [
+            exports.Tag.tag_graphql._id,
+            exports.Tag.tag_python._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_22: {
+        _id: mongoose.Types.ObjectId(),
+        title: "How to participate",
+        status: "Online",
+        date: "2016-04-07",
+        sticky: false,
+        section: exports.Section.section_faq._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_23: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Fields depending on each other",
+        status: "Online",
+        date: "2016-04-22",
+        sticky: false,
         section: exports.Section.section_help._id,
         category: exports.Category.category_help_usage._id,
         tags: [
-            exports.Tag.tag_authentication._id,
-            exports.Tag.tag_backend._id,
-            exports.Tag.tag_permissions._id
+            exports.Tag.tag_customization._id,
+            exports.Tag.tag_fields._id,
+            exports.Tag.tag_usability._id
         ],
         summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
         body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
         owner: exports.User.user_demo._id
     },
-    entry_6: {
+    entry_24: {
         _id: mongoose.Types.ObjectId(),
-        title: "Separation of concerns",
+        title: "Ensure financing an open source project",
+        status: "Draft",
+        date: "2016-05-12",
+        sticky: false,
+        section: exports.Section.section_news._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_25: {
+        _id: mongoose.Types.ObjectId(),
+        title: "crudl.io launched",
         status: "Online",
-        date: "2016-05-22",
+        date: "2016-05-07",
+        sticky: true,
+        section: exports.Section.section_news._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_26: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Upcoming development (Autumn 2016)",
+        status: "Online",
+        date: "2016-04-02",
+        sticky: true,
+        section: exports.Section.section_news._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_27: {
+        _id: mongoose.Types.ObjectId(),
+        title: "crudl compared to the django admin",
+        status: "Online",
+        date: "2016-05-17",
+        sticky: false,
         section: exports.Section.section_faq._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_28: {
+        _id: mongoose.Types.ObjectId(),
+        title: "Using crudl-admin-kit",
+        status: "Draft",
+        date: "2016-03-17",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_usage._id,
+        tags: [
+            exports.Tag.tag_admin_kit._id,
+            exports.Tag.tag_beginner._id,
+            exports.Tag.tag_connector._id,
+            exports.Tag.tag_descriptor._id
+        ],
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_29: {
+        _id: mongoose.Types.ObjectId(),
+        title: "5 minutes crudl introduction",
+        status: "Draft",
+        date: "2016-02-07",
+        sticky: false,
+        section: exports.Section.section_help._id,
+        category: exports.Category.category_help_general._id,
+        summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
+        body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
+        owner: exports.User.user_demo._id
+    },
+    entry_30: {
+        _id: mongoose.Types.ObjectId(),
+        title: "New frontend theme (crudl.material)",
+        status: "Online",
+        date: "2016-06-12",
+        sticky: false,
+        section: exports.Section.section_updates._id,
+        category: exports.Category.category_updates_ui._id,
+        tags: [
+            exports.Tag.tag_admin._id,
+            exports.Tag.tag_frontend._id,
+            exports.Tag.tag_ui._id,
+            exports.Tag.tag_ux._id
+        ],
         summary: "Consequatur voluptatem rem rerum quo culpa. Praesentium qui dolore quo impedit. Nesciunt delectus atque molestiae ipsa consequuntur veritatis. Quisquam qui aliquid maxime qui.",
         body: "Minus earum eveniet temporibus beatae eum et porro. Atque id error commodi sed tenetur repudiandae. Error quis soluta optio ratione aspernatur mollitia molestiae. Et voluptas et similique.\r\nCorrupti maxime commodi molestiae sequi tenetur voluptatem quas. Quia ab dolores beatae minus. Quas et nihil quo maxime itaque non hic officia. Sequi reiciendis rerum adipisci nihil.",
         owner: exports.User.user_demo._id
@@ -481,33 +842,165 @@ exports.Entry = {
 
 exports.EntryLink = [
     {
-        entry: exports.Entry.entry_1._id,
-        url: "http://crudl.io",
-        title: "CRUDL",
+        entry: exports.Entry.entry_2._id,
+        url: "https://auth0.com/",
+        title: "Auth0",
         position: 0
     },
     {
-        entry: exports.Entry.entry_3._id,
+        entry: exports.Entry.entry_6._id,
+        url: "http://vonautomatisch.at",
+        title: "vonautomatisch",
+        position: 0
+    },
+    {
+        entry: exports.Entry.entry_6._id,
+        url: "https://twitter.com/sehmaschine",
+        title: "sehmaschine on Twitter",
+        position: 1
+    },
+    {
+        entry: exports.Entry.entry_7._id,
+        url: "https://github.com/crudlio",
+        title: "GitHub",
+        position: 0
+    },
+    {
+        entry: exports.Entry.entry_7._id,
+        url: "https://twitter.com/crudlio",
+        title: "Twitter",
+        position: 1
+    },
+    {
+        entry: exports.Entry.entry_8._id,
+        url: "https://stormpath.com/",
+        title: "Stormpath",
+        position: 0
+    },
+    {
+        entry: exports.Entry.entry_10._id,
+        url: "http://www.restapitutorial.com/",
+        title: "REST API Tutorial",
+        position: 0
+    },
+    {
+        entry: exports.Entry.entry_14._id,
         url: "https://www.djangoproject.com/",
         title: "Django",
         position: 0
     },
     {
-        entry: exports.Entry.entry_3._id,
+        entry: exports.Entry.entry_14._id,
+        url: "http://expressjs.com/",
+        title: "Express",
+        position: 1
+    },
+    {
+        entry: exports.Entry.entry_14._id,
+        url: "http://flask.pocoo.org/",
+        title: "Flask",
+        position: 2
+    },
+    {
+        entry: exports.Entry.entry_14._id,
+        url: "http://hapijs.com/",
+        title: "hapi",
+        position: 3
+    },
+    {
+        entry: exports.Entry.entry_14._id,
+        url: "http://koajs.com/",
+        title: "koa",
+        position: 4
+    },
+    {
+        entry: exports.Entry.entry_14._id,
+        url: "https://laravel.com/",
+        title: "Laravel",
+        position: 5
+    },
+    {
+        entry: exports.Entry.entry_14._id,
+        url: "https://nodejs.org",
+        title: "Node.js",
+        position: 6
+    },
+    {
+        entry: exports.Entry.entry_14._id,
+        url: "http://rubyonrails.org/",
+        title: "Ruby on Rails",
+        position: 7
+    },
+    {
+        entry: exports.Entry.entry_15._id,
+        url: "http://graphql.org/",
+        title: "GraphQL",
+        position: 0
+    },
+    {
+        entry: exports.Entry.entry_18._id,
+        url: "https://www.djangoproject.com/",
+        title: "Django",
+        position: 0
+    },
+    {
+        entry: exports.Entry.entry_18._id,
         url: "http://www.django-rest-framework.org/",
         title: "Django REST Framework",
         position: 1
     },
     {
-        entry: exports.Entry.entry_3._id,
+        entry: exports.Entry.entry_18._id,
         url: "http://graphene-python.org/",
         title: "Graphene",
         position: 2
     },
     {
-        entry: exports.Entry.entry_5._id,
-        url: "https://auth0.com/",
-        title: "Auth0",
+        entry: exports.Entry.entry_20._id,
+        url: "https://nodejs.org/",
+        title: "Node.js",
+        position: 0
+    },
+    {
+        entry: exports.Entry.entry_20._id,
+        url: "http://expressjs.com/",
+        title: "Express",
+        position: 1
+    },
+    {
+        entry: exports.Entry.entry_21._id,
+        url: "https://www.python.org/",
+        title: "Python",
+        position: 0
+    },
+    {
+        entry: exports.Entry.entry_21._id,
+        url: "http://graphene-python.org/",
+        title: "Graphene",
+        position: 1
+    },
+    {
+        entry: exports.Entry.entry_22._id,
+        url: "https://github.com/crudlio",
+        title: "GitHub",
+        position: 0
+    },
+    {
+        entry: exports.Entry.entry_25._id,
+        url: "http://crudl.io",
+        title: "CRUDL",
+        position: 0
+    },
+    {
+        entry: exports.Entry.entry_27._id,
+        url: "https://docs.djangoproject.com/en/1.9/ref/contrib/admin/",
+        title: "Django admin interface",
+        position: 0
+    },
+    {
+        entry: exports.Entry.entry_28._id,
+        url: "https://github.com/crudlio",
+        title: "GitHub",
         position: 0
     }
 ]
