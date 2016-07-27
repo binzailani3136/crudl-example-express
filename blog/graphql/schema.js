@@ -19,6 +19,20 @@ import { EntryLinkType, EntryLinkInputType, EntryLinkResultType } from './types/
 var paginate = require('express-paginate');
 import db from '../db';
 
+// Credits for this function go to https://gist.github.com/mathewbyrne
+function slugify(text) {
+    if (text) {
+        return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+    } else {
+        return ""
+    }
+}
+
 function getErrors(err) {
     let errors = null
     if (err.name === "ValidationError") {
@@ -213,8 +227,9 @@ let schema = new GraphQLSchema({
                 type: SectionResultType,
                 args: { data: { name: 'data', type: new GraphQLNonNull(SectionInputType) }},
                 resolve: (root, {data}) => {
+                    if (!data.slug) data.slug = slugify(data.name)
                     return db.models.Section.create(data)
-                    .then((function(object) { return { nores, object } }), function(err) {
+                    .then((function(object) { return { nores, section: object } }), function(err) {
                         let errors = getErrors(err)
                         return { errors, nores }
                     })
@@ -227,8 +242,9 @@ let schema = new GraphQLSchema({
                     data: { name: 'data', type: new GraphQLNonNull(SectionInputType) }
                 },
                 resolve: (root, {id, data}) => {
+                    if (!data.slug) data.slug = slugify(data.name)
                     return db.models.Section.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
-                    .then((function(object) { return { nores, object } }), function(err) {
+                    .then((function(object) { return { nores, section: object } }), function(err) {
                         let errors = getErrors(err)
                         return { errors, nores }
                     })
@@ -246,7 +262,7 @@ let schema = new GraphQLSchema({
                 args: { data: { name: 'data', type: new GraphQLNonNull(CategoryInputType) }},
                 resolve: (root, {data}) => {
                     return db.models.Category.create(data)
-                    .then((function(object) { return { nores, object } }), function(err) {
+                    .then((function(object) { return { nores, category: object } }), function(err) {
                         let errors = getErrors(err)
                         return { errors, nores }
                     })
@@ -260,7 +276,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, {id, data}) => {
                     return db.models.Category.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
-                    .then((function(object) { return { nores, object } }), function(err) {
+                    .then((function(object) { return { nores, category: object } }), function(err) {
                         let errors = getErrors(err)
                         return { errors, nores }
                     })
@@ -278,7 +294,7 @@ let schema = new GraphQLSchema({
                 args: { data: { name: 'data', type: new GraphQLNonNull(TagInputType) }},
                 resolve: (root, {data}) => {
                     return db.models.Tag.create(data)
-                    .then((function(object) { return { nores, object } }), function(err) {
+                    .then((function(object) { return { nores, tag: object } }), function(err) {
                         let errors = getErrors(err)
                         return { errors, nores }
                     })
@@ -292,7 +308,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, {id, data}) => {
                     return db.models.Tag.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
-                    .then((function(object) { return { nores, object } }), function(err) {
+                    .then((function(object) { return { nores, tag: object } }), function(err) {
                         let errors = getErrors(err)
                         return { errors, nores }
                     })
@@ -310,7 +326,7 @@ let schema = new GraphQLSchema({
                 args: { data: { name: 'data', type: new GraphQLNonNull(EntryInputType) }},
                 resolve: (root, {data}) => {
                     return db.models.Entry.create(data)
-                    .then((function(object) { return { nores, object } }), function(err) {
+                    .then((function(object) { return { nores, entry: object } }), function(err) {
                         let errors = getErrors(err)
                         return { errors, nores }
                     })
@@ -325,7 +341,7 @@ let schema = new GraphQLSchema({
                 resolve: (root, {id, data}) => {
                     if (data.category == "") data.category = null
                     return db.models.Entry.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
-                    .then((function(object) { return { nores, object } }), function(err) {
+                    .then((function(object) { return { nores, entry: object } }), function(err) {
                         let errors = getErrors(err)
                         return { errors, nores }
                     })
@@ -343,7 +359,7 @@ let schema = new GraphQLSchema({
                 args: { data: { name: 'data', type: new GraphQLNonNull(EntryLinkInputType) }},
                 resolve: (root, {data}) => {
                     return db.models.EntryLink.create(data)
-                    .then((function(object) { return { nores, object } }), function(err) {
+                    .then((function(object) { return { nores, entrylink: object } }), function(err) {
                         let errors = getErrors(err)
                         return { errors, nores }
                     })
@@ -357,7 +373,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, {id, data}) => {
                     return db.models.EntryLink.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
-                    .then((function(object) { return { nores, object } }), function(err) {
+                    .then((function(object) { return { nores, entrylink: object } }), function(err) {
                         let errors = getErrors(err)
                         return { errors, nores }
                     })
