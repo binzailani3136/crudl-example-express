@@ -394,7 +394,7 @@ changeView.tabs = [
                 name: 'entry',
                 key: 'entry._id',  // key because we get an object
                 field: 'hidden',
-                initialValue: (context) => context.data._id
+                initialValue: () => crudl.context.data._id
             },
         ],
     },
