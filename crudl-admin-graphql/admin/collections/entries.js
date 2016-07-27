@@ -16,7 +16,7 @@ var listView = {
             .then(res => {
                 /* counting the links requires an additional API call per row. please note that the
                 number of links could be added at the database level, removing this additional call. */
-                let promises = res.data.map(item => crudl.connectors.links.read(req.filter('entry', item._id)))
+                let promises = res.data.map(item => crudl.connectors.links.read(crudl.req().filter('entry', item._id)))
                 return Promise.all(promises)
                 .then(item_entrylinks => {
                     return res.set('data', res.data.map((item, index) => {
