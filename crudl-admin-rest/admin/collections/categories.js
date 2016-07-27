@@ -62,7 +62,7 @@ listView.filters = {
             name: 'section',
             label: 'Section',
             field: 'Select',
-            props: (req) => crudl.connectors.sections_options.read(req).then(res => res.data),
+            props: () => crudl.connectors.sections_options.read(crudl.req()).then(res => res.data),
             initialValue: '',
         },
     ]
@@ -85,7 +85,7 @@ changeView.fields = [
         label: 'Section',
         field: 'Select',
         required: true,
-        props: (req) => crudl.connectors.sections_options.read(req).then(res => res.data),
+        props: () => crudl.connectors.sections_options.read(crudl.req()).then(res => res.data),
     },
     {
         name: 'name',

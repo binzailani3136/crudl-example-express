@@ -92,7 +92,7 @@ listView.filters = {
             name: 'section',
             label: 'Section',
             field: 'Select',
-            props: (req) => crudl.connectors.sections_options.read(req).then(res => res.data),
+            props: () => crudl.connectors.sections_options.read(crudl.req()).then(res => res.data),
         },
         {
             name: 'category',
@@ -131,7 +131,7 @@ listView.filters = {
                     }
                 }
             ],
-            props: (req) => crudl.connectors.categories_options.read(req).then(res => res.data)
+            props: () => crudl.connectors.categories_options.read(crudl.req()).then(res => res.data)
         },
         {
             name: 'status',
@@ -235,7 +235,7 @@ changeView.fieldsets = [
                 /* we set required to false, although this field is actually
                 required with the API. */
                 required: false,
-                props: (req) => crudl.connectors.sections_options.read(req).then(res => ({
+                props: () => crudl.connectors.sections_options.read(crudl.req()).then(res => ({
                     helpText: 'Select a section',
                     ...res.data
                 }))
