@@ -98,7 +98,8 @@ module.exports = [
         query: {
             read: listQuery({
                 name: 'allSections',
-                fields: '_id, name, slug, position'
+                fields: '_id, name, slug, position',
+                args: { first: 20 }
             }),
             create: `mutation ($input: SectionInput!) {
                 addSection(data: $input) {
@@ -107,7 +108,7 @@ module.exports = [
                 }
             }`,
         },
-        // pagination,
+        pagination: pagination,
         transform: {
             readResponseData: data => data.data.allSections.edges.map(e => e.node),
             createResponseData: data => {
@@ -153,7 +154,8 @@ module.exports = [
         query: {
             read: listQuery({
                 name: 'allCategories',
-                fields: '_id, section{_id, name}, name, slug, position'
+                fields: '_id, section{_id, name}, name, slug, position',
+                args: { first: 20 }
             }),
             create: `mutation ($input: CategoryInput!) {
                 addCategory(data: $input) {
@@ -162,7 +164,7 @@ module.exports = [
                 }
             }`,
         },
-        // pagination,
+        pagination: pagination,
         transform: {
             readResponseData: data => data.data.allCategories.edges.map(e => e.node),
             createResponseData: data => {
@@ -264,7 +266,8 @@ module.exports = [
         query: {
             read: listQuery({
                 name: 'allEntries',
-                fields: '_id, title, status, date, sticky, section{_id, name}, category{_id, name}, owner{_id, username}, tags{_id}'
+                fields: '_id, title, status, date, sticky, section{_id, name}, category{_id, name}, owner{_id, username}, tags{_id}',
+                args: { first: 20 }
             }),
             create: `mutation ($input: EntryInput!) {
                 addEntry(data: $input) {
@@ -273,7 +276,7 @@ module.exports = [
                 }
             }`,
         },
-        // pagination,
+        pagination: pagination,
         transform: {
             readResponseData: data => data.data.allEntries.edges.map(e => e.node),
             createResponseData: data => {
@@ -375,12 +378,12 @@ module.exports = [
     {
         id: 'sections_options',
         query: {
-            read: `{sections{_id, name}}`,
+            read: `{allSections{edges{node{_id, name}}}}`,
         },
         transform: {
             readResponseData: data => ({
-                options: data.data.sections.map(function(item) {
-                    return { value: item._id, label: item.name }
+                options: data.data.allSections.edges.map(function(item) {
+                    return { value: item.node._id, label: item.node.name }
                 }),
             })
         },
@@ -391,12 +394,15 @@ module.exports = [
     {
         id: 'categories_options',
         query: {
-            read: `{categories{_id, name}}`,
+            read: listQuery({
+                name: 'allCategories',
+                fields: '_id, name, slug'
+            }),
         },
         transform: {
             readResponseData: data => ({
-                options: data.data.categories.map(function(item) {
-                    return { value: item._id, label: item.name }
+                options: data.data.allCategories.edges.map(function(item) {
+                    return { value: item.node._id, label: item.node.name }
                 }),
             })
         },
@@ -407,12 +413,15 @@ module.exports = [
     {
         id: 'tags_options',
         query: {
-            read: `{tags{_id, name}}`,
+            read: listQuery({
+                name: 'allTags',
+                fields: '_id, name'
+            }),
         },
         transform: {
             readResponseData: data => ({
-                options: data.data.tags.map(function(item) {
-                    return { value: item._id, label: item.name }
+                options: data.data.allTags.edges.map(function(item) {
+                    return { value: item.node._id, label: item.node.name }
                 }),
             })
         },
