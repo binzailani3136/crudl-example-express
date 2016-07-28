@@ -55,11 +55,15 @@ module.exports = [
     {
         id: 'users',
         query: {
-            read: `{users{_id, username, first_name, last_name, email, is_active, is_staff, date_joined}}`,
+            read: listQuery({
+                name: 'allUsers',
+                fields: '_id, username, first_name, last_name, email, is_active, is_staff, date_joined',
+                args: { first: 20 }
+            }),
         },
-        // pagination,
+        pagination: pagination,
         transform: {
-            readResponseData: data => data.data.users
+            readResponseData: data => data.data.allUsers.edges.map(e => e.node),
         },
     },
     {
