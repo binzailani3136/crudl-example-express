@@ -6,6 +6,7 @@ function pagination(res) {
     let next = hasNext && {
         after: res.data.data[key].pageInfo.endCursor
     }
+    console.log("XXX", res.data.data[key].pageInfo)
     return { type: 'continuous', next }
 }
 
@@ -207,7 +208,8 @@ module.exports = [
         query: {
             read: listQuery({
                 name: 'allTags',
-                fields: '_id, name, slug'
+                fields: '_id, name, slug',
+                args: { first: 20 }
             }),
             create: `mutation ($input: TagInput!) {
                 addTag(data: $input) {

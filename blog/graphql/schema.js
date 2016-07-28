@@ -19,7 +19,7 @@ import {
 import { UserType, UserInputType, UserResultType, UserListType, UserListFilter } from './types/user';
 import { SectionType, SectionInputType, SectionResultType } from './types/section';
 import { CategoryType, CategoryInputType, CategoryResultType } from './types/category';
-import { TagConnection, TagListConnection, TagType, TagListType, TagInputType, TagResultType } from './types/tag';
+import { TagConnection, TagListConnection, TagType, TagInputType, TagResultType } from './types/tag';
 import { EntryType, EntryInputType, EntryResultType } from './types/entry';
 import { EntryLinkType, EntryLinkInputType, EntryLinkResultType } from './types/entrylink';
 var paginate = require('express-paginate');

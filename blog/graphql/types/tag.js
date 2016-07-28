@@ -55,29 +55,6 @@ let TagResultType = new GraphQLObjectType({
     })
 })
 
-// let PageInfo = new GraphQLObjectType({
-//     name: 'PageInfo',
-//     fields: () => ({
-//         hasPreviousPage: { type: GraphQLString },
-//         hasNextPage: { type: GraphQLString },
-//         startCursor: { type: GraphQLString },
-//         endCursor: { type: GraphQLString },
-//         counter: { type: GraphQLString }
-//     })
-// })
-
-let TagListType = new GraphQLObjectType({
-    name: 'TagList',
-    fields: () => ({
-        edges: {
-            type: TagConnection
-        }
-        // pageInfo: {
-        //     type: PageInfo
-        // }
-    })
-})
-
 
 const { connectionType: TagConnection, edgeType: TagEdge } =
     connectionDefinitions({ name: 'Tag', nodeType: TagType })
@@ -90,7 +67,6 @@ module.exports = {
     TagConnection: TagConnection,
     TagListConnection: TagListConnection,
     TagType: TagType,
-    TagListType: TagListType,
     TagInputType: TagInputType,
     TagResultType: TagResultType
 }
