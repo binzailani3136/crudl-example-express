@@ -6,7 +6,6 @@ function pagination(res) {
     let next = hasNext && {
         after: res.data.data[key].pageInfo.endCursor
     }
-    console.log("XXX", res.data.data[key].pageInfo)
     return { type: 'continuous', next }
 }
 

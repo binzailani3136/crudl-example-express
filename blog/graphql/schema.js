@@ -178,7 +178,7 @@ let schema = new GraphQLSchema({
                     if (args.owner) { query["owner"] = { "$eq": args.owner }}
                     if (args.search) { query["title"] = { "$regex": args.search, "$options": "i" }}
                     if (args.search_summary) { query["summary"] = { "$regex": args.search_summary, "$options": "i" }}
-                    return db.models.Category.find(query).sort(sort)
+                    return db.models.Entry.find(query).sort(sort)
                     .then(function(result) {
                         return connectionFromArray(result, args)
                     })
@@ -193,12 +193,14 @@ let schema = new GraphQLSchema({
                 type: EntryLinkListConnection,
                 args: {
                     orderBy: { type: GraphQLString },
+                    entry: { type: GraphQLString },
                     ...connectionArgs,
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
                     let sort = ""
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
+                    if (args.entry) { query["entry"] = { "$eq": args.entry }}
                     return db.models.EntryLink.find(query).sort(sort)
                     .then(function(result) {
                         return connectionFromArray(result, args)
