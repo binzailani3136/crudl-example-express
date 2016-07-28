@@ -139,14 +139,14 @@ listView.filters = {
             field: 'Select',
             props: {
                 options: [
-                    {value: '0', label: 'Draft'},
-                    {value: '1', label: 'Online'}
+                    {value: 'Draft', label: 'Draft'},
+                    {value: 'Online', label: 'Online'}
                 ]
             },
         },
         {
-            name: 'date',
-            label: 'Published on',
+            name: 'date_gt',
+            label: 'Published after',
             field: 'Date',
             /* simple date validation (please note that this is just a showcase,
             we know that it does not check for real dates) */
