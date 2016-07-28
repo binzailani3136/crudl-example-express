@@ -1,4 +1,4 @@
-import { formatDate } from '../utils'
+import { formatDate, formatStringToDate } from '../utils'
 
 function transform(p, func) {
     return p.then(response => {
@@ -30,6 +30,10 @@ var listView = {
             })
         }
     },
+    normalize: (list) => list.map(item => {
+        item.date = formatStringToDate(item.date)
+        return item
+    })
 }
 
 listView.fields = [

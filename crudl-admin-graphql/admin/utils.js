@@ -51,3 +51,8 @@ export function slugify(text) {
 export function formatDate(date) {
     return date.toJSON().slice(0, 10)
 }
+
+export function formatStringToDate(dateStr) {
+    let date = new Date(dateStr)
+    return date.toJSON().slice(0, 10)
+}
