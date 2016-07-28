@@ -135,12 +135,12 @@ let schema = new GraphQLSchema({
                     ...connectionArgs,
                 },
                 resolve: (root, { ...args }) => {
-                    const result = db.models.Tag.find({})
-                        .then(function(result) {
-                            return result
-                        })
-                    console.log("XXX", result)
-                    return connectionFromArray(result, args)
+                    return db.models.Tag.find({})
+                    .then(function(result) {
+                        return connectionFromArray(result, args)
+                    })
+                    // console.log("XXX", result)
+
                     // return {
                     //     "edges": db.models.Tag.find(),
                     //     "pageInfo": {
