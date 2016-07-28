@@ -170,7 +170,7 @@ listView.filters = {
             }
         },
         {
-            name: 'summary_Icontains',
+            name: 'search_summary',
             label: 'Search (Summary)',
             field: 'Search',
         },
@@ -178,7 +178,7 @@ listView.filters = {
 }
 
 listView.search = {
-    name: 'title_Icontains',
+    name: 'search',
 }
 
 //-------------------------------------------------------------------
