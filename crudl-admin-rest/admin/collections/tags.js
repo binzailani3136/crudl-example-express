@@ -12,7 +12,7 @@ var listView = {
             .then(res => {
                 // The result of the following line is an array of promises, where each promise resolves
                 // to an array of entries associated with the item
-                let promises = res.data.map(item => crudl.connectors.entries.read(req.filter('tags', item._id)))
+                let promises = res.data.map(item => crudl.connectors.entries.read(crudl.req().filter('tags', item._id)))
                 // We return a single promise that synchronizes on all the promises created in the previous step
                 return Promise.all(promises)
                 // And we also need to return a correct response, so we transform
