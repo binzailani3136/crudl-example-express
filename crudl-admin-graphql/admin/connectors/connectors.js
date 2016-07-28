@@ -39,6 +39,13 @@ function listQuery(options) {
             req.filters,
             sorting(req)
         ))
+        let query = `{
+            ${options.name} ${args} {
+                pageInfo { hasNextPage, hasPreviousPage, startCursor, endCursor }
+                edges { node { ${options.fields} }}
+            }
+        }`
+        console.log("QUERY", query)
         return `{
             ${options.name} ${args} {
                 pageInfo { hasNextPage, hasPreviousPage, startCursor, endCursor }

@@ -10,7 +10,7 @@ var listView = {
         list: function (req) {
             return crudl.connectors.sections.read(req)
             .then(res => {
-                let promises = res.data.map(item => crudl.connectors.entries.read(req.filter('section', item._id)))
+                let promises = res.data.map(item => crudl.connectors.entries.read(crudl.req().filter('section', item._id)))
                 return Promise.all(promises)
                 .then(item_entries => {
                     return res.set('data', res.data.map((item, index) => {
