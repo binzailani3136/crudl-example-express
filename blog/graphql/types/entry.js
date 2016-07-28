@@ -66,7 +66,7 @@ let EntryType = new GraphQLObjectType({
         owner: {
             type: UserType,
             resolve(parent, args) {
-                return db.models.User.findById(parent.user);
+                return db.models.User.findById(parent.owner);
             }
         },
         createdate: {

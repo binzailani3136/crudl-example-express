@@ -20,7 +20,8 @@ var listView = {
                 return Promise.all(promises)
                 .then(item_entrylinks => {
                     return res.set('data', res.data.map((item, index) => {
-                        item.isOwner = crudl.auth.user == item.owner
+                        item.isOwner = false
+                        if (item.owner && '_id' in item.owner) item.isOwner = crudl.auth.user == item.owner._id
                         item.counterTags = item.tags.length
                         item.counterLinks = item_entrylinks[index].data.length
                         return item
