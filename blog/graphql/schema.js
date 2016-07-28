@@ -136,7 +136,9 @@ let schema = new GraphQLSchema({
                     ...connectionArgs,
                 },
                 resolve: (root, { ...args }) => {
-                    return db.models.Tag.find({})
+                    let sort = ""
+                    if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
+                    return db.models.Tag.find({}).sort(sort)
                     .then(function(result) {
                         return connectionFromArray(result, args)
                     })

@@ -216,7 +216,7 @@ module.exports = [
                 }
             }`,
         },
-        //pagination: pagination,
+        pagination: pagination,
         transform: {
             readResponseData: data => data.data.allTags.edges.map(e => e.node),
             createResponseData: data => {
