@@ -6,9 +6,10 @@ import {
     GraphQLList,
     GraphQLInt,
     GraphQLID
-} from 'graphql';
-import { SectionType, SectionInputType } from './section';
-var db = require('../../db');
+} from 'graphql'
+import { connectionDefinitions, } from 'graphql-relay'
+import { SectionType, SectionInputType } from './section'
+var db = require('../../db')
 
 let CategoryType = new GraphQLObjectType({
     name: 'Category',
@@ -67,7 +68,11 @@ let CategoryResultType = new GraphQLObjectType({
     })
 });
 
+const { connectionType: CategoryListConnection, edgeType: CategoryListEdge } =
+    connectionDefinitions({ name: 'CategoryList', nodeType: CategoryType })
+
 module.exports = {
+    CategoryListConnection: CategoryListConnection,
     CategoryType: CategoryType,
     CategoryInputType: CategoryInputType,
     CategoryResultType: CategoryResultType

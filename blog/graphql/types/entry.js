@@ -7,12 +7,13 @@ import {
     GraphQLString,
     GraphQLBoolean,
     GraphQLID
-} from 'graphql';
-import { UserType, UserInputType } from './user';
-import { SectionType, SectionInputType } from './section';
-import { CategoryType, CategoryInputType } from './category';
-import { TagType, TagInputType } from './tag';
-var db = require('../../db');
+} from 'graphql'
+import { connectionDefinitions, } from 'graphql-relay'
+import { UserType, UserInputType } from './user'
+import { SectionType, SectionInputType } from './section'
+import { CategoryType, CategoryInputType } from './category'
+import { TagType, TagInputType } from './tag'
+var db = require('../../db')
 
 let EntryType = new GraphQLObjectType({
     name: 'Entry',
@@ -128,7 +129,11 @@ let EntryResultType = new GraphQLObjectType({
     })
 });
 
+const { connectionType: EntryListConnection, edgeType: EntryListEdge } =
+    connectionDefinitions({ name: 'EntryList', nodeType: EntryType })
+
 module.exports = {
+    EntryListConnection: EntryListConnection,
     EntryType: EntryType,
     EntryInputType: EntryInputType,
     EntryResultType: EntryResultType

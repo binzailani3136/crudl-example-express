@@ -6,11 +6,8 @@ import {
     GraphQLList,
     GraphQLID,
     GraphQLInt
-} from 'graphql';
-
-import {
-  connectionDefinitions,
-} from 'graphql-relay';
+} from 'graphql'
+import { connectionDefinitions, } from 'graphql-relay'
 
 
 let TagType = new GraphQLObjectType({
@@ -55,16 +52,11 @@ let TagResultType = new GraphQLObjectType({
     })
 })
 
-
-const { connectionType: TagConnection, edgeType: TagEdge } =
-    connectionDefinitions({ name: 'Tag', nodeType: TagType })
-
 const { connectionType: TagListConnection, edgeType: TagListEdge } =
     connectionDefinitions({ name: 'TagList', nodeType: TagType })
 
 
 module.exports = {
-    TagConnection: TagConnection,
     TagListConnection: TagListConnection,
     TagType: TagType,
     TagInputType: TagInputType,

@@ -7,7 +7,8 @@ import {
     GraphQLBoolean,
     GraphQLID,
     GraphQLInt
-} from 'graphql';
+} from 'graphql'
+import { connectionDefinitions, } from 'graphql-relay'
 
 let UserType = new GraphQLObjectType({
     name: 'User',
@@ -81,42 +82,12 @@ let UserResultType = new GraphQLObjectType({
     })
 });
 
-let PageInfo = new GraphQLObjectType({
-    name: 'PageInfo',
-    fields: () => ({
-        total: { type: GraphQLInt },
-        limit: { type: GraphQLInt },
-        page: { type: GraphQLInt },
-        pages: { type: GraphQLInt },
-        counter: { type: GraphQLInt }
-    })
-})
-
-let UserListType = new GraphQLObjectType({
-    name: 'UserList',
-    fields: () => ({
-        users: {
-            type: new GraphQLList(UserType)
-        },
-        pageInfo: {
-            type: PageInfo
-        }
-    })
-})
-
-let UserListFilter = new GraphQLInputObjectType({
-    name: 'UserListFilter',
-    fields: () => ({
-        is_staff: {
-            type: GraphQLBoolean
-        }
-    })
-})
+const { connectionType: UserListConnection, edgeType: UserListEdge } =
+    connectionDefinitions({ name: 'UserList', nodeType: UserType })
 
 module.exports = {
+    UserListConnection: UserListConnection,
     UserType: UserType,
     UserInputType: UserInputType,
-    UserListType: UserListType,
-    UserListFilter: UserListFilter,
     UserResultType: UserResultType
 }

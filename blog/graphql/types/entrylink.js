@@ -6,9 +6,10 @@ import {
     GraphQLList,
     GraphQLInt,
     GraphQLID
-} from 'graphql';
-import { EntryType, EntryInputType } from './entry';
-var db = require('../../db');
+} from 'graphql'
+import { connectionDefinitions, } from 'graphql-relay'
+import { EntryType, EntryInputType } from './entry'
+var db = require('../../db')
 
 let EntryLinkType = new GraphQLObjectType({
     name: 'Entrylink',
@@ -73,7 +74,11 @@ let EntryLinkResultType = new GraphQLObjectType({
     })
 });
 
+const { connectionType: EntryLinkListConnection, edgeType: EntryLinkListEdge } =
+    connectionDefinitions({ name: 'EntryLinkList', nodeType: EntryLinkType })
+
 module.exports = {
+    EntryLinkListConnection: EntryLinkListConnection,
     EntryLinkType: EntryLinkType,
     EntryLinkInputType: EntryLinkInputType,
     EntryLinkResultType: EntryLinkResultType

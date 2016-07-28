@@ -6,7 +6,8 @@ import {
     GraphQLList,
     GraphQLInt,
     GraphQLID
-} from 'graphql';
+} from 'graphql'
+import { connectionDefinitions, } from 'graphql-relay'
 
 let SectionType = new GraphQLObjectType({
     name: 'Section',
@@ -56,7 +57,11 @@ let SectionResultType = new GraphQLObjectType({
     })
 });
 
+const { connectionType: SectionListConnection, edgeType: SectionListEdge } =
+    connectionDefinitions({ name: 'SectionList', nodeType: SectionType })
+
 module.exports = {
+    SectionListConnection: SectionListConnection,
     SectionType: SectionType,
     SectionInputType: SectionInputType,
     SectionResultType: SectionResultType

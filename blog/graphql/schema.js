@@ -16,12 +16,12 @@ import {
     cursorToOffset
 } from 'graphql-relay';
 
-import { UserType, UserInputType, UserResultType, UserListType, UserListFilter } from './types/user';
-import { SectionType, SectionInputType, SectionResultType } from './types/section';
-import { CategoryType, CategoryInputType, CategoryResultType } from './types/category';
-import { TagConnection, TagListConnection, TagType, TagInputType, TagResultType } from './types/tag';
-import { EntryType, EntryInputType, EntryResultType } from './types/entry';
-import { EntryLinkType, EntryLinkInputType, EntryLinkResultType } from './types/entrylink';
+import { UserListConnection, UserType, UserInputType, UserResultType, UserListType, UserListFilter } from './types/user';
+import { SectionListConnection, SectionType, SectionInputType, SectionResultType } from './types/section';
+import { CategoryListConnection, CategoryType, CategoryInputType, CategoryResultType } from './types/category';
+import { TagListConnection, TagType, TagInputType, TagResultType } from './types/tag';
+import { EntryListConnection, EntryType, EntryInputType, EntryResultType } from './types/entry';
+import { EntryLinkListConnection, EntryLinkType, EntryLinkInputType, EntryLinkResultType } from './types/entrylink';
 var paginate = require('express-paginate');
 import db from '../db';
 
@@ -58,24 +58,41 @@ let schema = new GraphQLSchema({
     query: new GraphQLObjectType({
         name: 'Query',
         fields: () => ({
-            users: {
-                type: new GraphQLList(UserType),
-                resolve: () => db.models.User.find()
+            allUsers: {
+                type: UserListConnection,
+                args: {
+                    orderBy: { type: GraphQLString },
+                    ...connectionArgs,
+                },
+                resolve: (root, { ...args }) => {
+                    const query = {}
+                    let sort = ""
+                    if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
+                    return db.models.User.find(query).sort(sort)
+                    .then(function(result) {
+                        return connectionFromArray(result, args)
+                    })
+                }
             },
             user: {
                 type: UserType,
                 args: { id: { type: GraphQLID } },
                 resolve: (root, {id}) => db.models.User.findById(id)
             },
-            sections: {
-                type: new GraphQLList(SectionType),
+            allSections: {
+                type: SectionListConnection,
                 args: {
-                    orderBy: { type: GraphQLString }
+                    orderBy: { type: GraphQLString },
+                    ...connectionArgs,
                 },
-                resolve: (root, {orderBy}) => {
-                    let sort = "-slug"
-                    if (orderBy) { sort = orderBy.replace(/,/g, ' ') }
-                    return db.models.Section.find().sort(sort)
+                resolve: (root, { ...args }) => {
+                    const query = {}
+                    let sort = ""
+                    if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
+                    return db.models.Section.find(query).sort(sort)
+                    .then(function(result) {
+                        return connectionFromArray(result, args)
+                    })
                 }
             },
             section: {
@@ -83,22 +100,26 @@ let schema = new GraphQLSchema({
                 args: { id: { type: GraphQLID } },
                 resolve: (root, {id}) => db.models.Section.findById(id)
             },
-            categories: {
-                type: new GraphQLList(CategoryType),
+            allCategories: {
+                type: CategoryListConnection,
                 args: {
                     orderBy: { type: GraphQLString },
                     section: { type: GraphQLString },
                     name: { type: GraphQLString },
-                    search: { type: GraphQLString }
+                    search: { type: GraphQLString },
+                    ...connectionArgs,
                 },
-                resolve: (root, {orderBy, section, name, search}) => {
+                resolve: (root, { ...args }) => {
                     const query = {}
                     let sort = ""
-                    if (orderBy) { sort = orderBy.replace(/,/g, ' ') }
-                    if (section) { query["section"] = { "$eq": section }}
-                    if (name) { query["name"] = { "$regex": name, "$options": "i" }}
-                    if (search) { query["name"] = { "$regex": search, "$options": "i" }}
+                    if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
+                    if (args.section) { query["section"] = { "$eq": args.section }}
+                    if (args.name) { query["name"] = { "$regex": args.name, "$options": "i" }}
+                    if (args.search) { query["name"] = { "$regex": args.search, "$options": "i" }}
                     return db.models.Category.find(query).sort(sort)
+                    .then(function(result) {
+                        return connectionFromArray(result, args)
+                    })
                 }
             },
             category: {
@@ -113,9 +134,10 @@ let schema = new GraphQLSchema({
                     ...connectionArgs,
                 },
                 resolve: (root, { ...args }) => {
+                    const query = {}
                     let sort = ""
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
-                    return db.models.Tag.find({}).sort(sort)
+                    return db.models.Tag.find(query).sort(sort)
                     .then(function(result) {
                         return connectionFromArray(result, args)
                     })
@@ -126,8 +148,8 @@ let schema = new GraphQLSchema({
                 args: { id: { type: GraphQLID } },
                 resolve: (root, {id}) => db.models.Tag.findById(id)
             },
-            entries: {
-                type: new GraphQLList(EntryType),
+            allEntries: {
+                type: EntryListConnection,
                 args: {
                     orderBy: { type: GraphQLString },
                     title: { type: GraphQLString },
@@ -140,22 +162,26 @@ let schema = new GraphQLSchema({
                     owner: { type: GraphQLString },
                     search: { type: GraphQLString },
                     search_summary: { type: GraphQLString },
+                    ...connectionArgs,
                 },
-                resolve: (root, {orderBy, title, status, date_gt, sticky, section, category, tags, owner, search, search_summary}) => {
+                resolve: (root, { ...args }) => {
                     const query = {}
                     let sort = ""
-                    if (orderBy) { sort = orderBy.replace(/,/g, ' ') }
-                    if (title) { query["title"] = { "$regex": title, "$options": "i" }}
-                    if (status) { query["status"] = { "$eq": status }}
-                    if (date_gt) { query["date"] = { "$gt": date_gt }}
-                    if (sticky) { query["sticky"] = { "$eq": sticky }}
-                    if (section) { query["section"] = { "$eq": section }}
-                    if (category) { query["category"] = { "$eq": category }}
-                    if (tags) { query["tags"] = { "$in": [tags] }}
-                    if (owner) { query["owner"] = { "$eq": owner }}
-                    if (search) { query["title"] = { "$regex": search, "$options": "i" }}
-                    if (search_summary) { query["summary"] = { "$regex": search_summary, "$options": "i" }}
-                    return db.models.Entry.find(query).sort(sort)
+                    if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
+                    if (args.title) { query["title"] = { "$regex": args.title, "$options": "i" }}
+                    if (args.status) { query["status"] = { "$eq": args.status }}
+                    if (args.date_gt) { query["date"] = { "$gt": args.date_gt }}
+                    if (args.sticky) { query["sticky"] = { "$eq": args.sticky }}
+                    if (args.section) { query["section"] = { "$eq": args.section }}
+                    if (args.category) { query["category"] = { "$eq": args.category }}
+                    if (args.tags) { query["tags"] = { "$in": [args.tags] }}
+                    if (args.owner) { query["owner"] = { "$eq": args.owner }}
+                    if (args.search) { query["title"] = { "$regex": args.search, "$options": "i" }}
+                    if (args.search_summary) { query["summary"] = { "$regex": args.search_summary, "$options": "i" }}
+                    return db.models.Category.find(query).sort(sort)
+                    .then(function(result) {
+                        return connectionFromArray(result, args)
+                    })
                 }
             },
             entry: {
@@ -163,17 +189,20 @@ let schema = new GraphQLSchema({
                 args: { id: { type: GraphQLID } },
                 resolve: (root, {id}) => db.models.Entry.findById(id)
             },
-            entrylinks: {
-                type: new GraphQLList(EntryLinkType),
+            allEntryLinks: {
+                type: EntryLinkListConnection,
                 args: {
                     orderBy: { type: GraphQLString },
-                    entry: { type: GraphQLString }
+                    ...connectionArgs,
                 },
-                resolve: (root, {orderBy, entry}) => {
+                resolve: (root, { ...args }) => {
                     const query = {}
                     let sort = ""
-                    if (entry) { query["entry"] = { "$eq": entry }}
+                    if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     return db.models.EntryLink.find(query).sort(sort)
+                    .then(function(result) {
+                        return connectionFromArray(result, args)
+                    })
                 }
             },
             entrylink: {

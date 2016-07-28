@@ -97,7 +97,7 @@ module.exports = [
         id: 'sections',
         query: {
             read: listQuery({
-                name: 'sections',
+                name: 'allSections',
                 fields: '_id, name, slug, position'
             }),
             create: `mutation ($input: SectionInput!) {
@@ -109,7 +109,7 @@ module.exports = [
         },
         // pagination,
         transform: {
-            readResponseData: data => data.data.sections,
+            readResponseData: data => data.data.allSections.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addSection.errors) {
                     throw data.data.addSection.errors
@@ -152,7 +152,7 @@ module.exports = [
         id: 'categories',
         query: {
             read: listQuery({
-                name: 'categories',
+                name: 'allCategories',
                 fields: '_id, section{_id, name}, name, slug, position'
             }),
             create: `mutation ($input: CategoryInput!) {
@@ -164,7 +164,7 @@ module.exports = [
         },
         // pagination,
         transform: {
-            readResponseData: data => data.data.categories,
+            readResponseData: data => data.data.allCategories.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addCategory.errors) {
                     throw data.data.addCategory.errors
@@ -263,7 +263,7 @@ module.exports = [
         id: 'entries',
         query: {
             read: listQuery({
-                name: 'entries',
+                name: 'allEntries',
                 fields: '_id, title, status, date, sticky, section{_id, name}, category{_id, name}, owner{_id, username}, tags{_id}'
             }),
             create: `mutation ($input: EntryInput!) {
@@ -275,7 +275,7 @@ module.exports = [
         },
         // pagination,
         transform: {
-            readResponseData: data => data.data.entries,
+            readResponseData: data => data.data.allEntries.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addEntry.errors) {
                     throw data.data.addEntry.errors
@@ -319,7 +319,7 @@ module.exports = [
         id: 'links',
         query: {
             read: listQuery({
-                name: 'entrylinks',
+                name: 'allEntryLinks',
                 fields: '_id, entry{_id}, url, title, description, position',
             }),
             create: `mutation ($input: EntryLinkInput!) {
@@ -330,7 +330,7 @@ module.exports = [
             }`,
         },
         transform: {
-            readResponseData: data => data.data.entrylinks,
+            readResponseData: data => data.data.allEntryLinks.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addEntryLink.errors) {
                     throw data.data.addEntryLink.errors
