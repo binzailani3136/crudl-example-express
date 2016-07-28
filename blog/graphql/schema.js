@@ -129,9 +129,10 @@ let schema = new GraphQLSchema({
                 args: { id: { type: GraphQLID } },
                 resolve: (root, {id}) => db.models.Category.findById(id)
             },
-            tags: {
+            allTags: {
                 type: TagListConnection,
                 args: {
+                    orderBy: { type: GraphQLString },
                     ...connectionArgs,
                 },
                 resolve: (root, { ...args }) => {
@@ -139,18 +140,6 @@ let schema = new GraphQLSchema({
                     .then(function(result) {
                         return connectionFromArray(result, args)
                     })
-                    // console.log("XXX", result)
-
-                    // return {
-                    //     "edges": db.models.Tag.find(),
-                    //     "pageInfo": {
-                    //         "hasPreviousPage": false,
-                    //         "hasNextPage": false,
-                    //         "startCursor": "",
-                    //         "endCursor": "",
-                    //         "counter": 0
-                    //     }
-                    // }
                 }
             },
             // tags: {

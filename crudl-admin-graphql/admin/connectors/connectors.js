@@ -42,7 +42,7 @@ function listQuery(options) {
         return `{
             ${options.name} ${args} {
                 pageInfo { hasNextPage, hasPreviousPage, startCursor, endCursor }
-                ${options.name} { ${options.fields} }
+                edges { node { ${options.fields} }}
             }
         }`
     }
@@ -206,7 +206,7 @@ module.exports = [
         id: 'tags',
         query: {
             read: listQuery({
-                name: 'tags',
+                name: 'allTags',
                 fields: '_id, name, slug'
             }),
             create: `mutation ($input: TagInput!) {
@@ -218,10 +218,7 @@ module.exports = [
         },
         //pagination: pagination,
         transform: {
-            readResponseData: data => {
-                console.log("readResponseData", data)
-                return data.data.tags.tags
-            },
+            readResponseData: data => data.data.allTags.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addTag.errors) {
                     throw data.data.addTag.errors
