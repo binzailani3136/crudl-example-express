@@ -186,9 +186,9 @@ var changeView = {
     path: 'entries/:_id',
     title: 'Blog Entry',
     actions: {
-        get: function (req) { return crudl.connectors.entry(crudl.path.id).read(req) },
-        delete: function (req) { return crudl.connectors.entry(crudl.path.id).delete(req) },
-        save: function (req) { return crudl.connectors.entry(crudl.path.id).update(req) },
+        get: function (req) { return crudl.connectors.entry(crudl.path._id).read(req) },
+        delete: function (req) { return crudl.connectors.entry(crudl.path._id).delete(req) },
+        save: function (req) { return crudl.connectors.entry(crudl.path._id).update(req) },
     },
     normalize: (get) => {
         get.date = formatStringToDate(get.date)
@@ -374,7 +374,7 @@ changeView.tabs = [
     {
         title: 'Links',
         actions: {
-            list: (req) => crudl.connectors.links.read(req.filter('entry', crudl.path.id)),
+            list: (req) => crudl.connectors.links.read(req.filter('entry', crudl.path._id)),
             add: (req) => crudl.connectors.links.create(req),
             save: (req) => crudl.connectors.link(req.data._id).update(req),
             delete: (req) => crudl.connectors.link(req.data._id).delete(req)

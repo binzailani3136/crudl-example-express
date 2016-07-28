@@ -57,9 +57,9 @@ var changeView = {
     path: 'tags/:_id',
     title: 'Tag',
     actions: {
-        get: function (req) { return crudl.connectors.tag(crudl.path.id).read(req) },
-        delete: function (req) { return crudl.connectors.tag(crudl.path.id).delete(req) },
-        save: function (req) { return crudl.connectors.tag(crudl.path.id).update(req) },
+        get: function (req) { return crudl.connectors.tag(crudl.path._id).read(req) },
+        delete: function (req) { return crudl.connectors.tag(crudl.path._id).delete(req) },
+        save: function (req) { return crudl.connectors.tag(crudl.path._id).update(req) },
     },
 }
 

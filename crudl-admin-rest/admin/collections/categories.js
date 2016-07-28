@@ -73,9 +73,9 @@ var changeView = {
     path: 'categories/:_id',
     title: 'Category',
     actions: {
-        get: function (req) { return crudl.connectors.category(crudl.path.id).read(req) },
-        delete: function (req) { return crudl.connectors.category(crudl.path.id).delete(req) },
-        save: function (req) { return crudl.connectors.category(crudl.path.id).update(req) },
+        get: function (req) { return crudl.connectors.category(crudl.path._id).read(req) },
+        delete: function (req) { return crudl.connectors.category(crudl.path._id).delete(req) },
+        save: function (req) { return crudl.connectors.category(crudl.path._id).update(req) },
     },
 }
 

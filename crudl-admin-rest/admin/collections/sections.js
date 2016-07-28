@@ -53,9 +53,9 @@ var changeView = {
     path: 'sections/:_id',
     title: 'Section',
     actions: {
-        get: function (req) { return crudl.connectors.section(crudl.path.id).read(req) },
-        delete: function (req) { return crudl.connectors.section(crudl.path.id).delete(req) },
-        save: function (req) { return crudl.connectors.section(crudl.path.id).update(req) },
+        get: function (req) { return crudl.connectors.section(crudl.path._id).read(req) },
+        delete: function (req) { return crudl.connectors.section(crudl.path._id).delete(req) },
+        save: function (req) { return crudl.connectors.section(crudl.path._id).update(req) },
     },
 }
 
