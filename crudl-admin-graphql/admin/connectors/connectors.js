@@ -1,4 +1,4 @@
-
+import { continuousPagination, urlQuery, transformErrors } from '../utils'
 
 function pagination(res) {
     let key = Object.keys(res.data.data)[0]
@@ -6,7 +6,7 @@ function pagination(res) {
     let next = hasNext && {
         after: res.data.data[key].pageInfo.endCursor
     }
-    return { next }
+    return { type: 'continuous', next }
 }
 
 function objectToArgs(object) {
@@ -35,13 +35,14 @@ function listQuery(options) {
     return (req) => {
         let args = objectToArgs(Object.assign({},
             options.args,
-            //req.page,
+            req.page,
             req.filters,
             sorting(req)
         ))
         return `{
             ${options.name} ${args} {
-                ${options.fields}
+                pageInfo { hasNextPage, hasPreviousPage, startCursor, endCursor }
+                ${options.name} { ${options.fields} }
             }
         }`
     }
@@ -215,9 +216,12 @@ module.exports = [
                 }
             }`,
         },
-        // pagination,
+        //pagination: pagination,
         transform: {
-            readResponseData: data => data.data.tags,
+            readResponseData: data => {
+                console.log("readResponseData", data)
+                return data.data.tags.tags
+            },
             createResponseData: data => {
                 if (data.data.addTag.errors) {
                     throw data.data.addTag.errors

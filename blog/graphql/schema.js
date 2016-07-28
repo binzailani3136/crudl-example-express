@@ -10,10 +10,16 @@ import {
     GraphQLInt
 } from 'graphql';
 
+import {
+    connectionArgs,
+    connectionFromArray,
+    cursorToOffset
+} from 'graphql-relay';
+
 import { UserType, UserInputType, UserResultType, UserListType, UserListFilter } from './types/user';
 import { SectionType, SectionInputType, SectionResultType } from './types/section';
 import { CategoryType, CategoryInputType, CategoryResultType } from './types/category';
-import { TagType, TagInputType, TagResultType } from './types/tag';
+import { TagConnection, TagListConnection, TagType, TagListType, TagInputType, TagResultType } from './types/tag';
 import { EntryType, EntryInputType, EntryResultType } from './types/entry';
 import { EntryLinkType, EntryLinkInputType, EntryLinkResultType } from './types/entrylink';
 var paginate = require('express-paginate');
@@ -124,16 +130,61 @@ let schema = new GraphQLSchema({
                 resolve: (root, {id}) => db.models.Category.findById(id)
             },
             tags: {
-                type: new GraphQLList(TagType),
+                type: TagListConnection,
                 args: {
-                    orderBy: { type: GraphQLString }
+                    ...connectionArgs,
                 },
-                resolve: (root, {orderBy}) => {
-                    let sort = ""
-                    if (orderBy) { sort = orderBy.replace(/,/g, ' ') }
-                    return db.models.Tag.find().sort(sort)
+                resolve: (root, { ...args }) => {
+                    const result = db.models.Tag.find({})
+                        .then(function(result) {
+                            return result
+                        })
+                    console.log("XXX", result)
+                    return connectionFromArray(result, args)
+                    // return {
+                    //     "edges": db.models.Tag.find(),
+                    //     "pageInfo": {
+                    //         "hasPreviousPage": false,
+                    //         "hasNextPage": false,
+                    //         "startCursor": "",
+                    //         "endCursor": "",
+                    //         "counter": 0
+                    //     }
+                    // }
                 }
             },
+            // tags: {
+            //     type: TagListType,
+            //     args: {
+            //         orderBy: { type: GraphQLString },
+            //         page: { type: GraphQLString },
+            //         limit: { type: GraphQLString }
+            //     },
+            //     resolve: (root, {orderBy, page, limit}) => {
+            //         const query = {}
+            //         let sort = ""
+            //         if (orderBy) { sort = orderBy.replace(/,/g, ' ') }
+            //         // return db.models.Tag.find().sort(sort)
+            //         return db.models.Tag.paginate(query, {
+            //             sort: sort,
+            //             page: 1,
+            //             limit: 20,
+            //         })
+            //         .then(function(result) {
+            //             console.log("XXX", result)
+            //             return {
+            //                 "tags": result.docs,
+            //                 "pageInfo": {
+            //                     "hasPreviousPage": result.total,
+            //                     "hasNextPage": result.limit,
+            //                     "startCursor": result.page,
+            //                     "endCursor": result.pages,
+            //                     // "counter": counter
+            //                 }
+            //             }
+            //         })
+            //     }
+            // },
             tag: {
                 type: TagType,
                 args: { id: { type: GraphQLID } },
