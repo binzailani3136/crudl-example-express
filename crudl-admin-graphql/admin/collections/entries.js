@@ -413,6 +413,12 @@ var addView = {
     validate: changeView.validate,
     actions: {
         add: function (req) { return crudl.connectors.entries.create(req) },
+    },
+    denormalize: (data) => {
+        /* set owner on add. alternatively, we could manipulate the data
+        with the connector by using createRequestData (see connectors.js) */
+        if (crudl.auth.user) data.owner = crudl.auth.user
+        return data
     }
 }
 

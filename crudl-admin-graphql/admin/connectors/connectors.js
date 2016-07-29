@@ -289,6 +289,12 @@ module.exports = [
         pagination: pagination,
         transform: {
             readResponseData: data => data.data.allEntries.edges.map(e => e.node),
+            /* set owner on add. alternatively, we could use denormalize with
+            the descriptor, see collections/entries.js */
+            createRequestData: data => {
+                if (crudl.auth.user) data.owner = crudl.auth.user
+                return data
+            },
             createResponseData: data => {
                 if (data.data.addEntry.errors) {
                     throw data.data.addEntry.errors
