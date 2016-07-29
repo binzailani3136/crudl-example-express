@@ -345,6 +345,8 @@ let schema = new GraphQLSchema({
                 type: EntryResultType,
                 args: { data: { name: 'data', type: new GraphQLNonNull(EntryInputType) }},
                 resolve: (root, {data}) => {
+                    /* prevent Cast to ObjectID failed for ... */
+                    if (data.category == "") data.category = null
                     return db.models.Entry.create(data)
                     .then((function(object) { return { nores, entry: object } }), function(err) {
                         let errors = getErrors(err)
@@ -359,6 +361,7 @@ let schema = new GraphQLSchema({
                     data: { name: 'data', type: new GraphQLNonNull(EntryInputType) }
                 },
                 resolve: (root, {id, data}) => {
+                    /* prevent Cast to ObjectID failed for ... */
                     if (data.category == "") data.category = null
                     return db.models.Entry.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
                     .then((function(object) { return { nores, entry: object } }), function(err) {

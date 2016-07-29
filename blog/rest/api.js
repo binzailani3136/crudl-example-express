@@ -377,8 +377,8 @@ var createRouter = function () {
         })
     })
     .post(function (req, res) {
+        /* prevent Cast to ObjectID failed for ... */
         if (req.body.category == "") req.body.category = null
-        // if (crudl.auth) req.body.owner = crudl.auth.user
         db.models.Entry.create(req.body, function (err, result) {
             if (err) {
                 res.status(400)
@@ -407,6 +407,7 @@ var createRouter = function () {
     })
     .patch(function (req, res) {
         console.log(`Updating ${req.params.id}`);
+        /* prevent Cast to ObjectID failed for ... */
         if (req.body.category == "") req.body.category = null
         db.models.Entry.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
             if (err) {
