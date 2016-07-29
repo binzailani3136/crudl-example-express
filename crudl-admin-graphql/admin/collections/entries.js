@@ -268,7 +268,7 @@ changeView.fieldsets = [
                             return Promise.resolve({data: []})
                         } else {
                             return crudl.connectors.categories.read(req
-                                .filter('name_Icontains', req.data.query)
+                                .filter('name', req.data.query)
                                 .filter('section', crudl.context.data.section))
                             .then(res => res.set('data', res.data.map(d => ({
                                 value: d._id,
@@ -331,7 +331,7 @@ changeView.fieldsets = [
                 },
                 actions: {
                     search: (req) => {
-                        return crudl.connectors.tags_options.read(req.filter('name_Icontains', req.data.query.toLowerCase()))
+                        return crudl.connectors.tags_options.read(req.filter('name', req.data.query.toLowerCase()))
                         .then(res => res.set('data', res.data.options))
                     },
                     select: (req) => {

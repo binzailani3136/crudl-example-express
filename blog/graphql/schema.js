@@ -131,12 +131,14 @@ let schema = new GraphQLSchema({
                 type: TagListConnection,
                 args: {
                     orderBy: { type: GraphQLString },
+                    name: { type: GraphQLString },
                     ...connectionArgs,
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
                     let sort = ""
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
+                    if (args.name) { query["name"] = { "$regex": args.name, "$options": "i" }}
                     return db.models.Tag.find(query).sort(sort)
                     .then(function(result) {
                         return connectionFromArray(result, args)

@@ -86,9 +86,7 @@ changeView.fields = [
         label: 'Section',
         field: 'Select',
         required: true,
-        actions: {
-            asyncProps: (req) => crudl.connectors.sections_options.read(req)
-        }
+        props: () => crudl.connectors.sections_options.read(crudl.req()).then(res => res.data)
     },
     {
         name: 'name',

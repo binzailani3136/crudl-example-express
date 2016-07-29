@@ -188,11 +188,11 @@ module.exports = [
     {
         id: 'category',
         query: {
-            read: `{category(id: "%_id"){_id, section, name, slug, position}}`,
+            read: `{category(id: "%_id"){_id, section{_id, name}, name, slug, position}}`,
             update: `mutation ($input: CategoryInput!) {
                 changeCategory(id: "%_id", data: $input) {
                     errors
-                    category {_id, section, name, slug, position}
+                    category {_id, section{_id, name}, name, slug, position}
                 }
             }`,
             delete: `mutation ($input: DeleteCategoryInput!) {
