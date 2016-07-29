@@ -129,6 +129,18 @@ let EntryResultType = new GraphQLObjectType({
     })
 });
 
+let EntryDeleteType = new GraphQLObjectType({
+    name: 'EntryDelete',
+    fields: () => ({
+        deleted: {
+            type: GraphQLBoolean
+        },
+        entry: {
+            type: EntryType
+        }
+    })
+});
+
 const { connectionType: EntryListConnection, edgeType: EntryListEdge } =
     connectionDefinitions({ name: 'EntryList', nodeType: EntryType })
 
@@ -136,5 +148,6 @@ module.exports = {
     EntryListConnection: EntryListConnection,
     EntryType: EntryType,
     EntryInputType: EntryInputType,
-    EntryResultType: EntryResultType
+    EntryResultType: EntryResultType,
+    EntryDeleteType: EntryDeleteType
 }

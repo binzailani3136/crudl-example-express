@@ -5,6 +5,7 @@ import {
     GraphQLString,
     GraphQLList,
     GraphQLInt,
+    GraphQLBoolean,
     GraphQLID
 } from 'graphql'
 import { connectionDefinitions, } from 'graphql-relay'
@@ -57,6 +58,18 @@ let SectionResultType = new GraphQLObjectType({
     })
 });
 
+let SectionDeleteType = new GraphQLObjectType({
+    name: 'SectionDelete',
+    fields: () => ({
+        deleted: {
+            type: GraphQLBoolean
+        },
+        section: {
+            type: SectionType
+        }
+    })
+});
+
 const { connectionType: SectionListConnection, edgeType: SectionListEdge } =
     connectionDefinitions({ name: 'SectionList', nodeType: SectionType })
 
@@ -64,5 +77,6 @@ module.exports = {
     SectionListConnection: SectionListConnection,
     SectionType: SectionType,
     SectionInputType: SectionInputType,
-    SectionResultType: SectionResultType
+    SectionResultType: SectionResultType,
+    SectionDeleteType: SectionDeleteType
 }

@@ -5,6 +5,7 @@ import {
     GraphQLString,
     GraphQLList,
     GraphQLInt,
+    GraphQLBoolean,
     GraphQLID
 } from 'graphql'
 import { connectionDefinitions, } from 'graphql-relay'
@@ -74,6 +75,19 @@ let EntryLinkResultType = new GraphQLObjectType({
     })
 });
 
+let EntryLinkDeleteType = new GraphQLObjectType({
+    name: 'EntryLinkDelete',
+    fields: () => ({
+        deleted: {
+            type: GraphQLBoolean
+        },
+        link: {
+            type: EntryLinkType
+        }
+    })
+});
+
+
 const { connectionType: EntryLinkListConnection, edgeType: EntryLinkListEdge } =
     connectionDefinitions({ name: 'EntryLinkList', nodeType: EntryLinkType })
 
@@ -81,5 +95,6 @@ module.exports = {
     EntryLinkListConnection: EntryLinkListConnection,
     EntryLinkType: EntryLinkType,
     EntryLinkInputType: EntryLinkInputType,
-    EntryLinkResultType: EntryLinkResultType
+    EntryLinkResultType: EntryLinkResultType,
+    EntryLinkDeleteType: EntryLinkDeleteType
 }

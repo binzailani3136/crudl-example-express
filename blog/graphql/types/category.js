@@ -5,6 +5,7 @@ import {
     GraphQLString,
     GraphQLList,
     GraphQLInt,
+    GraphQLBoolean,
     GraphQLID
 } from 'graphql'
 import { connectionDefinitions, } from 'graphql-relay'
@@ -68,6 +69,18 @@ let CategoryResultType = new GraphQLObjectType({
     })
 });
 
+let CategoryDeleteType = new GraphQLObjectType({
+    name: 'CategoryDelete',
+    fields: () => ({
+        deleted: {
+            type: GraphQLBoolean
+        },
+        category: {
+            type: CategoryType
+        }
+    })
+});
+
 const { connectionType: CategoryListConnection, edgeType: CategoryListEdge } =
     connectionDefinitions({ name: 'CategoryList', nodeType: CategoryType })
 
@@ -75,5 +88,6 @@ module.exports = {
     CategoryListConnection: CategoryListConnection,
     CategoryType: CategoryType,
     CategoryInputType: CategoryInputType,
-    CategoryResultType: CategoryResultType
+    CategoryResultType: CategoryResultType,
+    CategoryDeleteType: CategoryDeleteType
 }

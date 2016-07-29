@@ -82,6 +82,18 @@ let UserResultType = new GraphQLObjectType({
     })
 });
 
+let UserDeleteType = new GraphQLObjectType({
+    name: 'UserDelete',
+    fields: () => ({
+        deleted: {
+            type: GraphQLBoolean
+        },
+        user: {
+            type: UserType
+        }
+    })
+});
+
 const { connectionType: UserListConnection, edgeType: UserListEdge } =
     connectionDefinitions({ name: 'UserList', nodeType: UserType })
 
@@ -89,5 +101,6 @@ module.exports = {
     UserListConnection: UserListConnection,
     UserType: UserType,
     UserInputType: UserInputType,
-    UserResultType: UserResultType
+    UserResultType: UserResultType,
+    UserDeleteType: UserDeleteType
 }

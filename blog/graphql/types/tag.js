@@ -5,7 +5,8 @@ import {
     GraphQLString,
     GraphQLList,
     GraphQLID,
-    GraphQLInt
+    GraphQLInt,
+    GraphQLBoolean
 } from 'graphql'
 import { connectionDefinitions, } from 'graphql-relay'
 
@@ -52,6 +53,18 @@ let TagResultType = new GraphQLObjectType({
     })
 })
 
+let TagDeleteType = new GraphQLObjectType({
+    name: 'TagDelete',
+    fields: () => ({
+        deleted: {
+            type: GraphQLBoolean
+        },
+        tag: {
+            type: TagType
+        }
+    })
+});
+
 const { connectionType: TagListConnection, edgeType: TagListEdge } =
     connectionDefinitions({ name: 'TagList', nodeType: TagType })
 
@@ -60,5 +73,6 @@ module.exports = {
     TagListConnection: TagListConnection,
     TagType: TagType,
     TagInputType: TagInputType,
-    TagResultType: TagResultType
+    TagResultType: TagResultType,
+    TagDeleteType: TagDeleteType
 }

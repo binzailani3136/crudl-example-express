@@ -83,11 +83,7 @@ module.exports = [
                     section {id, name, slug, position}
                 }
             }`,
-            delete: `mutation ($input: DeleteSectionInput!) {
-                deleteSection(data: $input) {
-                    deleted
-                }
-            }`,
+            delete: `mutation { deleteUser(id: "%_id") { deleted } }`,
         },
         transform: {
             readResponseData: data => data.data.user,
@@ -139,11 +135,7 @@ module.exports = [
                     section {_id, name, slug, position}
                 }
             }`,
-            delete: `mutation ($input: SectionInput!) {
-                deleteSection($id: ID!, data: $input) {
-                    deleted
-                }
-            }`,
+            delete: `mutation { deleteSection(id: "%_id") { deleted } }`,
         },
         transform: {
             readResponseData: data => data.data.section,
@@ -195,11 +187,7 @@ module.exports = [
                     category {_id, section{_id, name}, name, slug, position}
                 }
             }`,
-            delete: `mutation ($input: DeleteCategoryInput!) {
-                deleteCategory(data: $input) {
-                    deleted
-                }
-            }`,
+            delete: `mutation { deleteCategory(id: "%_id") { deleted } }`,
         },
         transform: {
             readResponseData: data => data.data.category,
@@ -251,11 +239,7 @@ module.exports = [
                     tag {_id, name, slug}
                 }
             }`,
-            delete: `mutation ($input: DeleteTagInput!) {
-                deleteTag(data: $input) {
-                    deleted
-                }
-            }`,
+            delete: `mutation { deleteTag(id: "%_id") { deleted } }`,
         },
         transform: {
             readResponseData: data => data.data.tag,
@@ -313,11 +297,7 @@ module.exports = [
                     entry {_id, title, status, date, sticky, section{_id, name}, category{_id, name}, tags{_id, name}, summary, body, owner{_id, username}, createdate, updatedate}
                 }
             }`,
-            delete: `mutation ($input: DeleteEntryInput!) {
-                deleteEntry(data: $input) {
-                    deleted
-                }
-            }`,
+            delete: `mutation { deleteEntry(id: "%_id") { deleted } }`,
         },
         transform: {
             readResponseData: data => data.data.entry,
@@ -368,11 +348,7 @@ module.exports = [
                     entrylink {_id, entry{_id}, url, title, description, position}
                 }
             }`,
-            delete: `mutation ($input: DeleteEntrylinkInput!) {
-                deleteEntrylink(data: $input) {
-                    deleted
-                }
-            }`,
+            delete: `mutation { deleteEntryLink(id: "%_id") { deleted } }`,
         },
         transform: {
             readResponseData: data => data.data.entrylink,

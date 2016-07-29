@@ -16,12 +16,12 @@ import {
     cursorToOffset
 } from 'graphql-relay';
 
-import { UserListConnection, UserType, UserInputType, UserResultType, UserListType, UserListFilter } from './types/user';
-import { SectionListConnection, SectionType, SectionInputType, SectionResultType } from './types/section';
-import { CategoryListConnection, CategoryType, CategoryInputType, CategoryResultType } from './types/category';
-import { TagListConnection, TagType, TagInputType, TagResultType } from './types/tag';
-import { EntryListConnection, EntryType, EntryInputType, EntryResultType } from './types/entry';
-import { EntryLinkListConnection, EntryLinkType, EntryLinkInputType, EntryLinkResultType } from './types/entrylink';
+import { UserListConnection, UserType, UserInputType, UserResultType, UserDeleteType } from './types/user';
+import { SectionListConnection, SectionType, SectionInputType, SectionResultType, SectionDeleteType } from './types/section';
+import { CategoryListConnection, CategoryType, CategoryInputType, CategoryResultType, CategoryDeleteType } from './types/category';
+import { TagListConnection, TagType, TagInputType, TagResultType, TagDeleteType } from './types/tag';
+import { EntryListConnection, EntryType, EntryInputType, EntryResultType, EntryDeleteType } from './types/entry';
+import { EntryLinkListConnection, EntryLinkType, EntryLinkInputType, EntryLinkResultType, EntryLinkDeleteType } from './types/entrylink';
 var paginate = require('express-paginate');
 import db from '../db';
 
@@ -237,10 +237,13 @@ let schema = new GraphQLSchema({
                 }
             },
             deleteUser: {
-                type: UserType,
+                type: UserDeleteType,
                 args: { id: { name: 'id', type: new GraphQLNonNull(GraphQLID) }},
                 resolve: (root, {id}) => {
                     return db.models.User.findByIdAndRemove(id)
+                    .then((function(object) { return { deleted: true, user: object } }), function(err) {
+                        return { deleted: false, user: object }
+                    })
                 }
             },
             addSection: {
@@ -271,10 +274,13 @@ let schema = new GraphQLSchema({
                 }
             },
             deleteSection: {
-                type: SectionType,
+                type: SectionDeleteType,
                 args: { id: { name: 'id', type: new GraphQLNonNull(GraphQLID) }},
                 resolve: (root, {id}) => {
                     return db.models.Section.findByIdAndRemove(id)
+                    .then((function(object) { return { deleted: true, section: object } }), function(err) {
+                        return { deleted: false, section: object }
+                    })
                 }
             },
             addCategory: {
@@ -303,10 +309,13 @@ let schema = new GraphQLSchema({
                 }
             },
             deleteCategory: {
-                type: CategoryType,
+                type: CategoryDeleteType,
                 args: { id: { name: 'id', type: new GraphQLNonNull(GraphQLID) }},
                 resolve: (root, {id}) => {
                     return db.models.Category.findByIdAndRemove(id)
+                    .then((function(object) { return { deleted: true, category: object } }), function(err) {
+                        return { deleted: false, category: object }
+                    })
                 }
             },
             addTag: {
@@ -335,10 +344,13 @@ let schema = new GraphQLSchema({
                 }
             },
             deleteTag: {
-                type: TagType,
+                type: TagDeleteType,
                 args: { id: { name: 'id', type: new GraphQLNonNull(GraphQLID) }},
                 resolve: (root, {id}) => {
                     return db.models.Tag.findByIdAndRemove(id)
+                    .then((function(object) { return { deleted: true, tag: object } }), function(err) {
+                        return { deleted: false, tag: object }
+                    })
                 }
             },
             addEntry: {
@@ -371,10 +383,13 @@ let schema = new GraphQLSchema({
                 }
             },
             deleteEntry: {
-                type: EntryType,
+                type: EntryDeleteType,
                 args: { id: { name: 'id', type: new GraphQLNonNull(GraphQLID) }},
                 resolve: (root, {id}) => {
                     return db.models.Entry.findByIdAndRemove(id)
+                    .then((function(object) { return { deleted: true, entry: object } }), function(err) {
+                        return { deleted: false, entry: object }
+                    })
                 }
             },
             addEntryLink: {
@@ -403,10 +418,13 @@ let schema = new GraphQLSchema({
                 }
             },
             deleteEntryLink: {
-                type: EntryLinkType,
+                type: EntryLinkDeleteType,
                 args: { id: { name: 'id', type: new GraphQLNonNull(GraphQLID) }},
                 resolve: (root, {id}) => {
                     return db.models.EntryLink.findByIdAndRemove(id)
+                    .then((function(object) { return { deleted: true, entrylink: object } }), function(err) {
+                        return { deleted: false, entrylink: object }
+                    })
                 }
             },
         })
