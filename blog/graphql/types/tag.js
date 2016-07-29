@@ -29,6 +29,9 @@ let TagType = new GraphQLObjectType({
 let TagInputType = new GraphQLInputObjectType({
     name: 'TagInput',
     fields: () => ({
+        _id: {
+            type: GraphQLID
+        },
         clientMutationId: {
             type: GraphQLString
         },

@@ -324,7 +324,7 @@ module.exports = [
             create: `mutation ($input: EntryLinkInput!) {
                 addEntryLink(data: $input) {
                     errors
-                    link {_id, entry{_id}, url, title, description, position}
+                    entrylink {_id, entry{_id}, url, title, description, position}
                 }
             }`,
         },
@@ -334,7 +334,7 @@ module.exports = [
                 if (data.data.addEntryLink.errors) {
                     throw data.data.addEntryLink.errors
                 }
-                return data.data.addEntryLink.entry
+                return data.data.addEntryLink.entrylink
             },
         },
     },
@@ -353,10 +353,10 @@ module.exports = [
         transform: {
             readResponseData: data => data.data.entrylink,
             updateResponseData: data => {
-                if (data.data.changeEntrylink.errors) {
-                    throw data.data.changeEntrylink.errors
+                if (data.data.changeEntryLink.errors) {
+                    throw data.data.changeEntryLink.errors
                 }
-                return data.data.changeEntrylink.entrylink
+                return data.data.changeEntryLink.entrylink
             },
             deleteRequestData: data => ({ id: data.id }),
             deleteResponseData: data => data.data,

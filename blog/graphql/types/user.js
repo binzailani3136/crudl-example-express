@@ -43,6 +43,9 @@ let UserType = new GraphQLObjectType({
 let UserInputType = new GraphQLInputObjectType({
     name: 'UserInput',
     fields: () => ({
+        _id: {
+            type: GraphQLID
+        },
         clientMutationId: {
             type: GraphQLString
         },

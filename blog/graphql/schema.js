@@ -404,7 +404,7 @@ let schema = new GraphQLSchema({
                 }
             },
             changeEntryLink: {
-                type: EntryLinkType,
+                type: EntryLinkResultType,
                 args: {
                     id: { name: 'id', type: new GraphQLNonNull(GraphQLID) },
                     data: { name: 'data', type: new GraphQLNonNull(EntryLinkInputType) }

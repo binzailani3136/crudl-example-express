@@ -31,6 +31,9 @@ let SectionType = new GraphQLObjectType({
 let SectionInputType = new GraphQLInputObjectType({
     name: 'SectionInput',
     fields: () => ({
+        _id: {
+            type: GraphQLID
+        },
         clientMutationId: {
             type: GraphQLString
         },

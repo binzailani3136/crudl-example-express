@@ -42,6 +42,9 @@ let EntryLinkType = new GraphQLObjectType({
 let EntryLinkInputType = new GraphQLInputObjectType({
     name: 'EntryLinkInput',
     fields: () => ({
+        _id: {
+            type: GraphQLID
+        },
         clientMutationId: {
             type: GraphQLString
         },
@@ -69,7 +72,7 @@ let EntryLinkResultType = new GraphQLObjectType({
         errors: {
             type: new GraphQLList(GraphQLString),
         },
-        link: {
+        entrylink: {
             type: EntryLinkType
         }
     })
@@ -81,7 +84,7 @@ let EntryLinkDeleteType = new GraphQLObjectType({
         deleted: {
             type: GraphQLBoolean
         },
-        link: {
+        entrylink: {
             type: EntryLinkType
         }
     })

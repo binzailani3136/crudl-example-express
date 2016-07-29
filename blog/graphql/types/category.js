@@ -39,6 +39,9 @@ let CategoryType = new GraphQLObjectType({
 let CategoryInputType = new GraphQLInputObjectType({
     name: 'CategoryInput',
     fields: () => ({
+        _id: {
+            type: GraphQLID
+        },
         clientMutationId: {
             type: GraphQLString
         },
