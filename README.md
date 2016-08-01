@@ -121,7 +121,6 @@ With collections, you create the visual representation by defining the _listView
 var listView = {}
 listView.fields = []
 listView.filters = []
-listView.search = []
 var changeView = {}
 changeView.fields = []
 changeView.tabs = []

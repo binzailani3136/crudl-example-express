@@ -48,8 +48,14 @@ listView.fields = [
     },
 ]
 
-listView.search = {
-    name: 'search',
+listView.filters = {
+    fields: [
+        {
+            name: 'search',
+            label: 'Search',
+            field: 'Search',
+        },
+    ]
 }
 
 //-------------------------------------------------------------------
