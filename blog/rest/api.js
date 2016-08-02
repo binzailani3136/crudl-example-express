@@ -188,7 +188,7 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        let sort = "section name"
+        let sort = "name"
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.section) { query["section"] = { "$eq": req.query.section }}
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}

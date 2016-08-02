@@ -66,7 +66,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
-                    let sort = ""
+                    let sort = "username"
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     return db.models.User.find(query).sort(sort)
                     .then(function(result) {
@@ -87,7 +87,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
-                    let sort = ""
+                    let sort = "name"
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     return db.models.Section.find(query).sort(sort)
                     .then(function(result) {
@@ -111,7 +111,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
-                    let sort = ""
+                    let sort = "name"
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     if (args.section) { query["section"] = { "$eq": args.section }}
                     if (args.name) { query["name"] = { "$regex": args.name, "$options": "i" }}
@@ -136,7 +136,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
-                    let sort = ""
+                    let sort = "name"
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     if (args.name) { query["name"] = { "$regex": args.name, "$options": "i" }}
                     return db.models.Tag.find(query).sort(sort)
@@ -168,7 +168,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
-                    let sort = ""
+                    let sort = "-sticky -date"
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     if (args.title) { query["title"] = { "$regex": args.title, "$options": "i" }}
                     if (args.status) { query["status"] = { "$eq": args.status }}
@@ -200,7 +200,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
-                    let sort = ""
+                    let sort = "entry title"
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     if (args.entry) { query["entry"] = { "$eq": args.entry }}
                     return db.models.EntryLink.find(query).sort(sort)
