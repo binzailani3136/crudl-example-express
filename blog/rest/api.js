@@ -30,7 +30,7 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        let sort = null
+        let sort = "username"
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         db.models.User.count({}, function (err, count) { counter = count });
         db.models.User.paginate(query, {
@@ -107,7 +107,7 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        let sort = null
+        let sort = "name"
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         if (req.query.search) { query["name"] = { "$regex": req.query.search, "$options": "i" }}
@@ -188,7 +188,7 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        let sort = null
+        let sort = "section name"
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.section) { query["section"] = { "$eq": req.query.section }}
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
@@ -271,7 +271,7 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        let sort = null
+        let sort = "name"
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         if (req.query.search) { query["name"] = { "$regex": req.query.search, "$options": "i" }}
@@ -352,7 +352,7 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        let sort = null
+        let sort = "-sticky -date"
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.title) { query["title"] = { "$regex": req.query.title, "$options": "i" }}
         if (req.query.status) { query["status"] = { "$eq": req.query.status }}
@@ -444,11 +444,13 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
+        let sort = "entry title"
         if (req.query.entry) { query["entry"] = { "$eq": req.query.entry }}
         if (req.query.title) { query["title"] = { "$regex": req.query.title, "$options": "i" }}
         db.models.EntryLink.count({}, function (err, count) { counter = count });
         db.models.EntryLink.paginate(query, {
             select: "entry url title description position",
+            sort: sort,
             page: req.query.page,
             limit: req.query.limit,
         }, function(err, result) {
