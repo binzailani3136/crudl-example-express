@@ -43,6 +43,7 @@ listView.fields = [
         sortable: true,
         sorted: 'ascending',
         sortpriority: '2',
+        sortKey: 'slug',
     },
     {
         name: 'slug',
