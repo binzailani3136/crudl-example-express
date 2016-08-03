@@ -19,7 +19,7 @@ export function urlQuery(req) {
         {
             ordering: req.sorting.map(field => {
                 let prefix = field.sorted == 'ascending' ? '' : '-'
-                return prefix + field.name
+                return prefix + field.sortKey
             }).join(',')
         }
     )

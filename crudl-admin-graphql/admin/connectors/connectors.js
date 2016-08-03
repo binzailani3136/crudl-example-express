@@ -21,7 +21,7 @@ function sorting(req) {
         return {
             orderBy: req.sorting.map(field => {
                 let prefix = field.sorted == 'ascending' ? '' : '-'
-                return prefix + field.name
+                return prefix + field.sortKey
             }).join(',')
         }
     }
