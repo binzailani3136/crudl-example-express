@@ -250,7 +250,11 @@ let schema = new GraphQLSchema({
                 type: SectionResultType,
                 args: { data: { name: 'data', type: new GraphQLNonNull(SectionInputType) }},
                 resolve: (root, {data}) => {
-                    if (!data.slug) data.slug = slugify(data.name)
+                    if (!data.slug) {
+                        data.slug = slugify(data.name)
+                    } else {
+                        data.slug = data.slug.toLowerCase();
+                    }
                     return db.models.Section.create(data)
                     .then((function(object) { return { nores, section: object } }), function(err) {
                         let errors = getErrors(err)
@@ -265,7 +269,11 @@ let schema = new GraphQLSchema({
                     data: { name: 'data', type: new GraphQLNonNull(SectionInputType) }
                 },
                 resolve: (root, {id, data}) => {
-                    if (!data.slug) data.slug = slugify(data.name)
+                    if (!data.slug) {
+                        data.slug = slugify(data.name)
+                    } else {
+                        data.slug = data.slug.toLowerCase();
+                    }
                     return db.models.Section.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
                     .then((function(object) { return { nores, section: object } }), function(err) {
                         let errors = getErrors(err)
@@ -287,6 +295,11 @@ let schema = new GraphQLSchema({
                 type: CategoryResultType,
                 args: { data: { name: 'data', type: new GraphQLNonNull(CategoryInputType) }},
                 resolve: (root, {data}) => {
+                    if (!data.slug) {
+                        data.slug = slugify(data.name)
+                    } else {
+                        data.slug = data.slug.toLowerCase();
+                    }
                     return db.models.Category.create(data)
                     .then((function(object) { return { nores, category: object } }), function(err) {
                         let errors = getErrors(err)
@@ -301,6 +314,11 @@ let schema = new GraphQLSchema({
                     data: { name: 'data', type: new GraphQLNonNull(CategoryInputType) }
                 },
                 resolve: (root, {id, data}) => {
+                    if (!data.slug) {
+                        data.slug = slugify(data.name)
+                    } else {
+                        data.slug = data.slug.toLowerCase();
+                    }
                     return db.models.Category.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
                     .then((function(object) { return { nores, category: object } }), function(err) {
                         let errors = getErrors(err)

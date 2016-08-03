@@ -123,7 +123,11 @@ var createRouter = function () {
         })
     })
     .post(function (req, res) {
-        if (!req.body.slug) req.body.slug = slugify(req.body.name)
+        if (!req.body.slug) {
+            req.body.slug = slugify(req.body.name)
+        } else {
+            req.body.slug = req.body.slug.toLowerCase();
+        }
         db.models.Section.create(req.body, function (err, result) {
             if (err) {
                 res.status(400)
@@ -152,7 +156,11 @@ var createRouter = function () {
     })
     .patch(function (req, res) {
         console.log(`Updating ${req.params.id}`);
-        if (!req.body.slug) req.body.slug = slugify(req.body.name)
+        if (!req.body.slug) {
+            req.body.slug = slugify(req.body.name)
+        } else {
+            req.body.slug = req.body.slug.toLowerCase();
+        }
         db.models.Section.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
             if (err) {
                 res.status(400)
@@ -206,7 +214,11 @@ var createRouter = function () {
         })
     })
     .post(function (req, res) {
-        if (!req.body.slug) req.body.slug = slugify(req.body.name)
+        if (!req.body.slug) {
+            req.body.slug = slugify(req.body.name)
+        } else {
+            req.body.slug = req.body.slug.toLowerCase();
+        }
         db.models.Category.create(req.body, function (err, result) {
             if (err) {
                 res.status(400)
@@ -235,7 +247,11 @@ var createRouter = function () {
     })
     .patch(function (req, res) {
         console.log(`Updating ${req.params.id}`);
-        if (!req.body.slug) req.body.slug = slugify(req.body.name)
+        if (!req.body.slug) {
+            req.body.slug = slugify(req.body.name)
+        } else {
+            req.body.slug = req.body.slug.toLowerCase();
+        }
         db.models.Category.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
             if (err) {
                 res.status(400)
