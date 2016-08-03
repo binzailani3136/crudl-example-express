@@ -87,7 +87,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
-                    let sort = "name"
+                    let sort = "slug"
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     return db.models.Section.find(query).sort(sort)
                     .then(function(result) {
@@ -111,7 +111,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
-                    let sort = "name"
+                    let sort = "slug"
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     if (args.section) { query["section"] = { "$eq": args.section }}
                     if (args.name) { query["name"] = { "$regex": args.name, "$options": "i" }}
@@ -136,7 +136,7 @@ let schema = new GraphQLSchema({
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
-                    let sort = "name"
+                    let sort = "slug"
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     if (args.name) { query["name"] = { "$regex": args.name, "$options": "i" }}
                     return db.models.Tag.find(query).sort(sort)

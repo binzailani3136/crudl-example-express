@@ -107,7 +107,7 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        let sort = "name"
+        let sort = "slug"
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         if (req.query.search) { query["name"] = { "$regex": req.query.search, "$options": "i" }}
@@ -188,7 +188,7 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        let sort = "name"
+        let sort = "slug"
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.section) { query["section"] = { "$eq": req.query.section }}
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
@@ -271,7 +271,7 @@ var createRouter = function () {
     .get(function (req, res) {
         const query = {}
         let counter = 0
-        let sort = "name"
+        let sort = "slug"
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         if (req.query.search) { query["name"] = { "$regex": req.query.search, "$options": "i" }}
