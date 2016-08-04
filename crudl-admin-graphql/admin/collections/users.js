@@ -96,7 +96,7 @@ changeView.fieldsets = [
         expanded: true,
         fields: [
             {
-                name: 'isActive',
+                name: 'is_active',
                 label: 'Active',
                 field: 'Checkbox',
                 initialValue: true,
@@ -105,7 +105,7 @@ changeView.fieldsets = [
                 },
             },
             {
-                name: 'isStaff',
+                name: 'is_staff',
                 label: 'Staff member',
                 field: 'Checkbox',
                 props: {
