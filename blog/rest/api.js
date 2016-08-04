@@ -548,20 +548,6 @@ var createRouter = function () {
         })
     })
 
-    // router.use(function(req, res, next) {
-    //     console.log("XXX")
-    //     // check header or url parameters or post parameters for token
-    //     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    //     if (token || req.originalUrl == "/rest-api/login") {
-    //         next();
-    //     } else {
-    //         return res.status(403).send({
-    //             success: false,
-    //             message: 'No token provided.'
-    //         });
-    //     }
-    // });
-
     return router;
 }
 

@@ -9,12 +9,28 @@ var api = require('./rest/api')
 import schema from './graphql/schema.js'
 
 var app = express()
-// var router = express.Router()
 mongoose.connect(db.url)
 
 mongoose.connection.on('error', function () {
     console.log('Failed to connect to the db.')
 })
+
+function authChecker(req, res, next) {
+    var token = req.body.token || req.query.token || req.headers['authorization'] || req.headers['x-access-token'];
+    if (req.originalUrl == "/rest-api/login/") {
+        next()
+    } else {
+        if (!token) return res.status(401).send({ success: false, message: 'No token provided.' })
+        var split_token = token.split(' ');
+        if (split_token[0].toLowerCase() != "token") return res.status(401).send({ success: false, message: 'Invalid token header.' })
+        if (split_token.length == 1) return res.status(401).send({ success: false, message: 'Invalid token header. No credentials provided.' })
+        if (split_token.length > 2) return res.status(401).send({ success: false, message: 'Invalid token header. Token string should not contain spaces.' })
+        db.models.User.findOne({token: split_token[1]}).exec(function(err, user) {
+            if (err || !user) return res.status(401).send({ success: false, message: 'Unauthorized.' })
+            if (user) next()
+        })
+    }
+}
 
 mongoose.connection.once('open', function () {
     console.log('Connected to the db.')
@@ -23,14 +39,6 @@ mongoose.connection.once('open', function () {
     // this will let us get the data from a POST
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(bodyParser.json())
-    // rest
-    app.use(paginate.middleware(20, 50));
-    app.use('/rest-api', api.router())
-    // graphql
-    app.use('/graphql-api', graphqlHTTP(req => ({
-        schema,
-        pretty: true
-    })));
     // crudl-rest
     app.use('/crudl/', express.static(__dirname + '/../static/crudl/'))
     app.use('/crudl-admin-rest/', express.static(__dirname + '/../crudl-admin-rest/static/crudl-admin-rest/'))
@@ -42,6 +50,15 @@ mongoose.connection.once('open', function () {
     app.get('/crudl-graphql/*', function (request, response){
         response.sendFile(path.resolve(__dirname, '../crudl-admin-graphql/templates/', 'index.html'))
     })
+    // rest
+    app.use(paginate.middleware(20, 50));
+    app.use(authChecker);
+    app.use('/rest-api', api.router())
+    // graphql
+    app.use('/graphql-api', graphqlHTTP(req => ({
+        schema,
+        pretty: true
+    })));
 
     // start server
     var port = process.env.PORT || 3000
