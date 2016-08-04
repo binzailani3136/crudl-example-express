@@ -28,6 +28,8 @@ listView.fields = [
     {
         name: 'username',
         label: 'Username',
+        sortable: false,
+        sorted: 'ascending',
         main: true,
     },
     {
