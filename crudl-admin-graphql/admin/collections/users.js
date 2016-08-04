@@ -40,12 +40,12 @@ listView.fields = [
         label: 'Email address',
     },
     {
-        name: 'isActive',
+        name: 'is_active',
         label: 'Active',
         render: 'boolean',
     },
     {
-        name: 'isStaff',
+        name: 'is_staff',
         label: 'Staff member',
         render: 'boolean',
     },
@@ -57,32 +57,9 @@ var changeView = {
     title: 'User',
     actions: {
         get: function (req) { return crudl.connectors.user(crudl.path._id).read(req) },
+        delete: function (req) { return crudl.connectors.user(crudl.path._id).delete(req) },
         save: function (req) { return crudl.connectors.user(crudl.path._id).update(req) },
     },
-    normalize: (data, error) => {
-        if (error) {
-            if (error.firstName)
-                error.fullName = 'First name: ' + error.firstName
-            if (error.lastName)
-                error.fullName = 'Last name: ' + error.lastName
-            throw error
-        }
-        // full_name
-        data.fullName = data.lastName + ', ' + data.firstName
-        data.fullName = data.fullName.replace(/(^, )|(, $)/, '')
-        return data
-    },
-    denormalize: (data) => {
-        let index = data.fullName.indexOf(',')
-        if (index >= 0) {
-            data.lastName = data.fullName.slice(0, index)
-            data.firstName = data.fullName.slice(index+1)
-        } else {
-            data.lastName = ''
-            data.firstName = ''
-        }
-        return data
-    }
 }
 
 changeView.fieldsets = [
@@ -98,14 +75,14 @@ changeView.fieldsets = [
     {
         fields: [
             {
-                name: 'fullName',
-                label: 'Name',
+                name: 'first_name',
+                label: 'First Name',
                 field: 'String',
-                validate: (value, allValues) => {
-                    if (value && value.indexOf(',') < 0) {
-                        return 'The required format is: LastName, FirstName'
-                    }
-                },
+            },
+            {
+                name: 'last_name',
+                label: 'Last Name',
+                field: 'String',
             },
             {
                 name: 'email',

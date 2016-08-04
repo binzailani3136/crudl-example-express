@@ -220,20 +220,28 @@ let schema = new GraphQLSchema({
         name: 'Mutation',
         fields: () => ({
             addUser: {
-                type: UserType,
+                type: UserResultType,
                 args: { data: { name: 'data', type: new GraphQLNonNull(UserInputType) }},
                 resolve: (root, {data}) => {
-                    return new db.models.User(data).save()
+                    return db.models.User.create(data)
+                    .then((function(object) { return { nores, user: object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             changeUser: {
-                type: UserType,
+                type: UserResultType,
                 args: {
                     id: { name: 'id', type: new GraphQLNonNull(GraphQLID) },
                     data: { name: 'data', type: new GraphQLNonNull(UserInputType) }
                 },
                 resolve: (root, {id, data}) => {
-                    return db.models.User.findByIdAndUpdate(id, data)
+                    return db.models.User.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
+                    .then((function(object) { return { nores, user: object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             deleteUser: {

@@ -58,32 +58,9 @@ var changeView = {
     title: 'User',
     actions: {
         get: function (req) { return crudl.connectors.user(crudl.path._id).read(req) },
+        delete: function (req) { return crudl.connectors.user(crudl.path._id).delete(req) },
         save: function (req) { return crudl.connectors.user(crudl.path._id).update(req) },
     },
-    normalize: (data, error) => {
-        if (error) {
-            if (error.first_name)
-                error.full_name = 'First name: ' + error.first_name
-            if (error.last_name)
-                error.full_name = 'Last name: ' + error.last_name
-            throw error
-        }
-        // full_name
-        data.full_name = data.last_name + ', ' + data.first_name
-        data.full_name = data.full_name.replace(/(^, )|(, $)/, '')
-        return data
-    },
-    denormalize: (data) => {
-        let index = data.full_name.indexOf(',')
-        if (index >= 0) {
-            data.last_name = data.full_name.slice(0, index)
-            data.first_name = data.full_name.slice(index+1)
-        } else {
-            data.last_name = ''
-            data.first_name = ''
-        }
-        return data
-    }
 }
 
 changeView.fieldsets = [
@@ -99,14 +76,14 @@ changeView.fieldsets = [
     {
         fields: [
             {
-                name: 'full_name',
-                label: 'Name',
+                name: 'first_name',
+                label: 'First Name',
                 field: 'String',
-                validate: (value, allValues) => {
-                    if (value && value.indexOf(',') < 0) {
-                        return 'The required format is: LastName, FirstName'
-                    }
-                },
+            },
+            {
+                name: 'last_name',
+                label: 'Last Name',
+                field: 'String',
             },
             {
                 name: 'email',

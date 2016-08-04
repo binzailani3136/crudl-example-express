@@ -67,20 +67,32 @@ module.exports = [
                 fields: '_id, username, first_name, last_name, email, is_active, is_staff, date_joined',
                 args: { first: 20 }
             }),
+            create: `mutation ($input: UserInput!) {
+                addUser(data: $input) {
+                    errors
+                    user {_id, username, first_name, last_name, email, is_active, is_staff, date_joined}
+                }
+            }`,
         },
         pagination: pagination,
         transform: {
             readResponseData: data => data.data.allUsers.edges.map(e => e.node),
+            createResponseData: data => {
+                if (data.data.addUser.errors) {
+                    throw data.data.addUser.errors
+                }
+                return data.data.addUser.user
+            },
         },
     },
     {
         id: 'user',
         query: {
             read: `{user(id: "%_id"){_id, username, first_name, last_name, email, is_active, is_staff, date_joined}}`,
-            update: `mutation ($input: ChangeSectionInput!) {
-                changeSection(data: $input) {
+            update: `mutation ($input: UserInput!) {
+                changeUser(id: "%_id", data: $input) {
                     errors
-                    section {id, name, slug, position}
+                    user {_id, username, first_name, last_name, email, is_active, is_staff, date_joined}
                 }
             }`,
             delete: `mutation { deleteUser(id: "%_id") { deleted } }`,
@@ -91,7 +103,7 @@ module.exports = [
                 if (data.data.changeUser.errors) {
                     throw data.data.changeUser.errors
                 }
-                return data.data.changeUser.section
+                return data.data.changeUser.user
             },
             deleteRequestData: data => ({ id: data.id }),
             deleteResponseData: data => data.data,
