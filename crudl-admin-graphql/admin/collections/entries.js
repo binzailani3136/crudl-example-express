@@ -200,6 +200,10 @@ var changeView = {
         delete: function (req) { return crudl.connectors.entry(crudl.path._id).delete(req) },
         save: function (req) { return crudl.connectors.entry(crudl.path._id).update(req) },
     },
+    normalize: (get) => {
+        get.date = formatStringToDate(get.date)
+        return get
+    },
     validate: function (values) {
         if ((!values.category || values.category == "") && (!values.tags || values.tags.length == 0)) {
             return { _error: 'Either `Category` or `Tags` is required.' }

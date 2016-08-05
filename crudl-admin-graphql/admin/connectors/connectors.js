@@ -39,13 +39,6 @@ function listQuery(options) {
             req.filters,
             sorting(req)
         ))
-        // let query = `{
-        //     ${options.name} ${args} {
-        //         pageInfo { hasNextPage, hasPreviousPage, startCursor, endCursor }
-        //         edges { node { ${options.fields} }}
-        //     }
-        // }`
-        // console.log("QUERY", query)
         return `{
             ${options.name} ${args} {
                 pageInfo { hasNextPage, hasPreviousPage, startCursor, endCursor }
@@ -302,7 +295,7 @@ module.exports = [
     {
         id: 'entry',
         query: {
-            read: `{entry(id: "%_id"){_id, title, status, date, sticky, section{_id, name}, category{_id, name}, tags{_id, name}, summary, body, owner{_id, username}}}`,
+            read: `{entry(id: "%_id"){_id, title, status, date, sticky, section{_id, name}, category{_id, name}, tags{_id, name}, summary, body, owner{_id, username}, createdate, updatedate}}`,
             update: `mutation ($input: EntryInput!) {
                 changeEntry(id: "%_id", data: $input) {
                     errors
