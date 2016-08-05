@@ -365,13 +365,6 @@ changeView.fieldsets = [
                 field: 'Datetime',
                 readOnly: true
             },
-            {
-                name: 'owner',
-                key: 'owner_username',
-                label: 'Owner',
-                field: 'String',
-                readOnly: true
-            },
         ]
     }
 ]
