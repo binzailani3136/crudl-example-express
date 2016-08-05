@@ -433,6 +433,8 @@ var createRouter = function () {
         console.log(`Updating ${req.params.id}`);
         /* prevent Cast to ObjectID failed for ... */
         if (req.body.category == "") req.body.category = null
+        /* set updatedate because presave is not called with findByIdAndUpdate */
+        req.body.updatedate = Date.now()
         db.models.Entry.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
             if (err) {
                 res.status(400)

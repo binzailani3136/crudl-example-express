@@ -401,6 +401,8 @@ let schema = new GraphQLSchema({
                 resolve: (root, {id, data}) => {
                     /* prevent Cast to ObjectID failed for ... */
                     if (data.category == "") data.category = null
+                    /* set updatedate because presave is not called with findByIdAndUpdate */
+                    data.updatedate = Date.now()
                     return db.models.Entry.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
                     .then((function(object) { return { nores, entry: object } }), function(err) {
                         let errors = getErrors(err)
