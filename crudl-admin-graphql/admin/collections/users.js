@@ -60,6 +60,11 @@ var changeView = {
         delete: function (req) { return crudl.connectors.user(crudl.path._id).delete(req) },
         save: function (req) { return crudl.connectors.user(crudl.path._id).update(req) },
     },
+    normalize: (get) => {
+        let date = new Date(get.date_joined)
+        get.date_joined = date.toJSON()
+        return get
+    },
     denormalize: (data) => {
         /* prevent unknown field ... with query */
         delete(data.date_joined)
