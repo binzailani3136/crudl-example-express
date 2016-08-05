@@ -149,7 +149,7 @@ module.exports = [
     // AUTHENTICATION
     {
         id: 'login',
-        url: 'login',
+        url: '/rest-api/login/',
         mapping: { read: 'post', },
         transform: {
             readResponseData: data => ({
@@ -157,7 +157,6 @@ module.exports = [
                 info: data,
             })
         },
-        transformErrors,
     },
 
 ]
