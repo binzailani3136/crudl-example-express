@@ -94,6 +94,8 @@ var createRouter = function () {
                 if (req.body["is_staff"] != undefined) user.is_staff = req.body["is_staff"]
                 if (req.body["is_active"] != undefined) user.is_active = req.body["is_active"]
                 user.save()
+                /* remove password from response. otherwise, the field is getting populated */
+                user.password = null
                 res.json(user);
             }
         })
