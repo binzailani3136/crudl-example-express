@@ -17,7 +17,7 @@ mongoose.connection.on('error', function () {
 
 function authChecker(req, res, next) {
     var token = req.body.token || req.query.token || req.headers['authorization'] || req.headers['x-access-token'];
-    if (req.originalUrl == "/rest-api/login/") {
+    if (req.originalUrl == "/rest-api/login/" || req.originalUrl == "/favicon.ico") {
         next()
     } else {
         if (!token) return res.status(401).send({ success: false, message: 'No token provided.' })
