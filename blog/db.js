@@ -1,10 +1,14 @@
 var mongoose = require('mongoose')
 var mongoosePaginate = require('mongoose-paginate')
+var uniqueValidator = require('mongoose-unique-validator')
 var async = require('async')
 var colors = require('colors')
 var faker = require('faker')
 var _ = require('lodash')
+var bcrypt = require('bcrypt')
+var crypto = require('crypto')
 var Schema = mongoose.Schema
+const SALT_WORK_FACTOR = 10
 
 
 var UserSchema = new Schema({
@@ -16,31 +20,52 @@ var UserSchema = new Schema({
     is_staff: { type: Boolean, default: false },
     is_active: { type: Boolean, default: true },
     date_joined: { type: Date, default: Date.now, required: false },
-    token: { type: String, maxlength: 40, required: false }
+    token: { type: String, maxlength: 128, required: false }
 })
-// UserSchema.pre('save', function(next) {
-//     /* Set token with is_staff/is_active */
-//     if (this.is_staff && this.is_active && !this.token) {
-//         // FIXME: create valid token
-//         this.token = faker.internet.password()
-//     } else {
-//         this.token = ''
-//     }
-//     next();
-// });
-UserSchema.plugin(mongoosePaginate);
-var User = mongoose.model('User', UserSchema)
-var opts = {
-    toObject: { virtuals: true },
-    toJSON: { virtuals: true }
+UserSchema.pre("save", function(next) {
+    var user = this
+    if (!user.isModified('password')) return next()
+    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        if (err) return next(err)
+        bcrypt.hash(user.password, salt, function(err, hash) {
+            if (err) return next(err)
+            user.password = hash
+            next()
+        })
+    })
+})
+UserSchema.pre("save", function(next) {
+    var user = this
+    if (user.is_staff && user.is_active) {
+        if (!user.token) {
+            crypto.randomBytes(48, function (ex, buf) {
+                var token = buf.toString('base64').replace(/\//g, '_').replace(/\+/g, '-');
+                user.token = token.toString().slice(1, 40);
+                next()
+            })
+        }
+    } else {
+        user.token = ""
+        next()
+    }
+})
+UserSchema.methods.comparePassword = function(candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+        if (err) return cb(err)
+        cb(null, isMatch)
+    })
 }
+UserSchema.plugin(uniqueValidator, { message: 'Expected {PATH} to be unique.' })
+UserSchema.plugin(mongoosePaginate)
+var User = mongoose.model('User', UserSchema)
 
 var SectionSchema = new Schema({
     name: { type: String, maxlength: 100, required: true, unique: true },
     slug: { type: String, maxlength: 100 },
     position: { type: Number }
 })
-SectionSchema.plugin(mongoosePaginate);
+SectionSchema.plugin(uniqueValidator, { message: 'Expected {PATH} to be unique.' })
+SectionSchema.plugin(mongoosePaginate)
 var Section = mongoose.model('Section', SectionSchema)
 
 var CategorySchema = new Schema({
@@ -49,14 +74,15 @@ var CategorySchema = new Schema({
     slug: { type: String, maxlength: 100 },
     position: { type: Number }
 })
-CategorySchema.plugin(mongoosePaginate);
+CategorySchema.plugin(mongoosePaginate)
 var Category = mongoose.model('Category', CategorySchema)
 
 var TagSchema = new Schema({
     name: { type: String, maxlength: 200, required: true, unique: true },
     slug: { type: String, maxlength: 100 }
 })
-TagSchema.plugin(mongoosePaginate);
+TagSchema.plugin(uniqueValidator, { message: 'Expected {PATH} to be unique.' })
+TagSchema.plugin(mongoosePaginate)
 var Tag = mongoose.model('Tag', TagSchema)
 
 var EntrySchema = new Schema({
@@ -76,13 +102,13 @@ var EntrySchema = new Schema({
     updatedate: { type: Date }
 })
 EntrySchema.pre('save', function(next) {
-    this.updatedate = Date.now();
+    this.updatedate = Date.now()
     if (!this.createdate) {
-        this.createdate = Date.now();
+        this.createdate = Date.now()
     }
     next()
-});
-EntrySchema.plugin(mongoosePaginate);
+})
+EntrySchema.plugin(mongoosePaginate)
 var Entry = mongoose.model('Entry', EntrySchema)
 
 var EntryLinkSchema = new Schema({
@@ -92,7 +118,7 @@ var EntryLinkSchema = new Schema({
     description: { type: String, maxlength: 200 },
     position: { type: Number }
 })
-EntryLinkSchema.plugin(mongoosePaginate);
+EntryLinkSchema.plugin(mongoosePaginate)
 var EntryLink = mongoose.model('EntryLink', EntryLinkSchema)
 
 
