@@ -204,6 +204,13 @@ var changeView = {
         get.date = formatStringToDate(get.date)
         return get
     },
+    denormalize: function (data) {
+        /* prevent unknown field ... with query */
+        delete(data.updatedate)
+        delete(data.owner)
+        delete(data.createdate)
+        return data
+    },
     validate: function (values) {
         if ((!values.category || values.category == "") && (!values.tags || values.tags.length == 0)) {
             return { _error: 'Either `Category` or `Tags` is required.' }

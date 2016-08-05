@@ -60,6 +60,12 @@ var changeView = {
         delete: function (req) { return crudl.connectors.user(crudl.path._id).delete(req) },
         save: function (req) { return crudl.connectors.user(crudl.path._id).update(req) },
     },
+    denormalize: (data) => {
+        /* prevent unknown field ... with query */
+        delete(data.date_joined)
+        delete(data.password_confirm)
+        return data
+    }
 }
 
 changeView.fieldsets = [
@@ -166,6 +172,7 @@ var addView = {
     path: 'users/new',
     title: 'New User',
     fieldsets: changeView.fieldsets,
+    denormalize: changeView.denormalize,
     actions: {
         add: function (req) { return crudl.connectors.users.create(req) },
     },
