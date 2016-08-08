@@ -1,30 +1,56 @@
 
+
+//-------------------------------------------------------------------
 export function continuousPagination(res) {
-    function url2page(url) {
-        let match = /page=(\d+)/.exec(url)
-        return match ? parseInt(match[1]) : 1
+    let key = Object.keys(res.data.data)[0]
+    let hasNext = res.data.data[key].pageInfo.hasNextPage
+    let next = hasNext && {
+        after: res.data.data[key].pageInfo.endCursor
     }
-    let nextPage = res.data.next && url2page(res.data.next)
-    // Return the pagination descriptor
-    return {
-        type: 'continuous',
-        next: nextPage ? { page: nextPage } : undefined,
-    }
+    return { type: 'continuous', next }
 }
 
-export function urlQuery(req) {
-    return Object.assign({},
-        req.filters,
-        req.page,
-        {
-            ordering: req.sorting.map(field => {
+//-------------------------------------------------------------------
+function objectToArgs(object) {
+    let args = Object.getOwnPropertyNames(object).map(name => {
+        return `${name}: ${JSON.stringify(object[name])}`
+    }).join(', ')
+    return args ? `(${args})` : ''
+}
+
+function sorting(req) {
+    if (req.sorting && req.sorting.length > 0) {
+        return {
+            orderBy: req.sorting.map(field => {
                 let prefix = field.sorted == 'ascending' ? '' : '-'
                 return prefix + field.sortKey
             }).join(',')
         }
-    )
+    }
+    return {}
 }
 
+export function listQuery(options) {
+    if (Object.prototype.toString.call(options.fields) === '[object Array]') {
+        options.fields = options.fields.join(', ')
+    }
+    return (req) => {
+        let args = objectToArgs(Object.assign({},
+            options.args,
+            req.page,
+            req.filters,
+            sorting(req)
+        ))
+        return `{
+            ${options.name} ${args} {
+                pageInfo { hasNextPage, hasPreviousPage, startCursor, endCursor }
+                edges { node { ${options.fields} }}
+            }
+        }`
+    }
+}
+
+//-------------------------------------------------------------------
 export function join(p1, p2, var1, var2, defaultValue={}) {
     return Promise.all([p1, p2])
     .then(responses => {

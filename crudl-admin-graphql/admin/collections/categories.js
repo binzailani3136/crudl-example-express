@@ -1,4 +1,4 @@
-import { join, slugify } from '../utils'
+import { slugify } from '../utils'
 
 //-------------------------------------------------------------------
 var listView = {

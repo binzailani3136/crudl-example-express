@@ -9,7 +9,6 @@ exports.User = {
         is_active: true,
         is_staff: true,
         password: "demo",
-        token: "cb1ea0d5cd25d0073e47c36be67b1aa26a210eda",
         email: "",
         date_joined: "2016-06-28T08:45:14.078"
     },
@@ -21,7 +20,6 @@ exports.User = {
         "is_active": true,
         "is_staff": true,
         "password": "editor",
-        "token": "43b464e16613beb806b1e4b2b25c63aea189e397",
         "email": "",
         "date_joined": "2016-06-28T08:45:14.078"
     },
@@ -33,7 +31,6 @@ exports.User = {
         is_active: true,
         is_staff: true,
         password: "admin",
-        token: "5d212b63c1723cfdb6833abf858c45924584aed0",
         email: "",
         date_joined: "2016-06-28T08:45:14.078"
     }

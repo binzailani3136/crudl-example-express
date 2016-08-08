@@ -220,20 +220,43 @@ let schema = new GraphQLSchema({
         name: 'Mutation',
         fields: () => ({
             addUser: {
-                type: UserType,
+                type: UserResultType,
                 args: { data: { name: 'data', type: new GraphQLNonNull(UserInputType) }},
                 resolve: (root, {data}) => {
-                    return new db.models.User(data).save()
+                    return db.models.User.create(data)
+                    .then((function(object) { return { nores, user: object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             changeUser: {
-                type: UserType,
+                type: UserResultType,
                 args: {
                     id: { name: 'id', type: new GraphQLNonNull(GraphQLID) },
                     data: { name: 'data', type: new GraphQLNonNull(UserInputType) }
                 },
                 resolve: (root, {id, data}) => {
-                    return db.models.User.findByIdAndUpdate(id, data)
+                    /* We use findById instead of findByIdAndUpdate in order for the pre save functions to work */
+                    return db.models.User.findById(id).exec()
+                    .then(function(object) {
+                        if (data.username != undefined) object.username = data.username
+                        if (data.password != undefined) object.password = data.password
+                        if (data.first_name != undefined) object.first_name = data.first_name
+                        if (data.last_name != undefined) object.last_name = data.last_name
+                        if (data.email != undefined) object.email = data.email
+                        if (data.is_staff != undefined) object.is_staff = data.is_staff
+                        if (data.is_active != undefined) object.is_active = data.is_active
+                        return object.save()
+                    })
+                    .then((function(object) {
+                        /* remove password from response. otherwise, the field is getting populated */
+                        object.password = null
+                        return { nores, user: object }
+                    }) , function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
+                    })
                 }
             },
             deleteUser: {
@@ -393,6 +416,8 @@ let schema = new GraphQLSchema({
                 resolve: (root, {id, data}) => {
                     /* prevent Cast to ObjectID failed for ... */
                     if (data.category == "") data.category = null
+                    /* set updatedate because presave is not called with findByIdAndUpdate */
+                    data.updatedate = Date.now()
                     return db.models.Entry.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
                     .then((function(object) { return { nores, entry: object } }), function(err) {
                         let errors = getErrors(err)

@@ -1,3 +1,4 @@
+
 //-------------------------------------------------------------------
 var listView = {
     path: 'users',
@@ -8,12 +9,12 @@ var listView = {
         },
     },
     normalize: (list) => list.map(item => {
-        if (!item.lastName) {
-            item.fullName = item.firstName
-        } else if (!item.firstName) {
-            item.fullName = `<b>${item.lastName}</b>`
+        if (!item.last_name) {
+            item.full_name = item.first_name
+        } else if (!item.first_name) {
+            item.full_name = `<b>${item.last_name}</b>`
         } else {
-            item.fullName = `<b>${item.lastName}</b>, ${item.firstName}`
+            item.full_name = `<b>${item.last_name}</b>, ${item.first_name}`
         }
         return item
     })
@@ -32,7 +33,7 @@ listView.fields = [
         main: true,
     },
     {
-        name: 'fullName',
+        name: 'full_name',
         label: 'Full name',
     },
     {
@@ -40,12 +41,12 @@ listView.fields = [
         label: 'Email address',
     },
     {
-        name: 'isActive',
+        name: 'is_active',
         label: 'Active',
         render: 'boolean',
     },
     {
-        name: 'isStaff',
+        name: 'is_staff',
         label: 'Staff member',
         render: 'boolean',
     },
@@ -57,6 +58,7 @@ var changeView = {
     title: 'User',
     actions: {
         get: function (req) { return crudl.connectors.user(crudl.path._id).read(req) },
+        delete: function (req) { return crudl.connectors.user(crudl.path._id).delete(req) },
         save: function (req) { return crudl.connectors.user(crudl.path._id).update(req) },
     },
     normalize: (data, error) => {
@@ -71,14 +73,9 @@ var changeView = {
         return data
     },
     denormalize: (data) => {
-        let index = data.fullName.indexOf(',')
-        if (index >= 0) {
-            data.lastName = data.fullName.slice(0, index)
-            data.firstName = data.fullName.slice(index+1)
-        } else {
-            data.lastName = ''
-            data.firstName = ''
-        }
+        /* prevent unknown field ... with query */
+        delete(data.date_joined)
+        delete(data.password_confirm)
         return data
     }
 }
@@ -195,6 +192,7 @@ var addView = {
     path: 'users/new',
     title: 'New User',
     fieldsets: changeView.fieldsets,
+    denormalize: changeView.denormalize,
     actions: {
         add: function (req) { return crudl.connectors.users.create(req) },
     },

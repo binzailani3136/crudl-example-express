@@ -1,59 +1,4 @@
-import { continuousPagination, urlQuery, transformErrors } from '../utils'
-
-function pagination(res) {
-    let key = Object.keys(res.data.data)[0]
-    let hasNext = res.data.data[key].pageInfo.hasNextPage
-    let next = hasNext && {
-        after: res.data.data[key].pageInfo.endCursor
-    }
-    return { type: 'continuous', next }
-}
-
-function objectToArgs(object) {
-    let args = Object.getOwnPropertyNames(object).map(name => {
-        return `${name}: ${JSON.stringify(object[name])}`
-    }).join(', ')
-    return args ? `(${args})` : ''
-}
-
-function sorting(req) {
-    if (req.sorting && req.sorting.length > 0) {
-        return {
-            orderBy: req.sorting.map(field => {
-                let prefix = field.sorted == 'ascending' ? '' : '-'
-                return prefix + field.sortKey
-            }).join(',')
-        }
-    }
-    return {}
-}
-
-function listQuery(options) {
-    if (Object.prototype.toString.call(options.fields) === '[object Array]') {
-        options.fields = options.fields.join(', ')
-    }
-    return (req) => {
-        let args = objectToArgs(Object.assign({},
-            options.args,
-            req.page,
-            req.filters,
-            sorting(req)
-        ))
-        // let query = `{
-        //     ${options.name} ${args} {
-        //         pageInfo { hasNextPage, hasPreviousPage, startCursor, endCursor }
-        //         edges { node { ${options.fields} }}
-        //     }
-        // }`
-        // console.log("QUERY", query)
-        return `{
-            ${options.name} ${args} {
-                pageInfo { hasNextPage, hasPreviousPage, startCursor, endCursor }
-                edges { node { ${options.fields} }}
-            }
-        }`
-    }
-}
+import { continuousPagination, listQuery } from '../utils'
 
 
 module.exports = [
@@ -67,20 +12,32 @@ module.exports = [
                 fields: '_id, username, first_name, last_name, email, is_active, is_staff, date_joined',
                 args: { first: 20 }
             }),
+            create: `mutation ($input: UserInput!) {
+                addUser(data: $input) {
+                    errors
+                    user {_id, username, first_name, last_name, email, is_active, is_staff, date_joined}
+                }
+            }`,
         },
-        pagination: pagination,
+        pagination: continuousPagination,
         transform: {
             readResponseData: data => data.data.allUsers.edges.map(e => e.node),
+            createResponseData: data => {
+                if (data.data.addUser.errors) {
+                    throw data.data.addUser.errors
+                }
+                return data.data.addUser.user
+            },
         },
     },
     {
         id: 'user',
         query: {
             read: `{user(id: "%_id"){_id, username, first_name, last_name, email, is_active, is_staff, date_joined}}`,
-            update: `mutation ($input: ChangeSectionInput!) {
-                changeSection(data: $input) {
+            update: `mutation ($input: UserInput!) {
+                changeUser(id: "%_id", data: $input) {
                     errors
-                    section {id, name, slug, position}
+                    user {_id, username, first_name, last_name, email, is_active, is_staff, date_joined}
                 }
             }`,
             delete: `mutation { deleteUser(id: "%_id") { deleted } }`,
@@ -91,7 +48,7 @@ module.exports = [
                 if (data.data.changeUser.errors) {
                     throw data.data.changeUser.errors
                 }
-                return data.data.changeUser.section
+                return data.data.changeUser.user
             },
             deleteRequestData: data => ({ id: data.id }),
             deleteResponseData: data => data.data,
@@ -114,7 +71,7 @@ module.exports = [
                 }
             }`,
         },
-        pagination: pagination,
+        pagination: continuousPagination,
         transform: {
             readResponseData: data => data.data.allSections.edges.map(e => e.node),
             createResponseData: data => {
@@ -166,7 +123,7 @@ module.exports = [
                 }
             }`,
         },
-        pagination: pagination,
+        pagination: continuousPagination,
         transform: {
             readResponseData: data => data.data.allCategories.edges.map(e => e.node),
             createResponseData: data => {
@@ -218,7 +175,7 @@ module.exports = [
                 }
             }`,
         },
-        pagination: pagination,
+        pagination: continuousPagination,
         transform: {
             readResponseData: data => data.data.allTags.edges.map(e => e.node),
             createResponseData: data => {
@@ -270,7 +227,7 @@ module.exports = [
                 }
             }`,
         },
-        pagination: pagination,
+        pagination: continuousPagination,
         transform: {
             readResponseData: data => data.data.allEntries.edges.map(e => e.node),
             /* set owner on add. alternatively, we could use denormalize with
@@ -290,7 +247,7 @@ module.exports = [
     {
         id: 'entry',
         query: {
-            read: `{entry(id: "%_id"){_id, title, status, date, sticky, section{_id, name}, category{_id, name}, tags{_id, name}, summary, body, owner{_id, username}}}`,
+            read: `{entry(id: "%_id"){_id, title, status, date, sticky, section{_id, name}, category{_id, name}, tags{_id, name}, summary, body, owner{_id, username}, createdate, updatedate}}`,
             update: `mutation ($input: EntryInput!) {
                 changeEntry(id: "%_id", data: $input) {
                     errors

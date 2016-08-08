@@ -58,6 +58,7 @@ var changeView = {
     title: 'User',
     actions: {
         get: function (req) { return crudl.connectors.user(crudl.path._id).read(req) },
+        delete: function (req) { return crudl.connectors.user(crudl.path._id).delete(req) },
         save: function (req) { return crudl.connectors.user(crudl.path._id).update(req) },
     },
     normalize: (data, error) => {

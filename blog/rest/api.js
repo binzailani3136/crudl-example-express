@@ -1,6 +1,6 @@
-var express = require('express');
-var paginate = require('express-paginate');
-var db = require('../db');
+var express = require('express')
+var paginate = require('express-paginate')
+var db = require('../db')
 
 // Credits for this function go to https://gist.github.com/mathewbyrne
 function slugify(text) {
@@ -16,8 +16,22 @@ function slugify(text) {
     }
 }
 
+function handleErrors(res, err) {
+    res.status(400)
+    if (err.name === "ValidationError") {
+        var errors = {}
+        var obj = Object.keys(err.errors).forEach((key) => {
+            errors[key] = err.errors[key].message
+        })
+        console.log(errors);
+        res.json(errors);
+    } else {
+        res.json(err)
+    }
+}
+
 var createRouter = function () {
-    var router = express.Router();
+    var router = express.Router()
 
     router.get('/', function(req, res) {
         res.json({
@@ -46,17 +60,7 @@ var createRouter = function () {
     .post(function (req, res) {
         db.models.User.create(req.body, function (err, result) {
             if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
+                handleErrors(res, err)
             } else {
                 res.json(result);
             }
@@ -71,23 +75,25 @@ var createRouter = function () {
         })
     })
     .patch(function (req, res) {
-        console.log(`Updating ${req.params.id}`);
-        db.models.User.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true }, function (err, result) {
-            if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
-            } else {
-                res.json(result);
-            }
+        console.log(`Updating XXX ${req.params.id}`);
+        /* We use findById instead of findByIdAndUpdate in order for the pre save functions to work */
+        db.models.User.findById(req.params.id).exec()
+        .then(function(object) {
+            if (req.body["username"] != undefined) object.username = req.body["username"]
+            if (req.body["password"] != undefined) object.password = req.body["password"]
+            if (req.body["first_name"] != undefined) object.first_name = req.body["first_name"]
+            if (req.body["last_name"] != undefined) object.last_name = req.body["last_name"]
+            if (req.body["email"] != undefined) object.email = req.body["email"]
+            if (req.body["is_staff"] != undefined) object.is_staff = req.body["is_staff"]
+            if (req.body["is_active"] != undefined) object.is_active = req.body["is_active"]
+            return object.save()
+        })
+        .then((function(object) {
+            /* remove password from response. otherwise, the field is getting populated */
+            object.password = null
+            res.json(object)
+        }), function(err) {
+            handleErrors(res, err)
         })
     })
     .delete(function (req, res) {
@@ -130,17 +136,7 @@ var createRouter = function () {
         }
         db.models.Section.create(req.body, function (err, result) {
             if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
+                handleErrors(res, err)
             } else {
                 res.json(result);
             }
@@ -161,19 +157,9 @@ var createRouter = function () {
         } else {
             req.body.slug = req.body.slug.toLowerCase();
         }
-        db.models.Section.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
+        db.models.Section.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
             if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
+                handleErrors(res, err)
             } else {
                 res.json(result);
             }
@@ -221,17 +207,7 @@ var createRouter = function () {
         }
         db.models.Category.create(req.body, function (err, result) {
             if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
+                handleErrors(res, err)
             } else {
                 res.json(result);
             }
@@ -252,19 +228,9 @@ var createRouter = function () {
         } else {
             req.body.slug = req.body.slug.toLowerCase();
         }
-        db.models.Category.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
+        db.models.Category.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
             if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
+                handleErrors(res, err)
             } else {
                 res.json(result);
             }
@@ -306,17 +272,7 @@ var createRouter = function () {
         req.body.slug = slugify(req.body.name)
         db.models.Tag.create(req.body, function (err, result) {
             if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
+                handleErrors(res, err)
             } else {
                 res.json(result);
             }
@@ -333,19 +289,9 @@ var createRouter = function () {
     .patch(function (req, res) {
         console.log(`Updating ${req.params.id}`);
         req.body.slug = slugify(req.body.name)
-        db.models.Tag.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
+        db.models.Tag.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
             if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
+                handleErrors(res, err)
             } else {
                 res.json(result);
             }
@@ -397,17 +343,7 @@ var createRouter = function () {
         if (req.body.category == "") req.body.category = null
         db.models.Entry.create(req.body, function (err, result) {
             if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
+                handleErrors(res, err)
             } else {
                 res.json(result);
             }
@@ -425,19 +361,11 @@ var createRouter = function () {
         console.log(`Updating ${req.params.id}`);
         /* prevent Cast to ObjectID failed for ... */
         if (req.body.category == "") req.body.category = null
-        db.models.Entry.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
+        /* set updatedate because presave is not called with findByIdAndUpdate */
+        req.body.updatedate = Date.now()
+        db.models.Entry.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
             if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
+                handleErrors(res, err)
             } else {
                 res.json(result);
             }
@@ -477,17 +405,7 @@ var createRouter = function () {
     .post(function (req, res) {
         db.models.EntryLink.create(req.body, function (err, result) {
             if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
+                handleErrors(res, err)
             } else {
                 res.json(result);
             }
@@ -503,19 +421,9 @@ var createRouter = function () {
     })
     .patch(function (req, res) {
         console.log(`Updating ${req.params.id}`);
-        db.models.EntryLink.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true  }, function (err, result) {
+        db.models.EntryLink.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query' }, function (err, result) {
             if (err) {
-                res.status(400)
-                if (err.name === "ValidationError") {
-                    var errors = {}
-                    var obj = Object.keys(err.errors).forEach((key) => {
-                        errors[key] = err.errors[key].message
-                    })
-                    console.log(errors);
-                    res.json(errors);
-                } else {
-                    res.json(err)
-                }
+                handleErrors(res, err)
             } else {
                 res.json(result);
             }
@@ -535,22 +443,38 @@ var createRouter = function () {
 
     router.route('/login')
     .post(function (req, res) {
-        db.models.User.findOne({ username: req.body.username, password: req.body.password }, function (err, result) {
+        if (!req.body.username || !req.body.password) {
+            let errors = {}
+            if (!req.body.username) errors["username"] = "username is required."
+            if (!req.body.password) errors["password"] = "password is required."
+            return res.status(400).send(errors)
+        }
+        db.models.User.findOne({ username: req.body.username }, function (err, user) {
             if (err) {
                 res.status(400)
                 res.send(err)
-            } else if (result && result.token) {
-                res.json({'token': result.token, 'user': result._id, 'username': result.username})
+            } else if (user && user.token) {
+                user.comparePassword(req.body.password, function(err, isMatch) {
+                    if (err) res.send(err)
+                    if (isMatch) {
+                        res.json({'token': user.token, 'user': user._id, 'username': user.username})
+                    } else {
+                        res.status(400).send({"_error": "Unable to log in with provided credentials."})
+                    }
+                })
+            } else if (user && !user.is_active) {
+                res.status(400).send({"_error": "User account is disabled."})
+            } else if (user && !user.is_staff) {
+                res.status(400).send({"_error": "User has no access to crudl."})
             } else {
-                res.status(400)
-                res.send({})  // FIXME: better error message
+                res.status(400).send({"_error": "Unable to log in with provided credentials."})
             }
         })
     })
 
-    return router;
+    return router
 }
 
 module.exports = {
     router: createRouter,
-};
+}
