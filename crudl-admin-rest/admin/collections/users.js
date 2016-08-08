@@ -62,10 +62,8 @@ var changeView = {
     },
     normalize: (data, error) => {
         if (error) {
-            if (error.first_name)
-                error.full_name = 'First name: ' + error.first_name
-            if (error.last_name)
-                error.full_name = 'Last name: ' + error.last_name
+            if (error.first_name) error.full_name = 'First name: ' + error.first_name
+            if (error.last_name) error.full_name = 'Last name: ' + error.last_name
             throw error
         }
         // full_name
@@ -86,104 +84,112 @@ var changeView = {
     }
 }
 
-changeView.fieldsets = [
-    {
-        fields: [
-            {
-                name: 'username',
-                label: 'Username',
-                field: 'String',
-            },
-        ],
-    },
-    {
-        fields: [
-            {
-                name: 'full_name',
-                label: 'Name',
-                field: 'String',
-                validate: (value, allValues) => {
-                    if (value && value.indexOf(',') < 0) {
-                        return 'The required format is: LastName, FirstName'
+changeView.fieldsets = () => {
+    let fieldsets = [
+        {
+            fields: [
+                {
+                    name: 'username',
+                    label: 'Username',
+                    field: 'String',
+                },
+            ],
+        },
+        {
+            fields: [
+                {
+                    name: 'full_name',
+                    label: 'Name',
+                    field: 'String',
+                    validate: (value, allValues) => {
+                        if (value && value.indexOf(',') < 0) {
+                            return 'The required format is: LastName, FirstName'
+                        }
+                    },
+                },
+                {
+                    name: 'email',
+                    label: 'Email address',
+                    field: 'String',
+                }
+            ],
+        },
+        {
+            title: 'Roles',
+            expanded: true,
+            fields: [
+                {
+                    name: 'is_active',
+                    label: 'Active',
+                    field: 'Checkbox',
+                    initialValue: true,
+                    props: {
+                        helpText: 'Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'
+                    },
+                },
+                {
+                    name: 'is_staff',
+                    label: 'Staff member',
+                    field: 'Checkbox',
+                    props: {
+                        helpText: 'Designates whether the user can log into crudl.'
+                    },
+                },
+            ],
+        },
+        {
+            title: 'More...',
+            expanded: false,
+            description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            fields: [
+                {
+                    name: 'date_joined',
+                    label: 'Date joined',
+                    readOnly: true,
+                    field: 'SplitDateTime',
+                    props: {
+                        getTime: (date) => {
+                            let T = date.indexOf('T')
+                            return date.slice(T+1, T+6)
+                        },
+                        getDate: (date) => {
+                            let T = date.indexOf('T')
+                            return date.slice(0, T)
+                        },
                     }
                 },
-            },
-            {
-                name: 'email',
-                label: 'Email address',
-                field: 'String',
-            }
-        ],
-    },
-    {
-        title: 'Roles',
-        expanded: true,
-        fields: [
-            {
-                name: 'is_active',
-                label: 'Active',
-                field: 'Checkbox',
-                initialValue: true,
-                props: {
-                    helpText: 'Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'
+            ],
+        },
+    ]
+
+    // Show 'Password' fieldset only if the logged in user is viewing his/her own entry
+    if (crudl.auth.user === crudl.path._id) {
+        fieldsets.push({
+            title: 'Password',
+            expanded: false,
+            description: "Raw passwords are not stored, so there is no way to see this user's password, but you can set a new password.",
+            fields: [
+                {
+                    name: 'password',
+                    label: 'Password',
+                    field: 'Password',
                 },
-            },
-            {
-                name: 'is_staff',
-                label: 'Staff member',
-                field: 'Checkbox',
-                props: {
-                    helpText: 'Designates whether the user can log into crudl.'
-                },
-            },
-        ],
-    },
-    {
-        title: 'More...',
-        expanded: false,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        fields: [
-            {
-                name: 'date_joined',
-                label: 'Date joined',
-                readOnly: true,
-                field: 'SplitDateTime',
-                props: {
-                    getTime: (date) => {
-                        let T = date.indexOf('T')
-                        return date.slice(T+1, T+6)
-                    },
-                    getDate: (date) => {
-                        let T = date.indexOf('T')
-                        return date.slice(0, T)
-                    },
-                }
-            },
-        ],
-    },
-    {
-        title: 'Password',
-        expanded: false,
-        description: "Raw passwords are not stored, so there is no way to see this user's password, but you can set a new password.",
-        fields: [
-            {
-                name: 'password',
-                label: 'Password',
-                field: 'Password',
-            },
-            {
-                name: 'password_confirm',
-                label: 'Password (Confirm)',
-                field: 'Password',
-                validate: (value, allValues) => {
-                    if (value != allValues.password) {
-                        return 'The passwords do not match.'
+                {
+                    name: 'password_confirm',
+                    label: 'Password (Confirm)',
+                    field: 'Password',
+                    validate: (value, allValues) => {
+                        if (value != allValues.password) {
+                            return 'The passwords do not match.'
+                        }
                     }
-                }
-            },
-        ]
+                },
+            ]
+        })
     }
-]
+
+    return fieldsets
+}
 
 //-------------------------------------------------------------------
 var addView = {
