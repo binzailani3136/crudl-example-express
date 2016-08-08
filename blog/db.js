@@ -7,8 +7,19 @@ var faker = require('faker')
 var _ = require('lodash')
 var bcrypt = require('bcrypt')
 var crypto = require('crypto')
+var validator = require('validator')
 var Schema = mongoose.Schema
 const SALT_WORK_FACTOR = 10
+
+var validateEmail = function(email) {
+    if (email) return validator.isEmail(email)
+    return true
+}
+
+var validateURL = function(url) {
+    if (url) return validator.isURL(url)
+    return true
+}
 
 
 var UserSchema = new Schema({
@@ -16,7 +27,7 @@ var UserSchema = new Schema({
     password: { type: String, maxlength: 128, required: true },
     first_name: { type: String, maxlength: 30 },
     last_name: { type: String, maxlength: 30 },
-    email: { type: String, maxlength: 100 },
+    email: { type: String, maxlength: 100, required: false, validate: [validateEmail, 'Please use a valid email address.'], },
     is_staff: { type: Boolean, default: false },
     is_active: { type: Boolean, default: true },
     date_joined: { type: Date, default: Date.now, required: false },
@@ -43,6 +54,8 @@ UserSchema.pre("save", function(next) {
                 user.token = token.toString().slice(1, 40);
                 next()
             })
+        } else {
+            next()
         }
     } else {
         user.token = ""
@@ -113,7 +126,7 @@ var Entry = mongoose.model('Entry', EntrySchema)
 
 var EntryLinkSchema = new Schema({
     entry: { type: Schema.Types.ObjectId, required: true },
-    url: { type: String, maxlength: 200, required: true },
+    url: { type: String, maxlength: 200, required: true, validate: [validateURL, 'Please use a valid URL.'],  },
     title: { type: String, maxlength: 200, required: true },
     description: { type: String, maxlength: 200 },
     position: { type: Number }

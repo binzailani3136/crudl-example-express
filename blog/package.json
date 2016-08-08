@@ -26,7 +26,8 @@
     "mongoose": "^4.4.10",
     "mongoose-paginate": "^5.0.0",
     "mongoose-unique-validator": "^1.0.2",
-    "pow-mongodb-fixtures": "^0.13.0"
+    "pow-mongodb-fixtures": "^0.13.0",
+    "validator": "^5.5.0"
   },
   "devDependencies": {
     "babel-core": "^6.7.4",
