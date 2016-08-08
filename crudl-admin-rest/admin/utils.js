@@ -1,4 +1,5 @@
 
+//-------------------------------------------------------------------
 export function continuousPagination(res) {
     let nextPage = undefined
     let resultsTotal = undefined
@@ -16,6 +17,7 @@ export function continuousPagination(res) {
     }
 }
 
+//-------------------------------------------------------------------
 export function urlQuery(req) {
     return Object.assign({},
         req.filters,
@@ -29,6 +31,7 @@ export function urlQuery(req) {
     )
 }
 
+//-------------------------------------------------------------------
 export function join(p1, p2, var1, var2) {
     return Promise.all([p1, p2])
     .then(responses => {
