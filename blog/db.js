@@ -33,6 +33,13 @@ var UserSchema = new Schema({
     date_joined: { type: Date, default: Date.now, required: false },
     token: { type: String, maxlength: 128, required: false }
 })
+UserSchema.pre('validate', function(next) {
+    if (this.is_staff && !this.is_active) {
+        next(Error('Staff member requires active user.'));
+    } else {
+        next();
+    }
+});
 UserSchema.pre("save", function(next) {
     var user = this
     if (!user.isModified('password')) return next()
