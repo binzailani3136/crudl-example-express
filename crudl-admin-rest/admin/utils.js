@@ -62,6 +62,5 @@ export function formatStringToDate(dateStr) {
 }
 
 export function transformErrors(error) {
-    error._error = error.non_field_errors
     return error
 }

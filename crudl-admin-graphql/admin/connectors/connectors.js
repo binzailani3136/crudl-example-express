@@ -259,7 +259,6 @@ module.exports = [
         transform: {
             readResponseData: data => data.data.entry,
             updateResponseData: data => {
-                console.log("updateResponseData", data)
                 if (data.data.changeEntry.errors) {
                     throw data.data.changeEntry.errors
                 }

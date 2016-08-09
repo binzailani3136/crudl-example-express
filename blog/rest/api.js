@@ -23,8 +23,11 @@ function handleErrors(res, err) {
         var obj = Object.keys(err.errors).forEach((key) => {
             errors[key] = err.errors[key].message
         })
-        console.log(errors);
-        res.json(errors);
+        res.json(errors)
+    } else if (err.name === "Error") {
+        var errors = {}
+        errors["_error"] = err.message
+        res.json(errors)
     } else {
         res.json(err)
     }

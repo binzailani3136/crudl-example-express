@@ -35,11 +35,11 @@ var UserSchema = new Schema({
 })
 UserSchema.pre('validate', function(next) {
     if (this.is_staff && !this.is_active) {
-        next(Error('Staff member requires active user.'));
+        next(new Error('Staff member requires active user.'));
     } else {
-        next();
+        next()
     }
-});
+})
 UserSchema.pre("save", function(next) {
     var user = this
     if (!user.isModified('password')) return next()
