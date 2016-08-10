@@ -33,8 +33,8 @@ var UserSchema = new Schema({
     date_joined: { type: Date, default: Date.now, required: false },
     token: { type: String, maxlength: 128, required: false }
 })
-UserSchema.pre('validate', function(next) {
-    if (this.is_staff && !this.is_active) {
+UserSchema.post('validate', function(doc, next) {
+    if (doc.is_staff && !doc.is_active) {
         next(new Error('Staff member requires active user.'));
     } else {
         next()
