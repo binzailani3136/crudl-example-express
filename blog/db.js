@@ -8,6 +8,7 @@ var _ = require('lodash')
 var bcrypt = require('bcrypt')
 var crypto = require('crypto')
 var validator = require('validator')
+var ValidationError = mongoose.Error.ValidationError
 var Schema = mongoose.Schema
 const SALT_WORK_FACTOR = 10
 
@@ -35,7 +36,9 @@ var UserSchema = new Schema({
 })
 UserSchema.post('validate', function(doc, next) {
     if (doc.is_staff && !doc.is_active) {
-        next(new Error('Staff member requires active user.'));
+        var error = new ValidationError(this)
+        error.errors.__all__ = {'message': 'Staff member requires active user.'}
+        next(error)
     } else {
         next()
     }

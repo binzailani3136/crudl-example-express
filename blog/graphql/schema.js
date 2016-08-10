@@ -47,10 +47,6 @@ function getErrors(err) {
             errors.push(key)
             errors.push(err.errors[key].message)
         })
-    } else if (err.name === "Error") {
-        errors = []
-        errors.push("_error")
-        errors.push(err.message)
     } else {
         errors = err
     }

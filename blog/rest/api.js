@@ -16,23 +16,6 @@ function slugify(text) {
     }
 }
 
-function handleErrors(res, err) {
-    res.status(400)
-    if (err.name === "ValidationError") {
-        var errors = {}
-        var obj = Object.keys(err.errors).forEach((key) => {
-            errors[key] = err.errors[key].message
-        })
-        res.json(errors)
-    } else if (err.name === "Error") {
-        var errors = {}
-        errors["_error"] = err.message
-        res.json(errors)
-    } else {
-        res.json(err)
-    }
-}
-
 var createRouter = function () {
     var router = express.Router()
 
@@ -63,7 +46,7 @@ var createRouter = function () {
     .post(function (req, res) {
         db.models.User.create(req.body, function (err, result) {
             if (err) {
-                handleErrors(res, err)
+                res.status(400).send(err)
             } else {
                 res.json(result);
             }
@@ -96,7 +79,7 @@ var createRouter = function () {
             object.password = null
             res.json(object)
         }), function(err) {
-            handleErrors(res, err)
+            res.status(400).send(err)
         })
     })
     .delete(function (req, res) {
@@ -139,7 +122,7 @@ var createRouter = function () {
         }
         db.models.Section.create(req.body, function (err, result) {
             if (err) {
-                handleErrors(res, err)
+                res.status(400).send(err)
             } else {
                 res.json(result);
             }
@@ -162,7 +145,7 @@ var createRouter = function () {
         }
         db.models.Section.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
             if (err) {
-                handleErrors(res, err)
+                res.status(400).send(err)
             } else {
                 res.json(result);
             }
@@ -210,7 +193,7 @@ var createRouter = function () {
         }
         db.models.Category.create(req.body, function (err, result) {
             if (err) {
-                handleErrors(res, err)
+                res.status(400).send(err)
             } else {
                 res.json(result);
             }
@@ -233,7 +216,7 @@ var createRouter = function () {
         }
         db.models.Category.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
             if (err) {
-                handleErrors(res, err)
+                res.status(400).send(err)
             } else {
                 res.json(result);
             }
@@ -275,7 +258,7 @@ var createRouter = function () {
         req.body.slug = slugify(req.body.name)
         db.models.Tag.create(req.body, function (err, result) {
             if (err) {
-                handleErrors(res, err)
+                res.status(400).send(err)
             } else {
                 res.json(result);
             }
@@ -294,7 +277,7 @@ var createRouter = function () {
         req.body.slug = slugify(req.body.name)
         db.models.Tag.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
             if (err) {
-                handleErrors(res, err)
+                res.status(400).send(err)
             } else {
                 res.json(result);
             }
@@ -346,7 +329,7 @@ var createRouter = function () {
         if (req.body.category == "") req.body.category = null
         db.models.Entry.create(req.body, function (err, result) {
             if (err) {
-                handleErrors(res, err)
+                res.status(400).send(err)
             } else {
                 res.json(result);
             }
@@ -368,7 +351,7 @@ var createRouter = function () {
         req.body.updatedate = Date.now()
         db.models.Entry.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
             if (err) {
-                handleErrors(res, err)
+                res.status(400).send(err)
             } else {
                 res.json(result);
             }
@@ -408,7 +391,7 @@ var createRouter = function () {
     .post(function (req, res) {
         db.models.EntryLink.create(req.body, function (err, result) {
             if (err) {
-                handleErrors(res, err)
+                res.status(400).send(err)
             } else {
                 res.json(result);
             }
@@ -426,7 +409,7 @@ var createRouter = function () {
         console.log(`Updating ${req.params.id}`);
         db.models.EntryLink.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query' }, function (err, result) {
             if (err) {
-                handleErrors(res, err)
+                res.status(400).send(err)
             } else {
                 res.json(result);
             }

@@ -8,6 +8,7 @@ module.exports = [
         url: 'users',
         urlQuery,
         pagination: continuousPagination,
+        transformErrors,
         transform: { readResponseData: data => data.docs },
     },
     {
@@ -22,6 +23,7 @@ module.exports = [
         url: 'sections',
         urlQuery,
         pagination: continuousPagination,
+        transformErrors,
         transform: { readResponseData: data => data.docs },
     },
     {
@@ -37,6 +39,7 @@ module.exports = [
         urlQuery,
         pagination: continuousPagination,
         enableDepagination: true,
+        transformErrors,
         transform: { readResponseData: data => data.docs },
     },
     {
@@ -55,6 +58,7 @@ module.exports = [
         url: 'tags',
         urlQuery,
         pagination: continuousPagination,
+        transformErrors,
         transform: { readResponseData: data => data.docs },
     },
     {
@@ -69,6 +73,7 @@ module.exports = [
         url: 'entries',
         urlQuery,
         pagination: continuousPagination,
+        transformErrors,
         transform: {
             readResponseData: data => data.docs,
             /* set owner on add. alternatively, we could use denormalize with
@@ -91,6 +96,7 @@ module.exports = [
         url: 'entrylinks',
         pagination: continuousPagination,
         enableDepagination: true,
+        transformErrors,
         transform: { readResponseData: data => data.docs },
     },
     {

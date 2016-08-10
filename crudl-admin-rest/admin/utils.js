@@ -66,6 +66,36 @@ export function formatStringToDate(dateStr) {
     return date.toJSON().slice(0, 10)
 }
 
+/* transform mongoose error to redux-form (object) error
+mongoose:
+{
+    "errors": {
+        "__all__": {
+            "message": "message"
+        },
+        "key": {
+            "message": "message"
+        }
+    }
+}
+redux-form:
+{
+    "_error": ["message"],
+    "key": ["message"]
+}
+*/
+
 export function transformErrors(error) {
-    return error
+    console.log("REST transformErrors", error)
+    var errors = {}
+    if (error.name === "ValidationError") {
+        var obj = Object.keys(error.errors).forEach((key) => {
+            if (key == "__all__") {
+                errors["_error"] = error.errors[key].message
+            } else {
+                errors[key] = error.errors[key].message
+            }
+        })
+    }
+    return errors
 }

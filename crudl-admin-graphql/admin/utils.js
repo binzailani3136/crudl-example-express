@@ -82,3 +82,24 @@ export function formatStringToDate(dateStr) {
     let date = new Date(dateStr)
     return date.toJSON().slice(0, 10)
 }
+
+/* transform mongoose error to redux-form (object) error
+mongoose:
+[
+    "__all__": "message",
+    "key": "message"
+]
+redux-form:
+[
+    "_error": "message",
+    "key": "message"
+]
+*/
+export function transformErrors(error) {
+    console.log("GRAPHQL transformErrors", error)
+    var index = error.indexOf("__all__");
+    if (index !== -1) {
+        error[index] = "_error";
+    }
+    return error
+}
