@@ -3,16 +3,21 @@
 export function continuousPagination(res) {
     let nextPage = undefined
     let resultsTotal = undefined
+    let filteredTotal = undefined
     if (res.data.page < res.data.pages) {
         nextPage = res.data.page + 1
     }
     if (res.data.counter) {
         resultsTotal = res.data.counter
     }
+    if (res.data.total) {
+        filteredTotal = res.data.total
+    }
     // Return the pagination descriptor
     return {
         type: 'continuous',
-        resultsTotal: resultsTotal,
+        resultsTotal,
+        filteredTotal,
         next: nextPage ? { page: nextPage } : undefined,
     }
 }
