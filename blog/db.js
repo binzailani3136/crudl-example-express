@@ -22,13 +22,17 @@ var validateURL = function(url) {
     return true
 }
 
+function omitUndefined(value) {
+  return value === undefined ? '' : value
+}
+
 
 var UserSchema = new Schema({
     username: { type: String, maxlength: 30, required: true, unique: true },
     password: { type: String, maxlength: 128, required: true },
-    first_name: { type: String, maxlength: 30 },
-    last_name: { type: String, maxlength: 30 },
-    email: { type: String, maxlength: 100, required: false, validate: [validateEmail, 'Please use a valid email address.'], },
+    first_name: { type: String, maxlength: 30, default: '', set: omitUndefined },
+    last_name: { type: String, maxlength: 30, default: '', set: omitUndefined },
+    email: { type: String, maxlength: 100, required: false, validate: [validateEmail, 'Please use a valid email address.'], default: '', set: omitUndefined},
     is_staff: { type: Boolean, default: false },
     is_active: { type: Boolean, default: true },
     date_joined: { type: Date, default: Date.now, required: false },
@@ -116,9 +120,9 @@ var EntrySchema = new Schema({
     section: { type: Schema.Types.ObjectId, ref: 'Section', required: true },
     category: { type: Schema.Types.ObjectId, ref: 'Category', null: true, default: null },
     tags: [ {type : Schema.Types.ObjectId, ref: 'Tag'} ],
-    image: { type: String, maxlength: 200 },
-    summary: { type: String, maxlength: 500 },
-    body: { type: String, maxlength: 5000 },
+    image: { type: String, maxlength: 200, default: '', set: omitUndefined },
+    summary: { type: String, maxlength: 500, default: '', set: omitUndefined },
+    body: { type: String, maxlength: 5000, default: '', set: omitUndefined },
     owner: { type: Schema.Types.ObjectId },
     locked: { type: Boolean, default: false },
     createdate: { type: Date },
@@ -138,7 +142,7 @@ var EntryLinkSchema = new Schema({
     entry: { type: Schema.Types.ObjectId, required: true },
     url: { type: String, maxlength: 200, required: true, validate: [validateURL, 'Please use a valid URL.'],  },
     title: { type: String, maxlength: 200, required: true },
-    description: { type: String, maxlength: 200 },
+    description: { type: String, maxlength: 200, default: '', set: omitUndefined },
     position: { type: Number }
 })
 EntryLinkSchema.plugin(mongoosePaginate)
