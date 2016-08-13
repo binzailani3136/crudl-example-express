@@ -114,7 +114,7 @@ listView.filters = {
                 {
                     in: 'section',
                     // set the value to '' if the user changed the section or the section is not set
-                    setValue: (section) => section.dirty || !section.value ? '' : undefined,
+                    setValue: (section) => (section.dirty && !section.touched) || !section.value ? '' : undefined,
                     setProps: (section) => {
                         if (!section.value) {
                             return {
