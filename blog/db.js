@@ -1,6 +1,5 @@
 var mongoose = require('mongoose')
 var mongoosePaginate = require('mongoose-paginate')
-var uniqueValidator = require('mongoose-unique-validator')
 var async = require('async')
 var colors = require('colors')
 var faker = require('faker')
@@ -82,7 +81,6 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
         cb(null, isMatch)
     })
 }
-UserSchema.plugin(uniqueValidator, { message: 'Expected {PATH} to be unique.' })
 UserSchema.plugin(mongoosePaginate)
 var User = mongoose.model('User', UserSchema)
 
@@ -91,13 +89,12 @@ var SectionSchema = new Schema({
     slug: { type: String, maxlength: 100 },
     position: { type: Number }
 })
-SectionSchema.plugin(uniqueValidator, { message: 'Expected {PATH} to be unique.' })
 SectionSchema.plugin(mongoosePaginate)
 var Section = mongoose.model('Section', SectionSchema)
 
 var CategorySchema = new Schema({
     section: { type: Schema.Types.ObjectId, ref: 'Section', required: true },
-    name: { type: String, maxlength: 100, required: true },
+    name: { type: String, maxlength: 100, required: true, unique: true  },
     slug: { type: String, maxlength: 100 },
     position: { type: Number }
 })
@@ -108,7 +105,6 @@ var TagSchema = new Schema({
     name: { type: String, maxlength: 200, required: true, unique: true },
     slug: { type: String, maxlength: 100 }
 })
-TagSchema.plugin(uniqueValidator, { message: 'Expected {PATH} to be unique.' })
 TagSchema.plugin(mongoosePaginate)
 var Tag = mongoose.model('Tag', TagSchema)
 

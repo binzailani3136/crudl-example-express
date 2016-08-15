@@ -223,10 +223,19 @@ let schema = new GraphQLSchema({
                 type: UserResultType,
                 args: { data: { name: 'data', type: new GraphQLNonNull(UserInputType) }},
                 resolve: (root, {data}) => {
-                    return db.models.User.create(data)
-                    .then((function(object) { return { nores, user: object } }), function(err) {
-                        let errors = getErrors(err)
-                        return { errors, nores }
+                    return db.models.User.findOne({username: data.username})
+                    .then(function(user) {
+                        let errors = []
+                        if (user) {
+                            if (user.username == data.username) errors.push('username', 'A user with that username already exists.')
+                            return { errors, nores }
+                        } else {
+                            return db.models.User.create(data)
+                            .then((function(object) { return { nores, user: object } }), function(err) {
+                                let errors = getErrors(err)
+                                return { errors, nores }
+                            })
+                        }
                     })
                 }
             },
@@ -237,25 +246,34 @@ let schema = new GraphQLSchema({
                     data: { name: 'data', type: new GraphQLNonNull(UserInputType) }
                 },
                 resolve: (root, {id, data}) => {
-                    /* We use findById instead of findByIdAndUpdate in order for the pre save functions to work */
-                    return db.models.User.findById(id).exec()
-                    .then(function(object) {
-                        if (data.username != undefined) object.username = data.username
-                        if (data.password != undefined) object.password = data.password
-                        if (data.first_name != undefined) object.first_name = data.first_name
-                        if (data.last_name != undefined) object.last_name = data.last_name
-                        if (data.email != undefined) object.email = data.email
-                        if (data.is_staff != undefined) object.is_staff = data.is_staff
-                        if (data.is_active != undefined) object.is_active = data.is_active
-                        return object.save()
-                    })
-                    .then((function(object) {
-                        /* remove password from response. otherwise, the field is getting populated */
-                        object.password = null
-                        return { nores, user: object }
-                    }) , function(err) {
-                        let errors = getErrors(err)
-                        return { errors, nores }
+                    return db.models.User.findOne({username: data.username, _id: { $ne: id }})
+                    .then(function(user) {
+                        let errors = []
+                        if (user) {
+                            if (user.username == data.username) errors.push('username', 'A user with that username already exists.')
+                            return { errors, nores }
+                        } else {
+                            /* We use findById instead of findByIdAndUpdate in order for the pre save functions to work */
+                            return db.models.User.findById(id).exec()
+                            .then(function(object) {
+                                if (data.username != undefined) object.username = data.username
+                                if (data.password != undefined) object.password = data.password
+                                if (data.first_name != undefined) object.first_name = data.first_name
+                                if (data.last_name != undefined) object.last_name = data.last_name
+                                if (data.email != undefined) object.email = data.email
+                                if (data.is_staff != undefined) object.is_staff = data.is_staff
+                                if (data.is_active != undefined) object.is_active = data.is_active
+                                return object.save()
+                            })
+                            .then((function(object) {
+                                /* remove password from response. otherwise, the field is getting populated */
+                                object.password = null
+                                return { nores, user: object }
+                            }) , function(err) {
+                                let errors = getErrors(err)
+                                return { errors, nores }
+                            })
+                        }
                     })
                 }
             },
@@ -279,10 +297,20 @@ let schema = new GraphQLSchema({
                     } else {
                         data.slug = data.slug.toLowerCase();
                     }
-                    return db.models.Section.create(data)
-                    .then((function(object) { return { nores, section: object } }), function(err) {
-                        let errors = getErrors(err)
-                        return { errors, nores }
+                    return db.models.Section.findOne({$or: [{name: data.name}, {slug: data.slug}]})
+                    .then(function(section) {
+                        let errors = []
+                        if (section) {
+                            if (section.name == data.name) errors.push('name', 'A section with that name already exists.')
+                            if (section.slug == data.slug) errors.push('slug', 'A section with that slug already exists.')
+                            return { errors, nores }
+                        } else {
+                            return db.models.Section.create(data)
+                            .then((function(object) { return { nores, section: object } }), function(err) {
+                                let errors = getErrors(err)
+                                return { errors, nores }
+                            })
+                        }
                     })
                 }
             },
@@ -296,12 +324,22 @@ let schema = new GraphQLSchema({
                     if (!data.slug) {
                         data.slug = slugify(data.name)
                     } else {
-                        data.slug = data.slug.toLowerCase();
+                        data.slug = data.slug.toLowerCase()
                     }
-                    return db.models.Section.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
-                    .then((function(object) { return { nores, section: object } }), function(err) {
-                        let errors = getErrors(err)
-                        return { errors, nores }
+                    return db.models.Section.findOne({$or: [{name: data.name}, {slug: data.slug}], _id: { $ne: id }})
+                    .then(function(section) {
+                        let errors = []
+                        if (section) {
+                            if (section.name == data.name) errors.push('name', 'A section with that name already exists.')
+                            if (section.slug == data.slug) errors.push('slug', 'A section with that slug already exists.')
+                            return { errors, nores }
+                        } else {
+                            return db.models.Section.findByIdAndUpdate(id, data, { runValidators: true, new: true })
+                            .then((function(object) { return { nores, section: object } }), function(err) {
+                                errors = getErrors(err)
+                                return { errors, nores }
+                            })
+                        }
                     })
                 }
             },
@@ -322,12 +360,22 @@ let schema = new GraphQLSchema({
                     if (!data.slug) {
                         data.slug = slugify(data.name)
                     } else {
-                        data.slug = data.slug.toLowerCase();
+                        data.slug = data.slug.toLowerCase()
                     }
-                    return db.models.Category.create(data)
-                    .then((function(object) { return { nores, category: object } }), function(err) {
-                        let errors = getErrors(err)
-                        return { errors, nores }
+                    return db.models.Category.findOne({$or: [{name: data.name}, {slug: data.slug}]})
+                    .then(function(category) {
+                        let errors = []
+                        if (category) {
+                            if (category.name == data.name) errors.push('name', 'A category with that name already exists.')
+                            if (category.slug == data.slug) errors.push('slug', 'A category with that slug already exists.')
+                            return { errors, nores }
+                        } else {
+                            return db.models.Category.create(data)
+                            .then((function(object) { return { nores, category: object } }), function(err) {
+                                let errors = getErrors(err)
+                                return { errors, nores }
+                            })
+                        }
                     })
                 }
             },
@@ -341,12 +389,22 @@ let schema = new GraphQLSchema({
                     if (!data.slug) {
                         data.slug = slugify(data.name)
                     } else {
-                        data.slug = data.slug.toLowerCase();
+                        data.slug = data.slug.toLowerCase()
                     }
-                    return db.models.Category.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
-                    .then((function(object) { return { nores, category: object } }), function(err) {
-                        let errors = getErrors(err)
-                        return { errors, nores }
+                    return db.models.Category.findOne({$or: [{name: data.name}, {slug: data.slug}], _id: { $ne: id }})
+                    .then(function(category) {
+                        let errors = []
+                        if (category) {
+                            if (category.name == data.name) errors.push('name', 'A category with that name already exists.')
+                            if (category.slug == data.slug) errors.push('slug', 'A category with that slug already exists.')
+                            return { errors, nores }
+                        } else {
+                            return db.models.Category.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
+                            .then((function(object) { return { nores, category: object } }), function(err) {
+                                let errors = getErrors(err)
+                                return { errors, nores }
+                            })
+                        }
                     })
                 }
             },
@@ -364,10 +422,19 @@ let schema = new GraphQLSchema({
                 type: TagResultType,
                 args: { data: { name: 'data', type: new GraphQLNonNull(TagInputType) }},
                 resolve: (root, {data}) => {
-                    return db.models.Tag.create(data)
-                    .then((function(object) { return { nores, tag: object } }), function(err) {
-                        let errors = getErrors(err)
-                        return { errors, nores }
+                    return db.models.Tag.findOne({name: data.name})
+                    .then(function(tag) {
+                        let errors = []
+                        if (tag) {
+                            if (tag.name == data.name) errors.push('name', 'A tag with that name already exists.')
+                            return { errors, nores }
+                        } else {
+                            return db.models.Tag.create(data)
+                            .then((function(object) { return { nores, tag: object } }), function(err) {
+                                let errors = getErrors(err)
+                                return { errors, nores }
+                            })
+                        }
                     })
                 }
             },
@@ -378,10 +445,19 @@ let schema = new GraphQLSchema({
                     data: { name: 'data', type: new GraphQLNonNull(TagInputType) }
                 },
                 resolve: (root, {id, data}) => {
-                    return db.models.Tag.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
-                    .then((function(object) { return { nores, tag: object } }), function(err) {
-                        let errors = getErrors(err)
-                        return { errors, nores }
+                    return db.models.Tag.findOne({name: data.name, _id: { $ne: id }})
+                    .then(function(tag) {
+                        let errors = []
+                        if (tag) {
+                            if (tag.name == data.name) errors.push('name', 'A tag with that name already exists.')
+                            return { errors, nores }
+                        } else {
+                            return db.models.Tag.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
+                            .then((function(object) { return { nores, tag: object } }), function(err) {
+                                let errors = getErrors(err)
+                                return { errors, nores }
+                            })
+                        }
                     })
                 }
             },

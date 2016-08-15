@@ -57,11 +57,19 @@ var createRouter = function () {
         })
     })
     .post(function (req, res) {
-        db.models.User.create(req.body, function (err, result) {
-            if (err) {
-                handleErrors(res, err)
+        db.models.User.findOne({username: req.body.username}, function (err, result) {
+            let errors = {}
+            if (result) {
+                if (result.username == req.body.username) errors['username'] = 'A user with that username already exists.'
+                res.status(400).json(errors)
             } else {
-                res.json(result);
+                db.models.User.create(req.body, function (err, result) {
+                    if (err) {
+                        handleErrors(res, err)
+                    } else {
+                        res.json(result);
+                    }
+                })
             }
         })
     })
@@ -75,24 +83,32 @@ var createRouter = function () {
     })
     .patch(function (req, res) {
         console.log(`Updating XXX ${req.params.id}`);
-        /* We use findById instead of findByIdAndUpdate in order for the pre save functions to work */
-        db.models.User.findById(req.params.id).exec()
-        .then(function(object) {
-            if (req.body["username"] != undefined) object.username = req.body["username"]
-            if (req.body["password"] != undefined) object.password = req.body["password"]
-            if (req.body["first_name"] != undefined) object.first_name = req.body["first_name"]
-            if (req.body["last_name"] != undefined) object.last_name = req.body["last_name"]
-            if (req.body["email"] != undefined) object.email = req.body["email"]
-            if (req.body["is_staff"] != undefined) object.is_staff = req.body["is_staff"]
-            if (req.body["is_active"] != undefined) object.is_active = req.body["is_active"]
-            return object.save()
-        })
-        .then((function(object) {
-            /* remove password from response. otherwise, the field is getting populated */
-            object.password = null
-            res.json(object)
-        }), function(err) {
-            handleErrors(res, err)
+        db.models.User.findOne({username: req.body.username, _id: { $ne: req.params.id }}, function (err, result) {
+            let errors = {}
+            if (result) {
+                if (result.username == req.body.username) errors['username'] = 'A user with that username already exists.'
+                res.status(400).json(errors)
+            } else {
+                /* We use findById instead of findByIdAndUpdate in order for the pre save functions to work */
+                db.models.User.findById(req.params.id).exec()
+                .then(function(object) {
+                    if (req.body["username"] != undefined) object.username = req.body["username"]
+                    if (req.body["password"] != undefined) object.password = req.body["password"]
+                    if (req.body["first_name"] != undefined) object.first_name = req.body["first_name"]
+                    if (req.body["last_name"] != undefined) object.last_name = req.body["last_name"]
+                    if (req.body["email"] != undefined) object.email = req.body["email"]
+                    if (req.body["is_staff"] != undefined) object.is_staff = req.body["is_staff"]
+                    if (req.body["is_active"] != undefined) object.is_active = req.body["is_active"]
+                    return object.save()
+                })
+                .then((function(object) {
+                    /* remove password from response. otherwise, the field is getting populated */
+                    object.password = null
+                    res.json(object)
+                }), function(err) {
+                    handleErrors(res, err)
+                })
+            }
         })
     })
     .delete(function (req, res) {
@@ -134,11 +150,20 @@ var createRouter = function () {
         } else {
             req.body.slug = req.body.slug.toLowerCase();
         }
-        db.models.Section.create(req.body, function (err, result) {
-            if (err) {
-                handleErrors(res, err)
+        db.models.Section.findOne({$or: [{name: req.body.name}, {slug: req.body.slug}]}, function (err, result) {
+            let errors = {}
+            if (result) {
+                if (result.name == req.body.name) errors['name'] = 'A section with that name already exists.'
+                if (result.slug == req.body.slug) errors['slug'] = 'A section with that slug already exists.'
+                res.status(400).json(errors)
             } else {
-                res.json(result);
+                db.models.Section.create(req.body, function (err, result) {
+                    if (err) {
+                        handleErrors(res, err)
+                    } else {
+                        res.json(result);
+                    }
+                })
             }
         })
     })
@@ -157,11 +182,20 @@ var createRouter = function () {
         } else {
             req.body.slug = req.body.slug.toLowerCase();
         }
-        db.models.Section.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
-            if (err) {
-                handleErrors(res, err)
+        db.models.Section.findOne({$or: [{name: req.body.name}, {slug: req.body.slug}], _id: { $ne: req.params.id }}, function (err, result) {
+            let errors = {}
+            if (result) {
+                if (result.name == req.body.name) errors['name'] = 'A section with that name already exists.'
+                if (result.slug == req.body.slug) errors['slug'] = 'A section with that slug already exists.'
+                res.status(400).json(errors)
             } else {
-                res.json(result);
+                db.models.Section.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
+                    if (err) {
+                        handleErrors(res, err)
+                    } else {
+                        res.json(result);
+                    }
+                })
             }
         })
     })
@@ -205,11 +239,20 @@ var createRouter = function () {
         } else {
             req.body.slug = req.body.slug.toLowerCase();
         }
-        db.models.Category.create(req.body, function (err, result) {
-            if (err) {
-                handleErrors(res, err)
+        db.models.Category.findOne({$or: [{name: req.body.name}, {slug: req.body.slug}]}, function (err, result) {
+            let errors = {}
+            if (result) {
+                if (result.name == req.body.name) errors['name'] = 'A category with that name already exists.'
+                if (result.slug == req.body.slug) errors['slug'] = 'A category with that slug already exists.'
+                res.status(400).json(errors)
             } else {
-                res.json(result);
+                db.models.Category.create(req.body, function (err, result) {
+                    if (err) {
+                        handleErrors(res, err)
+                    } else {
+                        res.json(result);
+                    }
+                })
             }
         })
     })
@@ -228,11 +271,20 @@ var createRouter = function () {
         } else {
             req.body.slug = req.body.slug.toLowerCase();
         }
-        db.models.Category.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
-            if (err) {
-                handleErrors(res, err)
+        db.models.Category.findOne({$or: [{name: req.body.name}, {slug: req.body.slug}], _id: { $ne: req.params.id }}, function (err, result) {
+            let errors = {}
+            if (result) {
+                if (result.name == req.body.name) errors['name'] = 'A category with that name already exists.'
+                if (result.slug == req.body.slug) errors['slug'] = 'A category with that slug already exists.'
+                res.status(400).json(errors)
             } else {
-                res.json(result);
+                db.models.Category.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
+                    if (err) {
+                        handleErrors(res, err)
+                    } else {
+                        res.json(result);
+                    }
+                })
             }
         })
     })
@@ -270,11 +322,19 @@ var createRouter = function () {
     })
     .post(function (req, res) {
         req.body.slug = slugify(req.body.name)
-        db.models.Tag.create(req.body, function (err, result) {
-            if (err) {
-                handleErrors(res, err)
+        db.models.Tag.findOne({name: req.body.name}, function (err, result) {
+            let errors = {}
+            if (result) {
+                if (result.name == req.body.name) errors['name'] = 'A tag with that name already exists.'
+                res.status(400).json(errors)
             } else {
-                res.json(result);
+                db.models.Tag.create(req.body, function (err, result) {
+                    if (err) {
+                        handleErrors(res, err)
+                    } else {
+                        res.json(result);
+                    }
+                })
             }
         })
     })
@@ -289,11 +349,19 @@ var createRouter = function () {
     .patch(function (req, res) {
         console.log(`Updating ${req.params.id}`);
         req.body.slug = slugify(req.body.name)
-        db.models.Tag.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
-            if (err) {
-                handleErrors(res, err)
+        db.models.Tag.findOne({name: req.body.name, _id: { $ne: req.params.id }}, function (err, result) {
+            let errors = {}
+            if (result) {
+                if (result.name == req.body.name) errors['name'] = 'A section with that name already exists.'
+                res.status(400).json(errors)
             } else {
-                res.json(result);
+                db.models.Tag.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
+                    if (err) {
+                        handleErrors(res, err)
+                    } else {
+                        res.json(result);
+                    }
+                })
             }
         })
     })
