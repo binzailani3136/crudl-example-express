@@ -263,6 +263,7 @@ let schema = new GraphQLSchema({
                 type: UserDeleteType,
                 args: { id: { name: 'id', type: new GraphQLNonNull(GraphQLID) }},
                 resolve: (root, {id}) => {
+                    /* FIXME: prevent user to delete herself */
                     return db.models.User.findByIdAndRemove(id)
                     .then((function(object) { return { deleted: true, user: object } }), function(err) {
                         return { deleted: false, user: object }

@@ -96,6 +96,7 @@ var createRouter = function () {
         })
     })
     .delete(function (req, res) {
+        /* FIXME: prevent user to delete herself */
         console.log(`Deleting ${req.params.id}`);
         db.models.User.findByIdAndRemove(req.params.id, function(err) {
             if (err) {
