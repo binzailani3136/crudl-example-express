@@ -20,12 +20,11 @@ module.exports = [
             }`,
         },
         pagination: continuousPagination,
-        transformErrors,
         transform: {
             readResponseData: data => data.data.allUsers.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addUser.errors) {
-                    throw data.data.addUser.errors
+                    throw transformErrors(data.data.addUser.errors)
                 }
                 return data.data.addUser.user
             },
