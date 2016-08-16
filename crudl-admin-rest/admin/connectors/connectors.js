@@ -1,5 +1,31 @@
 import { continuousPagination, urlQuery, transformErrors } from '../utils'
 
+/**
+* Transform helper. Takes care of errors and allows a quick definition of the
+* data transformation for the read operation.
+*/
+function transform(readResponseData, other) {
+
+    function transformResponse(res) {
+        if (res.status >= 400) {
+            console.log("XXX", res)
+            throw res
+            //throw (res.data ? transformErrors(res.data) : res)
+        }
+        return res
+    }
+
+    return {
+        readResponse: transformResponse,
+        createResponse: transformResponse,
+        updateResponse: transformResponse,
+        deleteResponse: transformResponse,
+        readResponseData: readResponseData || (data => data),
+        ...other,
+    }
+}
+
+
 module.exports = [
 
     // USERS
@@ -8,13 +34,12 @@ module.exports = [
         url: 'users',
         urlQuery,
         pagination: continuousPagination,
-        transformErrors,
-        transform: { readResponseData: data => data.docs },
+        transform: transform(data => data.docs),
     },
     {
         id: 'user',
         url: 'users/:id',
-        transformErrors,
+        transform: transform(),
     },
 
     // SECTIONS
@@ -23,13 +48,12 @@ module.exports = [
         url: 'sections',
         urlQuery,
         pagination: continuousPagination,
-        transformErrors,
-        transform: { readResponseData: data => data.docs },
+        transform: transform(data => data.docs),
     },
     {
         id: 'section',
         url: 'sections/:id',
-        transformErrors,
+        transform: transform(),
     },
 
     // CATEGORIES
@@ -39,13 +63,12 @@ module.exports = [
         urlQuery,
         pagination: continuousPagination,
         enableDepagination: true,
-        transformErrors,
-        transform: { readResponseData: data => data.docs },
+        transform: transform(data => data.docs),
     },
     {
         id: 'category',
         url: 'categories/:id',
-        transformErrors,
+        transform: transform(),
     },
     {
         id: 'allCategories',
@@ -58,13 +81,12 @@ module.exports = [
         url: 'tags',
         urlQuery,
         pagination: continuousPagination,
-        transformErrors,
-        transform: { readResponseData: data => data.docs },
+        transform: transform(data => data.docs),
     },
     {
         id: 'tag',
         url: 'tags/:id',
-        transformErrors,
+        transform: transform(),
     },
 
     // ENTRIES
@@ -87,7 +109,7 @@ module.exports = [
     {
         id: 'entry',
         url: 'entries/:id',
-        transformErrors,
+        transform: transform(),
     },
 
     // ENTRIELINKS
@@ -96,13 +118,12 @@ module.exports = [
         url: 'entrylinks',
         pagination: continuousPagination,
         enableDepagination: true,
-        transformErrors,
-        transform: { readResponseData: data => data.docs },
+        transform: transform(data => data.docs),
     },
     {
         id: 'link',
         url: 'entrylinks/:id',
-        transformErrors,
+        transform: transform(),
     },
 
     // SPECIAL CONNECTORS
@@ -113,13 +134,11 @@ module.exports = [
         id: 'sections_options',
         url: 'sections',
         urlQuery,
-        transform: {
-            readResponseData: data => ({
-                options: data.docs.map(function(item) {
-                    return { value: item._id, label: item.name }
-                }),
-            })
-        },
+        transform: transform(data => ({
+            options: data.docs.map(function(item) {
+                return { value: item._id, label: item.name }
+            }),
+        })),
     },
 
     // category_options
@@ -128,13 +147,11 @@ module.exports = [
         id: 'categories_options',
         url: 'categories',
         urlQuery,
-        transform: {
-            readResponseData: data => ({
-                options: data.docs.map(function(item) {
-                    return { value: item._id, label: item.name }
-                }),
-            })
-        },
+        transform: transform(data => ({
+            options: data.docs.map(function(item) {
+                return { value: item._id, label: item.name }
+            }),
+        })),
     },
 
     // tags_options
@@ -143,13 +160,11 @@ module.exports = [
         id: 'tags_options',
         url: 'tags',
         urlQuery,
-        transform: {
-            readResponseData: data => ({
-                options: data.docs.map(function(item) {
-                    return { value: item._id, label: item.name }
-                }),
-            })
-        },
+        transform: transform(data => ({
+            options: data.docs.map(function(item) {
+                return { value: item._id, label: item.name }
+            }),
+        })),
     },
 
     // AUTHENTICATION
@@ -157,12 +172,10 @@ module.exports = [
         id: 'login',
         url: '/rest-api/login/',
         mapping: { read: 'post', },
-        transform: {
-            readResponseData: data => ({
-                requestHeaders: { "Authorization": `Token ${data.token}` },
-                info: data,
-            })
-        },
+        transform: transform(data => ({
+            requestHeaders: { "Authorization": `Token ${data.token}` },
+            info: data,
+        })),
     },
 
 ]
