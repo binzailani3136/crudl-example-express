@@ -42,7 +42,6 @@ module.exports = [
             }`,
             delete: `mutation { deleteUser(id: "%_id") { deleted } }`,
         },
-        transformErrors,
         transform: {
             readResponseData: data => data.data.user,
             updateResponseData: data => {
@@ -73,7 +72,6 @@ module.exports = [
             }`,
         },
         pagination: continuousPagination,
-        transformErrors,
         transform: {
             readResponseData: data => data.data.allSections.edges.map(e => e.node),
             createResponseData: data => {
@@ -96,7 +94,6 @@ module.exports = [
             }`,
             delete: `mutation { deleteSection(id: "%_id") { deleted } }`,
         },
-        transformErrors,
         transform: {
             readResponseData: data => data.data.section,
             updateResponseData: data => {
@@ -127,7 +124,6 @@ module.exports = [
             }`,
         },
         pagination: continuousPagination,
-        transformErrors,
         transform: {
             readResponseData: data => data.data.allCategories.edges.map(e => e.node),
             createResponseData: data => {
@@ -150,7 +146,6 @@ module.exports = [
             }`,
             delete: `mutation { deleteCategory(id: "%_id") { deleted } }`,
         },
-        transformErrors,
         transform: {
             readResponseData: data => data.data.category,
             updateResponseData: data => {
@@ -181,7 +176,6 @@ module.exports = [
             }`,
         },
         pagination: continuousPagination,
-        transformErrors,
         transform: {
             readResponseData: data => data.data.allTags.edges.map(e => e.node),
             createResponseData: data => {
@@ -204,7 +198,6 @@ module.exports = [
             }`,
             delete: `mutation { deleteTag(id: "%_id") { deleted } }`,
         },
-        transformErrors,
         transform: {
             readResponseData: data => data.data.tag,
             updateResponseData: data => {
@@ -235,7 +228,6 @@ module.exports = [
             }`,
         },
         pagination: continuousPagination,
-        transformErrors,
         transform: {
             readResponseData: data => data.data.allEntries.edges.map(e => e.node),
             /* set owner on add. alternatively, we could use denormalize with
@@ -264,7 +256,6 @@ module.exports = [
             }`,
             delete: `mutation { deleteEntry(id: "%_id") { deleted } }`,
         },
-        transformErrors,
         transform: {
             readResponseData: data => data.data.entry,
             updateResponseData: data => {
@@ -293,7 +284,6 @@ module.exports = [
                 }
             }`,
         },
-        transformErrors,
         transform: {
             readResponseData: data => data.data.allEntryLinks.edges.map(e => e.node),
             createResponseData: data => {
@@ -316,7 +306,6 @@ module.exports = [
             }`,
             delete: `mutation { deleteEntryLink(id: "%_id") { deleted } }`,
         },
-        transformErrors,
         transform: {
             readResponseData: data => data.data.entrylink,
             updateResponseData: data => {
