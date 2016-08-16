@@ -277,7 +277,7 @@ changeView.fieldsets = [
                                 value: res.data._id,
                                 label: res.data.name,
                             }))
-                        }))
+                        })).then(responses => ({ data: responses.map(r => r.data) }))
                     },
                     search: (req) => {
                         if (!crudl.context.data.section) {
@@ -357,7 +357,7 @@ changeView.fieldsets = [
                                 value: res.data._id,
                                 label: res.data.name,
                             }))
-                        }))
+                        })).then(responses => ({ data: responses.map(r => r.data) }))
                     },
                 },
             }
