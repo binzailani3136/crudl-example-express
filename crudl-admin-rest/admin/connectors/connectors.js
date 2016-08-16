@@ -8,9 +8,9 @@ function transform(readResponseData, other) {
 
     function transformResponse(res) {
         if (res.status >= 400) {
-            console.log("XXX", res)
-            throw res
-            //throw (res.data ? transformErrors(res.data) : res)
+            // console.log("XXX", res)
+            // throw res
+            throw (res.data ? transformErrors(res.data) : res)
         }
         return res
     }
