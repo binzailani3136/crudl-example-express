@@ -9,19 +9,17 @@ exports.User = {
         is_active: true,
         is_staff: true,
         password: "demo",
-        email: "",
         date_joined: "2016-06-28T08:45:14.078"
     },
     user_editor: {
         _id: mongoose.Types.ObjectId(),
-        "username": "editor",
-        "first_name": "Joe",
-        "last_name": "Bloggs",
-        "is_active": true,
-        "is_staff": true,
-        "password": "editor",
-        "email": "",
-        "date_joined": "2016-06-28T08:45:14.078"
+        username: "editor",
+        first_name: "Joe",
+        last_name: "Bloggs",
+        is_active: true,
+        is_staff: true,
+        password: "editor",
+        date_joined: "2016-06-28T08:45:14.078"
     },
     user_admin: {
         _id: mongoose.Types.ObjectId(),
@@ -31,7 +29,6 @@ exports.User = {
         is_active: true,
         is_staff: true,
         password: "admin",
-        email: "",
         date_joined: "2016-06-28T08:45:14.078"
     }
 }
@@ -168,7 +165,6 @@ exports.Tag = {
         _id: mongoose.Types.ObjectId(),
         name: "ux",
         slug: "ux"
-
     },
     tag_usability: {
         _id: mongoose.Types.ObjectId(),
@@ -274,7 +270,6 @@ exports.Tag = {
         _id: mongoose.Types.ObjectId(),
         name: "rails",
         slug: "rails"
-
     },
     tag_hapi: {
         _id: mongoose.Types.ObjectId(),
@@ -290,7 +285,6 @@ exports.Tag = {
         _id: mongoose.Types.ObjectId(),
         name: "laravel",
         slug: "laravel"
-
     },
     tag_nginx: {
         _id: mongoose.Types.ObjectId(),
@@ -306,7 +300,6 @@ exports.Tag = {
         _id: mongoose.Types.ObjectId(),
         name: "server",
         slug: "server"
-
     },
     tag_tests: {
         _id: mongoose.Types.ObjectId(),
@@ -322,7 +315,6 @@ exports.Tag = {
         _id: mongoose.Types.ObjectId(),
         name: "npm",
         slug: "npm"
-
     },
     tag_documentation: {
         _id: mongoose.Types.ObjectId(),
@@ -338,7 +330,6 @@ exports.Tag = {
         _id: mongoose.Types.ObjectId(),
         name: "intermediate",
         slug: "intermediate"
-
     },
     tag_advanced: {
         _id: mongoose.Types.ObjectId(),
@@ -354,7 +345,6 @@ exports.Tag = {
         _id: mongoose.Types.ObjectId(),
         name: "browserify",
         slug: "browserify"
-
     },
     tag_webpack: {
         _id: mongoose.Types.ObjectId(),
@@ -370,7 +360,6 @@ exports.Tag = {
         _id: mongoose.Types.ObjectId(),
         name: "mysql",
         slug: "mysql"
-
     },
     tag_postgresql: {
         _id: mongoose.Types.ObjectId(),
@@ -381,7 +370,6 @@ exports.Tag = {
         _id: mongoose.Types.ObjectId(),
         name: "rethinkdb",
         slug: "rethinkdb"
-
     },
     tag_python: {
         _id: mongoose.Types.ObjectId(),
