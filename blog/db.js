@@ -94,7 +94,7 @@ var Section = mongoose.model('Section', SectionSchema)
 
 var CategorySchema = new Schema({
     section: { type: Schema.Types.ObjectId, ref: 'Section', required: true },
-    name: { type: String, maxlength: 100, required: true, unique: true  },
+    name: { type: String, maxlength: 100, required: true  },
     slug: { type: String, maxlength: 100 },
     position: { type: Number }
 })

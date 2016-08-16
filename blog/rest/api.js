@@ -239,20 +239,11 @@ var createRouter = function () {
         } else {
             req.body.slug = req.body.slug.toLowerCase();
         }
-        db.models.Category.findOne({$or: [{name: req.body.name}, {slug: req.body.slug}]}, function (err, result) {
-            let errors = {}
-            if (result) {
-                if (result.name == req.body.name) errors['name'] = 'A category with that name already exists.'
-                if (result.slug == req.body.slug) errors['slug'] = 'A category with that slug already exists.'
-                res.status(400).json(errors)
+        db.models.Category.create(req.body, function (err, result) {
+            if (err) {
+                handleErrors(res, err)
             } else {
-                db.models.Category.create(req.body, function (err, result) {
-                    if (err) {
-                        handleErrors(res, err)
-                    } else {
-                        res.json(result);
-                    }
-                })
+                res.json(result);
             }
         })
     })
@@ -271,20 +262,11 @@ var createRouter = function () {
         } else {
             req.body.slug = req.body.slug.toLowerCase();
         }
-        db.models.Category.findOne({$or: [{name: req.body.name}, {slug: req.body.slug}], _id: { $ne: req.params.id }}, function (err, result) {
-            let errors = {}
-            if (result) {
-                if (result.name == req.body.name) errors['name'] = 'A category with that name already exists.'
-                if (result.slug == req.body.slug) errors['slug'] = 'A category with that slug already exists.'
-                res.status(400).json(errors)
+        db.models.Category.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
+            if (err) {
+                handleErrors(res, err)
             } else {
-                db.models.Category.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true, context: 'query'  }, function (err, result) {
-                    if (err) {
-                        handleErrors(res, err)
-                    } else {
-                        res.json(result);
-                    }
-                })
+                res.json(result);
             }
         })
     })

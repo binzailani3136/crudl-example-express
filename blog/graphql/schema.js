@@ -362,20 +362,10 @@ let schema = new GraphQLSchema({
                     } else {
                         data.slug = data.slug.toLowerCase()
                     }
-                    return db.models.Category.findOne({$or: [{name: data.name}, {slug: data.slug}]})
-                    .then(function(category) {
-                        let errors = []
-                        if (category) {
-                            if (category.name == data.name) errors.push('name', 'A category with that name already exists.')
-                            if (category.slug == data.slug) errors.push('slug', 'A category with that slug already exists.')
-                            return { errors, nores }
-                        } else {
-                            return db.models.Category.create(data)
-                            .then((function(object) { return { nores, category: object } }), function(err) {
-                                let errors = getErrors(err)
-                                return { errors, nores }
-                            })
-                        }
+                    return db.models.Category.create(data)
+                    .then((function(object) { return { nores, category: object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
                     })
                 }
             },
@@ -391,20 +381,10 @@ let schema = new GraphQLSchema({
                     } else {
                         data.slug = data.slug.toLowerCase()
                     }
-                    return db.models.Category.findOne({$or: [{name: data.name}, {slug: data.slug}], _id: { $ne: id }})
-                    .then(function(category) {
-                        let errors = []
-                        if (category) {
-                            if (category.name == data.name) errors.push('name', 'A category with that name already exists.')
-                            if (category.slug == data.slug) errors.push('slug', 'A category with that slug already exists.')
-                            return { errors, nores }
-                        } else {
-                            return db.models.Category.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
-                            .then((function(object) { return { nores, category: object } }), function(err) {
-                                let errors = getErrors(err)
-                                return { errors, nores }
-                            })
-                        }
+                    return db.models.Category.findByIdAndUpdate(id, data, { runValidators: true, new: true  })
+                    .then((function(object) { return { nores, category: object } }), function(err) {
+                        let errors = getErrors(err)
+                        return { errors, nores }
                     })
                 }
             },
