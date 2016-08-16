@@ -13,9 +13,7 @@ export default (
                 </p>
                 <p>
                     Please note that crudl is still under development and not production ready.
-                </p>
-                <p>
-                    A temporary documentation — outlining the basics and most important features — is available on <a href="https://github.com/crudlio/crudl-example-express/blob/master/README.md" target="_blank">GitHub</a>.
+                    A temporary documentation is available on <a href="https://github.com/crudlio/crudl-example-express/blob/master/README.md" target="_blank">GitHub</a>.
                 </p>
                 <h3>Credits & Links</h3>
                 <ul>
