@@ -43,7 +43,12 @@ module.exports = [
             delete: `mutation { deleteUser(id: "%_id") { deleted } }`,
         },
         transform: {
-            readResponseData: data => data.data.user,
+            readResponseData: data => {
+                if (!data.data.user) {
+                    throw crudl.notFoundError('The requested user was not found')
+                }
+                return data.data.user
+            },
             updateResponseData: data => {
                 if (data.data.changeUser.errors) {
                     throw transformErrors(data.data.changeUser.errors)
@@ -95,7 +100,12 @@ module.exports = [
             delete: `mutation { deleteSection(id: "%_id") { deleted } }`,
         },
         transform: {
-            readResponseData: data => data.data.section,
+            readResponseData: data => {
+                if (!data.data.section) {
+                    throw crudl.notFoundError('The requested section was not found')
+                }
+                return data.data.section
+            },
             updateResponseData: data => {
                 if (data.data.changeSection.errors) {
                     throw transformErrors(data.data.changeSection.errors)
@@ -147,7 +157,12 @@ module.exports = [
             delete: `mutation { deleteCategory(id: "%_id") { deleted } }`,
         },
         transform: {
-            readResponseData: data => data.data.category,
+            readResponseData: data => {
+                if (!data.data.category) {
+                    throw crudl.notFoundError('The requested category was not found')
+                }
+                return data.data.category
+            },
             updateResponseData: data => {
                 if (data.data.changeCategory.errors) {
                     throw transformErrors(data.data.changeCategory.errors)
@@ -199,7 +214,12 @@ module.exports = [
             delete: `mutation { deleteTag(id: "%_id") { deleted } }`,
         },
         transform: {
-            readResponseData: data => data.data.tag,
+            readResponseData: data => {
+                if (!data.data.tag) {
+                    throw crudl.notFoundError('The requested tag was not found')
+                }
+                return data.data.tag
+            },
             updateResponseData: data => {
                 if (data.data.changeTag.errors) {
                     throw transformErrors(data.data.changeTag.errors)
@@ -257,7 +277,12 @@ module.exports = [
             delete: `mutation { deleteEntry(id: "%_id") { deleted } }`,
         },
         transform: {
-            readResponseData: data => data.data.entry,
+            readResponseData: data => {
+                if (!data.data.entry) {
+                    throw crudl.notFoundError('The requested entry was not found')
+                }
+                return data.data.entry
+            },
             updateResponseData: data => {
                 if (data.data.changeEntry.errors) {
                     throw transformErrors(data.data.changeEntry.errors)
@@ -307,7 +332,12 @@ module.exports = [
             delete: `mutation { deleteEntryLink(id: "%_id") { deleted } }`,
         },
         transform: {
-            readResponseData: data => data.data.entrylink,
+            readResponseData: data => {
+                if (!data.data.entrylink) {
+                    throw crudl.notFoundError('The requested entrylink was not found')
+                }
+                return data.data.entrylink
+            },
             updateResponseData: data => {
                 if (data.data.changeEntryLink.errors) {
                     throw transformErrors(data.data.changeEntryLink.errors)

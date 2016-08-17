@@ -10,6 +10,9 @@ function transform(readResponseData, other) {
         if (res.status >= 400) {
             throw (res.data ? transformErrors(res.data) : res)
         }
+        if (!res.data) {
+            throw crudl.notFoundError(`Couldn't find ${res.url}`)
+        }
         return res
     }
 
