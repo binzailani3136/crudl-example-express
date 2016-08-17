@@ -113,16 +113,7 @@ var createRouter = function () {
         })
     })
     .delete(function (req, res) {
-        /* FIXME: prevent user to delete herself */
-        console.log(`Deleting ${req.params.id}`);
-        db.models.User.findByIdAndRemove(req.params.id, function(err) {
-            if (err) {
-                res.status(400)
-                res.send(err)
-            } else {
-                res.json({message: 'User has been removed.'});
-            }
-        })
+        res.status(405)
     })
 
     // Sections

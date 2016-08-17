@@ -302,17 +302,6 @@ let schema = new GraphQLSchema({
                     })
                 }
             },
-            deleteUser: {
-                type: UserDeleteType,
-                args: { id: { name: 'id', type: new GraphQLNonNull(GraphQLID) }},
-                resolve: (root, {id}) => {
-                    /* FIXME: prevent user to delete herself */
-                    return db.models.User.findByIdAndRemove(id)
-                    .then((function(object) { return { deleted: true, user: object } }), function(err) {
-                        return { deleted: false, user: object }
-                    })
-                }
-            },
             addSection: {
                 type: SectionResultType,
                 args: { data: { name: 'data', type: new GraphQLNonNull(SectionInputType) }},
