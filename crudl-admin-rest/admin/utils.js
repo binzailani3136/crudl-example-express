@@ -22,6 +22,39 @@ export function continuousPagination(res) {
     }
 }
 
+export function numberedPagination(res) {
+
+    // total number of results
+    let resultsTotal = res.data.counter
+    // total number of filtered results
+    let filteredTotal = res.data.total
+    // current page
+    let currentPage = res.data.page
+    // total pages
+    let pagesTotal = res.data.pages
+
+    // next page as number
+    let nextPage = currentPage > pagesTotal ? currentPage + 1 : null
+    // previous page as number
+    let previousPage = currentPage > 1 ? currentPage - 1 : null
+    // the page size
+    let pageSize = res.data.docs.length
+
+    // Compute all page cursors
+    let allPages = []
+    for (let i = 0; i < pagesTotal; i++) {
+        allPages[i] = `${(i+1)}` // We return string, so that the page will be preserved in the path query
+    }
+
+    return {
+        type: 'numbered',
+        allPages,
+        currentPage,
+        resultsTotal,
+        filteredTotal,
+    }
+}
+
 //-------------------------------------------------------------------
 export function urlQuery(req) {
     return Object.assign({},
