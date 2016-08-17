@@ -23,6 +23,7 @@ import { TagListConnection, TagType, TagInputType, TagResultType, TagDeleteType 
 import { EntryListConnection, EntryType, EntryInputType, EntryResultType, EntryDeleteType } from './types/entry';
 import { EntryLinkListConnection, EntryLinkType, EntryLinkInputType, EntryLinkResultType, EntryLinkDeleteType } from './types/entrylink';
 var paginate = require('express-paginate');
+var mongoose = require('mongoose')
 import db from '../db';
 
 // Credits for this function go to https://gist.github.com/mathewbyrne
@@ -83,12 +84,20 @@ let schema = new GraphQLSchema({
                 type: SectionListConnection,
                 args: {
                     orderBy: { type: GraphQLString },
+                    idIn: { type: GraphQLString },
                     ...connectionArgs,
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
                     let sort = "slug"
+                    let idlist = []
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
+                    if (args.idIn) {
+                        args.idIn.split(",").map((item, index) => {
+                            idlist.push(mongoose.Types.ObjectId(item))
+                        })
+                        query["_id"] = { "$in": idlist }
+                    }
                     return db.models.Section.find(query).sort(sort)
                     .then(function(result) {
                         return connectionFromArray(result, args)
@@ -107,15 +116,23 @@ let schema = new GraphQLSchema({
                     section: { type: GraphQLString },
                     name: { type: GraphQLString },
                     search: { type: GraphQLString },
+                    idIn: { type: GraphQLString },
                     ...connectionArgs,
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
                     let sort = "slug"
+                    let idlist = []
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     if (args.section) { query["section"] = { "$eq": args.section }}
                     if (args.name) { query["name"] = { "$regex": args.name, "$options": "i" }}
                     if (args.search) { query["name"] = { "$regex": args.search, "$options": "i" }}
+                    if (args.idIn) {
+                        args.idIn.split(",").map((item, index) => {
+                            idlist.push(mongoose.Types.ObjectId(item))
+                        })
+                        query["_id"] = { "$in": idlist }
+                    }
                     return db.models.Category.find(query).sort(sort)
                     .then(function(result) {
                         return connectionFromArray(result, args)
@@ -132,13 +149,21 @@ let schema = new GraphQLSchema({
                 args: {
                     orderBy: { type: GraphQLString },
                     name: { type: GraphQLString },
+                    idIn: { type: GraphQLString },
                     ...connectionArgs,
                 },
                 resolve: (root, { ...args }) => {
                     const query = {}
                     let sort = "slug"
+                    let idlist = []
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     if (args.name) { query["name"] = { "$regex": args.name, "$options": "i" }}
+                    if (args.idIn) {
+                        args.idIn.split(",").map((item, index) => {
+                            idlist.push(mongoose.Types.ObjectId(item))
+                        })
+                        query["_id"] = { "$in": idlist }
+                    }
                     return db.models.Tag.find(query).sort(sort)
                     .then(function(result) {
                         return connectionFromArray(result, args)

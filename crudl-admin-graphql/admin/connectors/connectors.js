@@ -46,7 +46,7 @@ module.exports = [
             readResponseData: data => data.data.user,
             updateResponseData: data => {
                 if (data.data.changeUser.errors) {
-                    throw data.data.changeUser.errors
+                    throw transformErrors(data.data.changeUser.errors)
                 }
                 return data.data.changeUser.user
             },
@@ -76,7 +76,7 @@ module.exports = [
             readResponseData: data => data.data.allSections.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addSection.errors) {
-                    throw data.data.addSection.errors
+                    throw transformErrors(data.data.addSection.errors)
                 }
                 return data.data.addSection.section
             },
@@ -98,7 +98,7 @@ module.exports = [
             readResponseData: data => data.data.section,
             updateResponseData: data => {
                 if (data.data.changeSection.errors) {
-                    throw data.data.changeSection.errors
+                    throw transformErrors(data.data.changeSection.errors)
                 }
                 return data.data.changeSection.section
             },
@@ -128,7 +128,7 @@ module.exports = [
             readResponseData: data => data.data.allCategories.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addCategory.errors) {
-                    throw data.data.addCategory.errors
+                    throw transformErrors(data.data.addCategory.errors)
                 }
                 return data.data.addCategory.category
             },
@@ -150,7 +150,7 @@ module.exports = [
             readResponseData: data => data.data.category,
             updateResponseData: data => {
                 if (data.data.changeCategory.errors) {
-                    throw data.data.changeCategory.errors
+                    throw transformErrors(data.data.changeCategory.errors)
                 }
                 return data.data.changeCategory.category
             },
@@ -180,7 +180,7 @@ module.exports = [
             readResponseData: data => data.data.allTags.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addTag.errors) {
-                    throw data.data.addTag.errors
+                    throw transformErrors(data.data.addTag.errors)
                 }
                 return data.data.addTag.tag
             },
@@ -202,7 +202,7 @@ module.exports = [
             readResponseData: data => data.data.tag,
             updateResponseData: data => {
                 if (data.data.changeTag.errors) {
-                    throw data.data.changeTag.errors
+                    throw transformErrors(data.data.changeTag.errors)
                 }
                 return data.data.changeTag.tag
             },
@@ -238,7 +238,7 @@ module.exports = [
             },
             createResponseData: data => {
                 if (data.data.addEntry.errors) {
-                    throw data.data.addEntry.errors
+                    throw transformErrors(data.data.addEntry.errors)
                 }
                 return data.data.addEntry.entry
             },
@@ -260,7 +260,7 @@ module.exports = [
             readResponseData: data => data.data.entry,
             updateResponseData: data => {
                 if (data.data.changeEntry.errors) {
-                    throw data.data.changeEntry.errors
+                    throw transformErrors(data.data.changeEntry.errors)
                 }
                 return data.data.changeEntry.entry
             },
@@ -288,7 +288,7 @@ module.exports = [
             readResponseData: data => data.data.allEntryLinks.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addEntryLink.errors) {
-                    throw data.data.addEntryLink.errors
+                    throw transformErrors(data.data.addEntryLink.errors)
                 }
                 return data.data.addEntryLink.entrylink
             },
@@ -310,7 +310,7 @@ module.exports = [
             readResponseData: data => data.data.entrylink,
             updateResponseData: data => {
                 if (data.data.changeEntryLink.errors) {
-                    throw data.data.changeEntryLink.errors
+                    throw transformErrors(data.data.changeEntryLink.errors)
                 }
                 return data.data.changeEntryLink.entrylink
             },

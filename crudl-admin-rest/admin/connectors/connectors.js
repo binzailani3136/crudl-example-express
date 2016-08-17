@@ -8,8 +8,6 @@ function transform(readResponseData, other) {
 
     function transformResponse(res) {
         if (res.status >= 400) {
-            // console.log("XXX", res)
-            // throw res
             throw (res.data ? transformErrors(res.data) : res)
         }
         return res
@@ -95,7 +93,6 @@ module.exports = [
         url: 'entries',
         urlQuery,
         pagination: continuousPagination,
-        transformErrors,
         transform: {
             readResponseData: data => data.docs,
             /* set owner on add. alternatively, we could use denormalize with

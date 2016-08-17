@@ -1,6 +1,7 @@
 var express = require('express')
 var paginate = require('express-paginate')
 var db = require('../db')
+var mongoose = require('mongoose')
 
 // Credits for this function go to https://gist.github.com/mathewbyrne
 function slugify(text) {
@@ -130,9 +131,16 @@ var createRouter = function () {
         const query = {}
         let counter = 0
         let sort = "slug"
+        let idlist = []
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         if (req.query.search) { query["name"] = { "$regex": req.query.search, "$options": "i" }}
+        if (req.query.idIn) {
+            req.query.idIn.split(",").map((item, index) => {
+                idlist.push(mongoose.Types.ObjectId(item))
+            })
+            query["_id"] = { "$in": idlist }
+        }
         db.models.Section.count({}, function (err, count) { counter = count });
         db.models.Section.paginate(query, {
             select: "name slug position",
@@ -217,10 +225,17 @@ var createRouter = function () {
         const query = {}
         let counter = 0
         let sort = "slug"
+        let idlist = []
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.section) { query["section"] = { "$eq": req.query.section }}
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         if (req.query.search) { query["name"] = { "$regex": req.query.search, "$options": "i" }}
+        if (req.query.idIn) {
+            req.query.idIn.split(",").map((item, index) => {
+                idlist.push(mongoose.Types.ObjectId(item))
+            })
+            query["_id"] = { "$in": idlist }
+        }
         db.models.Category.count({}, function (err, count) { counter = count });
         db.models.Category.paginate(query, {
             select: "section name slug position",
@@ -288,9 +303,16 @@ var createRouter = function () {
         const query = {}
         let counter = 0
         let sort = "slug"
+        let idlist = []
         if (req.query.ordering) sort = req.query.ordering.replace(/,/g, ' ')
         if (req.query.name) { query["name"] = { "$regex": req.query.name, "$options": "i" }}
         if (req.query.search) { query["name"] = { "$regex": req.query.search, "$options": "i" }}
+        if (req.query.idIn) {
+            req.query.idIn.split(",").map((item, index) => {
+                idlist.push(mongoose.Types.ObjectId(item))
+            })
+            query["_id"] = { "$in": idlist }
+        }
         db.models.Tag.count({}, function (err, count) { counter = count });
         db.models.Tag.paginate(query, {
             select: "name slug",

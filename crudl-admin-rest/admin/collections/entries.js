@@ -258,13 +258,18 @@ changeView.fieldsets = [
                 onChange: listView.filters.fields[2].onChange,
                 actions: {
                     select: (req) => {
-                        return Promise.all(req.data.selection.map(item => {
-                            return crudl.connectors.category(item.value).read(req)
-                            .then(res => res.set('data', {
-                                value: res.data._id,
-                                label: res.data.name,
-                            }))
-                        })).then(responses => ({ data: responses.map(r => r.data) }))
+                        return crudl.connectors.categories_options.read(req
+                            .filter('idIn', req.data.selection.map(item => item.value).toString()))
+                        .then(res => res.setData(res.data.options))
+                        /* the code below is an alternative, if an id_in filter is not available
+                        and if the options are build manually */
+                        // return Promise.all(req.data.selection.map(item => {
+                        //     return crudl.connectors.category(item.value).read(req)
+                        //     .then(res => res.set('data', {
+                        //         value: res.data._id,
+                        //         label: res.data.name,
+                        //     }))
+                        // })).then(responses => ({ data: responses.map(r => r.data) }))
                     },
                     search: (req) => {
                         if (!crudl.context.data.section) {
@@ -337,13 +342,9 @@ changeView.fieldsets = [
                         .then(res => res.set('data', res.data.options))
                     },
                     select: (req) => {
-                        return Promise.all(req.data.selection.map(item => {
-                            return crudl.connectors.tag(item.value).read(req)
-                            .then(res => res.set('data', {
-                                value: res.data._id,
-                                label: res.data.name,
-                            }))
-                        })).then(responses => ({ data: responses.map(r => r.data) }))
+                        return crudl.connectors.tags_options.read(req
+                            .filter('idIn', req.data.selection.map(item => item.value).toString()))
+                        .then(res => res.setData(res.data.options))
                     },
                 },
             }
