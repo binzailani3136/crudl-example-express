@@ -59,7 +59,7 @@ export function numberedPagination(res) {
 export function urlQuery(req) {
     return Object.assign({},
         req.filters,
-        req.page,
+        req.page && { page: req.page },
         {
             ordering: req.sorting.map(field => {
                 let prefix = field.sorted == 'ascending' ? '' : '-'

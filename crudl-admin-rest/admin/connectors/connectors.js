@@ -1,4 +1,4 @@
-import { continuousPagination, urlQuery, transformErrors } from '../utils'
+import { continuousPagination, numberedPagination, urlQuery, transformErrors } from '../utils'
 
 /**
 * Transform helper. Takes care of errors and allows a quick definition of the
@@ -95,7 +95,7 @@ module.exports = [
         id: 'entries',
         url: 'entries',
         urlQuery,
-        pagination: continuousPagination,
+        pagination: numberedPagination,
         transform: {
             readResponseData: data => data.docs,
             /* set owner on add. alternatively, we could use denormalize with
