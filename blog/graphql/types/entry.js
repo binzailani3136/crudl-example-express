@@ -106,7 +106,7 @@ let EntryInputType = new GraphQLInputObjectType({
             type: GraphQLString
         },
         tags: {
-            type: GraphQLString
+            type: new GraphQLList(GraphQLID),
         },
         summary: {
             type: GraphQLString
