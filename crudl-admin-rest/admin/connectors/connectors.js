@@ -1,4 +1,4 @@
-import { continuousPagination, numberedPagination, urlQuery, transformErrors } from '../utils'
+import { numberedPagination, urlQuery, transformErrors } from '../utils'
 
 /**
 * Transform helper. Takes care of errors and allows a quick definition of the
@@ -34,7 +34,7 @@ module.exports = [
         id: 'users',
         url: 'users',
         urlQuery,
-        pagination: continuousPagination,
+        pagination: numberedPagination,
         transform: transform(data => data.docs),
     },
     {
@@ -48,7 +48,7 @@ module.exports = [
         id: 'sections',
         url: 'sections',
         urlQuery,
-        pagination: continuousPagination,
+        pagination: numberedPagination,
         transform: transform(data => data.docs),
     },
     {
@@ -62,7 +62,7 @@ module.exports = [
         id: 'categories',
         url: 'categories',
         urlQuery,
-        pagination: continuousPagination,
+        pagination: numberedPagination,
         enableDepagination: true,
         transform: transform(data => data.docs),
     },
@@ -81,7 +81,7 @@ module.exports = [
         id: 'tags',
         url: 'tags',
         urlQuery,
-        pagination: continuousPagination,
+        pagination: numberedPagination,
         transform: transform(data => data.docs),
     },
     {
@@ -116,7 +116,7 @@ module.exports = [
     {
         id: 'links',
         url: 'entrylinks',
-        pagination: continuousPagination,
+        pagination: numberedPagination,
         enableDepagination: true,
         transform: transform(data => data.docs),
     },
