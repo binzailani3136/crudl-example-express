@@ -1,4 +1,5 @@
 import { formatDate, formatStringToDate } from '../utils'
+import React from 'react'
 
 //-------------------------------------------------------------------
 var listView = {
