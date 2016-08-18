@@ -45,7 +45,7 @@ module.exports = [
         transform: {
             readResponseData: data => {
                 if (!data.data.user) {
-                    throw crudl.notFoundError('The requested user was not found')
+                    throw new crudl.NotFoundError('The requested user was not found')
                 }
                 return data.data.user
             },
@@ -102,7 +102,7 @@ module.exports = [
         transform: {
             readResponseData: data => {
                 if (!data.data.section) {
-                    throw crudl.notFoundError('The requested section was not found')
+                    throw new crudl.NotFoundError('The requested section was not found')
                 }
                 return data.data.section
             },
@@ -159,7 +159,7 @@ module.exports = [
         transform: {
             readResponseData: data => {
                 if (!data.data.category) {
-                    throw crudl.notFoundError('The requested category was not found')
+                    throw new crudl.NotFoundError('The requested category was not found')
                 }
                 return data.data.category
             },
@@ -216,7 +216,7 @@ module.exports = [
         transform: {
             readResponseData: data => {
                 if (!data.data.tag) {
-                    throw crudl.notFoundError('The requested tag was not found')
+                    throw new crudl.NotFoundError('The requested tag was not found')
                 }
                 return data.data.tag
             },
@@ -279,7 +279,7 @@ module.exports = [
         transform: {
             readResponseData: data => {
                 if (!data.data.entry) {
-                    throw crudl.notFoundError('The requested entry was not found')
+                    throw new crudl.NotFoundError('The requested entry was not found')
                 }
                 return data.data.entry
             },
@@ -334,7 +334,7 @@ module.exports = [
         transform: {
             readResponseData: data => {
                 if (!data.data.entrylink) {
-                    throw crudl.notFoundError('The requested entrylink was not found')
+                    throw new crudl.NotFoundError('The requested entrylink was not found')
                 }
                 return data.data.entrylink
             },
