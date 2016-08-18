@@ -6,7 +6,8 @@ import {
     GraphQLNonNull,
     GraphQLString,
     GraphQLBoolean,
-    GraphQLID
+    GraphQLID,
+    GraphQLInt
 } from 'graphql'
 import { connectionDefinitions, } from 'graphql-relay'
 import { UserType, UserInputType } from './user'
@@ -145,7 +146,16 @@ let EntryDeleteType = new GraphQLObjectType({
 });
 
 const { connectionType: EntryListConnection, edgeType: EntryListEdge } =
-    connectionDefinitions({ name: 'EntryList', nodeType: EntryType })
+    connectionDefinitions({
+        name: 'EntryList',
+        nodeType: EntryType,
+        connectionFields: () => ({
+            totalCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.totalCount,
+            }
+        })
+    })
 
 module.exports = {
     EntryListConnection: EntryListConnection,

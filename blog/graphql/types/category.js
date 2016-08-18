@@ -85,7 +85,16 @@ let CategoryDeleteType = new GraphQLObjectType({
 });
 
 const { connectionType: CategoryListConnection, edgeType: CategoryListEdge } =
-    connectionDefinitions({ name: 'CategoryList', nodeType: CategoryType })
+    connectionDefinitions({
+        name: 'CategoryList',
+        nodeType: CategoryType,
+        connectionFields: () => ({
+            totalCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.totalCount,
+            }
+        })
+    })
 
 module.exports = {
     CategoryListConnection: CategoryListConnection,

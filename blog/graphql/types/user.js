@@ -98,7 +98,16 @@ let UserDeleteType = new GraphQLObjectType({
 });
 
 const { connectionType: UserListConnection, edgeType: UserListEdge } =
-    connectionDefinitions({ name: 'UserList', nodeType: UserType })
+    connectionDefinitions({
+        name: 'UserList',
+        nodeType: UserType,
+        connectionFields: () => ({
+            totalCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.totalCount,
+            }
+        })
+    })
 
 module.exports = {
     UserListConnection: UserListConnection,

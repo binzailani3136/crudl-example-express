@@ -71,7 +71,9 @@ let schema = new GraphQLSchema({
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     return db.models.User.find(query).sort(sort)
                     .then(function(result) {
-                        return connectionFromArray(result, args)
+                        let res = connectionFromArray(result, args)
+                        res.totalCount = result.length
+                        return res
                     })
                 }
             },
@@ -100,7 +102,9 @@ let schema = new GraphQLSchema({
                     }
                     return db.models.Section.find(query).sort(sort)
                     .then(function(result) {
-                        return connectionFromArray(result, args)
+                        let res = connectionFromArray(result, args)
+                        res.totalCount = result.length
+                        return res
                     })
                 }
             },
@@ -135,7 +139,9 @@ let schema = new GraphQLSchema({
                     }
                     return db.models.Category.find(query).sort(sort)
                     .then(function(result) {
-                        return connectionFromArray(result, args)
+                        let res = connectionFromArray(result, args)
+                        res.totalCount = result.length
+                        return res
                     })
                 }
             },
@@ -166,7 +172,9 @@ let schema = new GraphQLSchema({
                     }
                     return db.models.Tag.find(query).sort(sort)
                     .then(function(result) {
-                        return connectionFromArray(result, args)
+                        let res = connectionFromArray(result, args)
+                        res.totalCount = result.length
+                        return res
                     })
                 }
             },
@@ -207,7 +215,9 @@ let schema = new GraphQLSchema({
                     if (args.search_summary) { query["summary"] = { "$regex": args.search_summary, "$options": "i" }}
                     return db.models.Entry.find(query).sort(sort)
                     .then(function(result) {
-                        return connectionFromArray(result, args)
+                        let res = connectionFromArray(result, args)
+                        res.totalCount = result.length
+                        return res
                     })
                 }
             },

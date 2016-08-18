@@ -74,7 +74,16 @@ let SectionDeleteType = new GraphQLObjectType({
 });
 
 const { connectionType: SectionListConnection, edgeType: SectionListEdge } =
-    connectionDefinitions({ name: 'SectionList', nodeType: SectionType })
+    connectionDefinitions({
+        name: 'SectionList',
+        nodeType: SectionType,
+        connectionFields: () => ({
+            totalCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.totalCount,
+            }
+        })
+    })
 
 module.exports = {
     SectionListConnection: SectionListConnection,

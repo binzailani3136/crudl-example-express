@@ -69,7 +69,16 @@ let TagDeleteType = new GraphQLObjectType({
 });
 
 const { connectionType: TagListConnection, edgeType: TagListEdge } =
-    connectionDefinitions({ name: 'TagList', nodeType: TagType })
+    connectionDefinitions({
+        name: 'TagList',
+        nodeType: TagType,
+        connectionFields: () => ({
+            totalCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.totalCount,
+            }
+        })
+    })
 
 
 module.exports = {
