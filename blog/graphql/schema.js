@@ -69,10 +69,12 @@ let schema = new GraphQLSchema({
                     const query = {}
                     let sort = "username"
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
+                    let counter = db.models.User.count({}).exec(function (err, count) { return count })
                     return db.models.User.find(query).sort(sort)
                     .then(function(result) {
                         let res = connectionFromArray(result, args)
-                        res.totalCount = result.length
+                        res.filteredCount = result.length
+                        res.totalCount = counter
                         return res
                     })
                 }
@@ -100,10 +102,12 @@ let schema = new GraphQLSchema({
                         })
                         query["_id"] = { "$in": idlist }
                     }
+                    let counter = db.models.Section.count({}).exec(function (err, count) { return count })
                     return db.models.Section.find(query).sort(sort)
                     .then(function(result) {
                         let res = connectionFromArray(result, args)
-                        res.totalCount = result.length
+                        res.filteredCount = result.length
+                        res.totalCount = counter
                         return res
                     })
                 }
@@ -137,10 +141,12 @@ let schema = new GraphQLSchema({
                         })
                         query["_id"] = { "$in": idlist }
                     }
+                    let counter = db.models.Category.count({}).exec(function (err, count) { return count })
                     return db.models.Category.find(query).sort(sort)
                     .then(function(result) {
                         let res = connectionFromArray(result, args)
-                        res.totalCount = result.length
+                        res.filteredCount = result.length
+                        res.totalCount = counter
                         return res
                     })
                 }
@@ -170,10 +176,12 @@ let schema = new GraphQLSchema({
                         })
                         query["_id"] = { "$in": idlist }
                     }
+                    let counter = db.models.Tag.count({}).exec(function (err, count) { return count })
                     return db.models.Tag.find(query).sort(sort)
                     .then(function(result) {
                         let res = connectionFromArray(result, args)
-                        res.totalCount = result.length
+                        res.filteredCount = result.length
+                        res.totalCount = counter
                         return res
                     })
                 }
@@ -213,10 +221,12 @@ let schema = new GraphQLSchema({
                     if (args.owner) { query["owner"] = { "$eq": args.owner }}
                     if (args.search) { query["title"] = { "$regex": args.search, "$options": "i" }}
                     if (args.search_summary) { query["summary"] = { "$regex": args.search_summary, "$options": "i" }}
+                    let counter = db.models.Entry.count({}).exec(function (err, count) { return count })
                     return db.models.Entry.find(query).sort(sort)
                     .then(function(result) {
                         let res = connectionFromArray(result, args)
-                        res.totalCount = result.length
+                        res.filteredCount = result.length
+                        res.totalCount = counter
                         return res
                     })
                 }

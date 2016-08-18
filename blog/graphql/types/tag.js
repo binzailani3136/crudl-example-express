@@ -73,6 +73,10 @@ const { connectionType: TagListConnection, edgeType: TagListEdge } =
         name: 'TagList',
         nodeType: TagType,
         connectionFields: () => ({
+            filteredCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.filteredCount,
+            },
             totalCount: {
                 type: GraphQLInt,
                 resolve: (connection) => connection.totalCount,

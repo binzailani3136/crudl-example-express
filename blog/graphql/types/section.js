@@ -78,6 +78,10 @@ const { connectionType: SectionListConnection, edgeType: SectionListEdge } =
         name: 'SectionList',
         nodeType: SectionType,
         connectionFields: () => ({
+            filteredCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.filteredCount,
+            },
             totalCount: {
                 type: GraphQLInt,
                 resolve: (connection) => connection.totalCount,

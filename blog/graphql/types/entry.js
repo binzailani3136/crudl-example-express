@@ -150,6 +150,10 @@ const { connectionType: EntryListConnection, edgeType: EntryListEdge } =
         name: 'EntryList',
         nodeType: EntryType,
         connectionFields: () => ({
+            filteredCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.filteredCount,
+            },
             totalCount: {
                 type: GraphQLInt,
                 resolve: (connection) => connection.totalCount,

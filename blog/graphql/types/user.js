@@ -102,6 +102,10 @@ const { connectionType: UserListConnection, edgeType: UserListEdge } =
         name: 'UserList',
         nodeType: UserType,
         connectionFields: () => ({
+            filteredCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.filteredCount,
+            },
             totalCount: {
                 type: GraphQLInt,
                 resolve: (connection) => connection.totalCount,

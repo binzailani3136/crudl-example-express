@@ -89,6 +89,10 @@ const { connectionType: CategoryListConnection, edgeType: CategoryListEdge } =
         name: 'CategoryList',
         nodeType: CategoryType,
         connectionFields: () => ({
+            filteredCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.filteredCount,
+            },
             totalCount: {
                 type: GraphQLInt,
                 resolve: (connection) => connection.totalCount,
