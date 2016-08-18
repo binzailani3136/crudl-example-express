@@ -11,7 +11,7 @@ function transform(readResponseData, other) {
             throw (res.data ? transformErrors(res.data) : res)
         }
         if (!res.data) {
-            throw crudl.notFoundError(`Couldn't find ${res.url}`)
+            throw new crudl.NotFoundError(`Couldn't find ${res.url}`)
         }
         return res
     }
