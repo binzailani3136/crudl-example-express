@@ -248,9 +248,13 @@ let schema = new GraphQLSchema({
                     let sort = "entry title"
                     if (args.orderBy) { sort = args.orderBy.replace(/,/g, ' ') }
                     if (args.entry) { query["entry"] = { "$eq": args.entry }}
+                    let counter = db.models.EntryLink.count({}).exec(function (err, count) { return count })
                     return db.models.EntryLink.find(query).sort(sort)
                     .then(function(result) {
-                        return connectionFromArray(result, args)
+                        let res = connectionFromArray(result, args)
+                        res.filteredCount = result.length
+                        res.totalCount = counter
+                        return res
                     })
                 }
             },

@@ -92,7 +92,20 @@ let EntryLinkDeleteType = new GraphQLObjectType({
 
 
 const { connectionType: EntryLinkListConnection, edgeType: EntryLinkListEdge } =
-    connectionDefinitions({ name: 'EntryLinkList', nodeType: EntryLinkType })
+    connectionDefinitions({
+        name: 'EntryLinkList',
+        nodeType: EntryLinkType,
+        connectionFields: () => ({
+            filteredCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.filteredCount,
+            },
+            totalCount: {
+                type: GraphQLInt,
+                resolve: (connection) => connection.totalCount,
+            }
+        })
+    })
 
 module.exports = {
     EntryLinkListConnection: EntryLinkListConnection,
