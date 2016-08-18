@@ -7,7 +7,12 @@ export function continuousPagination(res) {
     let next = hasNext && {
         after: res.data.data[key].pageInfo.endCursor
     }
-    return { type: 'continuous', next }
+    return {
+        type: 'continuous',
+        next,
+        resultsTotal: res.data.data[key].totalCount,
+        filteredTotal: res.data.data[key].filteredCount
+    }
 }
 
 //-------------------------------------------------------------------
@@ -43,6 +48,7 @@ export function listQuery(options) {
         ))
         return `{
             ${options.name} ${args} {
+                totalCount, filteredCount,
                 pageInfo { hasNextPage, hasPreviousPage, startCursor, endCursor }
                 edges { node { ${options.fields} }}
             }
