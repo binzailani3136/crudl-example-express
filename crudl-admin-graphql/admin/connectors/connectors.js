@@ -411,6 +411,12 @@ module.exports = [
         url: '/rest-api/login/',
         mapping: { read: 'post', },
         transform: {
+            readResponse: res => {
+                if (res.status >= 400) {
+                    throw res.data
+                }
+                return res
+            },
             readResponseData: data => ({
                 requestHeaders: { "Authorization": `Token ${data.token}` },
                 info: data,
