@@ -5,7 +5,7 @@ var categories = require('./collections/categories')
 var tags = require('./collections/tags')
 var entries = require('./collections/entries')
 var connectors = require('./connectors/connectors')
-var auth = require('./auth')
+var { login, logout } = require('./auth')
 
 import dashboard from './dashboard'
 
@@ -14,7 +14,8 @@ var descriptor = {
     dashboard,
     connectors,
     collections: [],
-    auth,
+    login,
+    logout,
 }
 
 descriptor.collections.push(users)
