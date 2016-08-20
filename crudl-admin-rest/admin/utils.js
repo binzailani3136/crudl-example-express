@@ -114,7 +114,9 @@ redux-form:
 export function transformErrors(error) {
     console.log("REST transformErrors", error)
     if (error !== null && typeof error === 'object') {
-        error._error = error.__all__
+        if (error.__all__) {
+            error._error = error.__all__
+        }
     }
     return error
 }
