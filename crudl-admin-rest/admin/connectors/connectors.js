@@ -7,8 +7,8 @@ import { numberedPagination, urlQuery, transformErrors } from '../utils'
 function transform(readResponseData, other) {
 
     function transformResponse(res) {
-        if (res.status >= 400) {
-            throw (res.data ? transformErrors(res.data) : res)
+        if (res.status === 400) {
+            throw transformErrors(res.data)
         }
         if (!res.data) {
             throw new crudl.NotFoundError(`Couldn't find ${res.url}`)
@@ -71,11 +71,6 @@ module.exports = [
         url: 'categories/:id',
         transform: transform(),
     },
-    {
-        id: 'allCategories',
-        use: 'categories',
-    },
-
     // TAGS
     {
         id: 'tags',
@@ -96,15 +91,14 @@ module.exports = [
         url: 'entries',
         urlQuery,
         pagination: numberedPagination,
-        transform: {
-            readResponseData: data => data.docs,
+        transform: transform(data => data.docs, {
             /* set owner on add. alternatively, we could use denormalize with
             the descriptor, see collections/entries.js */
             createRequestData: data => {
                 if (crudl.auth.user) data.owner = crudl.auth.user
                 return data
             }
-        },
+        })
     },
     {
         id: 'entry',
