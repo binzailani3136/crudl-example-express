@@ -1,10 +1,11 @@
 # crudl express example
 DISCLAIMER: This is a preliminary, sketchy and incomplete documentation. This example mainly shows how to use CRUDL. It is not intended for development on CRUDL itself.
 
-## TOC
+## Contents
 * [About](#about)
 * [Requirements](#requirements)
 * [Installation](#installation)
+* [CRUDL documentation](#crudl-docs)
 * [Notes](#notes)
     * [Connectors and Descriptors](#connectors-and-descriptors)
     * [Authentication](#authentication)
@@ -64,6 +65,9 @@ This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/
     ```
 
 Open your browser and go to either ``http://localhost:3000/crudl-rest/`` or ``http://localhost:3000/crudl-graphql/`` and login with the demo user (demo/demo).
+
+## CRUDL documentation
+There is currently no official CRUDL documentation available, but we tried to summarize the most important building blocks. You can it [here](https://github.com/crudlio/crudl-example-express/blob/master/static/crudl-core/README.md).
 
 ## Notes
 While this example is simple, there's still a couple of more advanced features in order to represent a real-world scenario.
@@ -379,7 +383,7 @@ You can only change the password of the currently logged-in _User_ (see collecti
 * Sorting with MongoDB is case sensitive. With aggregation, it is possible to implement case-insensitive sorting.
 
 ## Credits & Links
-CRUDL and crudl-django-example is written and maintained by vonautomatisch (Patrick Kranzlmüller, Axel Swoboda).
+CRUDL and crudl-example-express is written and maintained by vonautomatisch (Patrick Kranzlmüller, Axel Swoboda).
 
 * http://crudl.io
 * https://twitter.com/crudlio
