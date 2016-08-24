@@ -60,16 +60,16 @@ listView.fields = [
 listView.filters = {
     fields: [
         {
+            name: 'name',
+            label: 'Search',
+            field: 'Search',
+        },
+        {
             name: 'section',
             label: 'Section',
             field: 'Select',
             props: () => crudl.connectors.sections_options.read(crudl.req()).then(res => res.data),
             initialValue: '',
-        },
-        {
-            name: 'name',
-            label: 'Name Contains',
-            field: 'String',
         },
     ]
 }
