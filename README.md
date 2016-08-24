@@ -1,19 +1,12 @@
 # crudl express example
-This is a [crudl](http://crudl.io/) example with [Express](http://expressjs.com/) and a REST-API as well as GraphQL.
-
-* crudl is still under development and the syntax might change (esp. with connectors and descriptors).
-* The relevant part for your admin interface is within the folder crudl-admin-rest/admin/ (resp. crudl-admin-graphql/admin/). All other files and folders are generally given when using crudl.
-* The descriptors are intentionally verbose in order to illustrate the possibilites with crudl.
-
-## Requirements
-* Node.js
-* MongoDB
+DISCLAIMER: This is a preliminary, sketchy and incomplete documentation. This example mainly shows how to use CRUDL. It is not intended for development on CRUDL itself.
 
 ## TOC
+* [About](#about)
+* [Requirements](#requirements)
 * [Installation](#installation)
     * [Optional: Install crudl-admin-rest (REST)](#install-crudl-admin-rest-rest)
     * [Optional: Install crudl-admin-graphql (GraphQL)](#install-crudl-admin-graphql-graphql)
-* [URLs](#urls)
 * [Notes](#notes)
     * [Connectors and Descriptors](#connectors-and-descriptors)
     * [Authentication](#authentication)
@@ -29,8 +22,18 @@ This is a [crudl](http://crudl.io/) example with [Express](http://expressjs.com/
     * [Filtering with listView](#filtering-with-listview)
     * [Change password](#change-password)
 * [Limitations](#limitations)
-* [Development](#development)
 * [Credits & Links](#credits--links)
+
+## About
+This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/) and a REST-API as well as GraphQL.
+
+* CRUDL is still under development and the syntax might change (esp. with connectors and descriptors).
+* The relevant part for your admin interface is within the folder crudl-admin-rest/admin/ (resp. crudl-admin-graphql/admin/). All other files and folders are generally given when using CRUDL.
+* The collections are intentionally verbose in order to illustrate the possibilites with CRUDL.
+
+## Requirements
+* Node.js
+* MongoDB
 
 ## Installation
 1. Start mongodb:
@@ -75,27 +78,18 @@ $ npm install
 $ npm run watchify
 ```
 
-## URLs
-```
-/api/               # REST API (DRF)
-/graphiql/          # GraphQL Query Interface
-/crudl-rest/        # Crudl Admin (REST)
-/crudl-graphql/     # Crudl Admin (GraphQL)
-```
-
 ## Notes
 While this example is simple, there's still a couple of more advanced features in order to represent a real-world scenario.
 
 ### Connectors and Descriptors
-In order for CRUDL to work, you need to define _connectors_ (API endpoints) and a _descriptor_ (visual representation). The _descriptor_ consists of _collections_ and the _authentification_.
+In order for CRUDL to work, you need to define _connectors_ (API endpoints) and a _descriptor_ (visual representation). The _descriptor_ mainly consists of _collections_ and the _authentification_.
 
 Here is the basic structure of a REST connector:
 ```javascript
 {
     id: 'entries',
     url: 'entries/',
-    urlQuery,
-    pagination,
+    pagination: numberedPagination,
     transform: {
         readResponseData: data => data.docs,
     },
@@ -109,7 +103,7 @@ And here is a similar connector with GraphQL:
     query: {
         read: `{allEntries{id, title, status, date}}`,
     },
-    pagination,
+    pagination: continuousPagination,
     transform: {
         readResponseData: data => data.data.allEntries.edges.map(e => e.node)
     },
@@ -154,17 +148,26 @@ With _Entries_, the _Categories_ depend on the selected _Section_. If you change
     onChange: [
         {
             in: 'section',
-            setProps: section => ({
-                disabled: !section,
-                helpText: !section ? "In order to select a category, you have to select a section first" : "Select a category",
-            }),
+            setProps: (section) => {
+                if (!section.value) {
+                    return {
+                        readOnly: true,
+                        helpText: 'In order to select a category, you have to select a section first',
+                    }
+                }
+                // Get the catogories options filtered by section
+                return crudl.connectors.categories_options.read(crudl.req()
+                .filter('section', section.value))
+                .then(res => {
+                    return {
+                        readOnly: false,
+                        helpText: 'Select a category',
+                        ...res.data,
+                    }
+                })
+            }
         }
     ],
-    actions: {
-        asyncProps: (req) => {
-            /* return the filtered categories based on crudl.context.data.section */
-        }
-    },
 }
 ```
 
@@ -178,33 +181,23 @@ There are a couple of foreign keys being used (e.g. _Section_ or _Category_ with
     name: 'section',
     label: 'Section',
     field: 'Select',
-    actions: {
-        asyncProps: (req) => crudl.connectors.sections_options.read(req),
-    },
+    props: () => crudl.connectors.sections_options.read(crudl.req()).then(res => res.data),
 },
 {
     name: 'category',
     label: 'Category',
     field: 'Autocomplete',
     actions: {
-        /* return the value and label when selecting a category.
-        please note that this is easier solved with a custom connector */
         select: (req) => {
-            return Promise.all(req.data.selection.map(item => {
-                return crudl.connectors.category(item.value).read(req)
-                .then(res => res.set('data', {
-                    value: res.data.id,
-                    label: res.data.name,
-                }))
-            }))
+            return crudl.connectors.categories_options.read(req
+            .filter('idIn', req.data.selection.map(item => item.value).toString()))
+            .then(res => res.setData(res.data.options))
         },
-        /* return the value and a custom label (as a react component) when searching for a category */
         search: (req) => {
-            return crudl.connectors.categories.read(req.filter('name', req.data.query)
-            .then(res => res.set('data', res.data.map(d => ({
-                value: d.id,
-                label: <span><b>{d.name}</b> ({d.slug})</span>,
-            }))))
+            return crudl.connectors.categories.read(req
+            .filter('name', req.data.query)
+            .filter('section', crudl.context.data.section))
+            .then(res => res.setData(res.data.options))
         },
     },
 },
@@ -226,8 +219,8 @@ changeView.tabs = [
         actions: {
             list: (req) => crudl.connectors.links.read(req.filter('entry', crudl.path._id)),
             add: (req) => crudl.connectors.links.create(req),
-            save: (req) => crudl.connectors.link(req.data.id).update(req),
-            delete: (req) => crudl.connectors.link(req.data.id).delete(req)
+            save: (req) => crudl.connectors.link(req.data._id).update(req),
+            delete: (req) => crudl.connectors.link(req.data._id).delete(req)
         },
         itemTitle: '{url}',
         fields: [
@@ -245,13 +238,13 @@ changeView.tabs = [
                 field: 'String',
             },
             {
-                name: 'id',
+                name: '_id',
                 field: 'hidden',
             },
             {
                 name: 'entry',
                 field: 'hidden',
-                initialValue: () => crudl.context.data.id,
+                initialValue: () => crudl.context.data._id,
             },
         ],
     },
@@ -259,28 +252,29 @@ changeView.tabs = [
 ```
 
 ### Normalize/denormalize
-With _Users_, we added a custom field _full_name_ which is not part of the database or the API. We achieve this by using the methods _normalize_ and _denormalize_ in order to manipulate the data stream.
+With _Entries_, we set the owner to the currently logged-in user with denormalize:
 
 ```javascript
-var changeView = {
-    /* manipulate data sent by the API */
-    normalize: (data, error) => {
-        data.full_name = data.last_name + ', ' + data.first_name
-        return data
-    },
-    /* manipulate data before sending to the API  */
+var addView = {
     denormalize: (data) => {
-        let index = data.full_name.indexOf(',')
-        if (index >= 0) {
-            data.last_name = data.full_name.slice(0, index)
-            data.first_name = data.full_name.slice(index+1)
-        }
+        /* set owner on add. alternatively, we could manipulate the data
+        with the connector by using createRequestData */
+        if (crudl.auth.user) data.owner = crudl.auth.user
         return data
     }
 }
 ```
 
-Please note that it is probably better to add that field to the API. We just added this case in order to demonstrate the maniuplation of data.
+With _Users_, we add a custom column full_name with the listView:
+
+```javascript
+var listView = {
+    normalize: (list) => list.map(item => {
+        item.full_name = <span><b>{item.last_name}</b>, {item.first_name}</span>
+        return item
+    })
+}
+```
 
 ### Custom components
 We have added a custom component _SplitDateTimeField.jsx_ (see admin/fields) in order to show how you're able to implement fields which are not part of the core package.
@@ -333,7 +327,7 @@ Validation should usually be handled with the API. That said, it sometimes makes
     label: 'Summary',
     field: 'Textarea',
     validate: (value, allValues) => {
-        if (!value && allValues.status == '1') {
+        if (!value && allValues.status == 'Online') {
             return 'The summary is required with status "Online".'
         }
     }
@@ -397,11 +391,8 @@ You can only change the password of the currently logged-in _User_ (see collecti
 ## Limitations
 * Sorting with MongoDB is case sensitive. With aggregation, it is possible to implement case-insensitive sorting.
 
-## Development
-This example mainly shows how to use crudl. It is not intended for development on crudl itself.
-
 ## Credits & Links
-crudl and crudl-django-example is written and maintained by vonautomatisch (Patrick Kranzlmüller, Axel Swoboda).
+CRUDL and crudl-django-example is written and maintained by vonautomatisch (Patrick Kranzlmüller, Axel Swoboda).
 
 * http://crudl.io
 * https://twitter.com/crudlio
