@@ -63,7 +63,7 @@ This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/
     crudl-admin-rest $ npm run watchify
     ```
 
-Open your browser and go to ``http://localhost:3000/crudl-rest/`` or ``http://localhost:3000/crudl-graphql/`` and login with the demo user (demo/demo).
+Open your browser and go to either ``http://localhost:3000/crudl-rest/`` or ``http://localhost:3000/crudl-graphql/`` and login with the demo user (demo/demo).
 
 ## Notes
 While this example is simple, there's still a couple of more advanced features in order to represent a real-world scenario.
