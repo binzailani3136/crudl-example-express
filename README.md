@@ -38,22 +38,31 @@ This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/
 ## Installation
 1. Start mongodb:
 
-    ```
+    ```shell
     $ mongod --dbpath "/path/to/my/database/"
     ```
 
-2. cd into blog, install the npm dependencies and initialize the database:
+2. Clone this repository and cd into the new folder:
 
+    ```shell
+    $ git clone https://github.com/crudlio/crudl-example-express.git
+    $ cd crudl-example-express
     ```
+
+2. Initialize the database and start the server:
+
+    ```shell
     $ cd blog
-    $ npm install
-    $ npm run initdb
+    blog $ npm install
+    blog $ npm run initdb
+    blog $ npm run start
     ```
 
-3. Start the server
+4. Build the crudl admin file. Go to either /crudl-admin-rest/ or /crudl-admin-graphql/ and type:
 
-    ```
-    $ npm run start
+    ```shell
+    crudl-admin-rest $ npm install
+    crudl-admin-rest $ npm run watchify
     ```
 
 Open your browser and go to ``http://localhost:3000/crudl-rest/`` or ``http://localhost:3000/crudl-graphql/`` and login with the demo user (demo/demo).
