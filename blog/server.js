@@ -39,6 +39,10 @@ mongoose.connection.once('open', function () {
     // this will let us get the data from a POST
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(bodyParser.json())
+    // index
+    app.get('/', function (request, response){
+        response.redirect('/crudl-rest/');
+    })
     // crudl core
     app.use('/crudl/crudl.js', express.static(__dirname + '/../static/crudl/crudl.js'))
     app.use('/crudl/', express.static(__dirname + '/../static/crudl/'))
