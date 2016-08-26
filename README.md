@@ -67,7 +67,7 @@ This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/
 
 5. Open your browser, go to ``http://localhost:3000/crudl-rest/`` and login with the demo user (demo/demo).
 
-GraphQL instead of REST: If you want to use the GraphQL interface instead of REST, you need to build the admin file (step 4) inside /crudl-admin-graphql/ and use ``http://localhost:8000/crudl-graphql/`` (step 5).
+GraphQL instead of REST: If you want to use the GraphQL interface instead of REST, you need to build the admin file (step 4) inside /crudl-admin-graphql/ and use ``http://localhost:3000/crudl-graphql/`` (step 5).
 
 ## CRUDL documentation
 There is currently no official CRUDL documentation available, but we tried to summarize the most important building blocks. You can read it [here](https://github.com/crudlio/crudl-example-express/blob/master/static/crudl-core/README.md).
