@@ -5,7 +5,7 @@ DISCLAIMER: This is a preliminary, sketchy and incomplete documentation. This ex
 * [About](#about)
 * [Requirements](#requirements)
 * [Installation](#installation)
-* [CRUDL documentation](#crudl-docs)
+* [CRUDL documentation](#crudl-documentation)
 * [Notes](#notes)
     * [Connectors and Descriptors](#connectors-and-descriptors)
     * [Authentication](#authentication)
@@ -32,7 +32,7 @@ This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/
 * The collections are intentionally verbose in order to illustrate the possibilites with CRUDL.
 
 ## Requirements
-* Node.js
+* Node.js 5+
 * MongoDB
 
 ## Installation
@@ -58,14 +58,16 @@ This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/
     blog $ npm run start
     ```
 
-4. Build the crudl admin file. Go to either /crudl-admin-rest/ or /crudl-admin-graphql/ and type:
+4. Open a new terminal window/tab and build the crudl admin file. Go to /crudl-admin-rest/ and type:
 
     ```shell
     crudl-admin-rest $ npm install
     crudl-admin-rest $ npm run watchify
     ```
 
-Open your browser and go to either ``http://localhost:3000/crudl-rest/`` or ``http://localhost:3000/crudl-graphql/`` and login with the demo user (demo/demo).
+5. Open your browser, go to ``http://localhost:3000/crudl-rest/`` and login with the demo user (demo/demo).
+
+GraphQL instead of REST: If you want to use the GraphQL interface instead of REST, you need to build the admin file (step 4) inside /crudl-admin-graphql/ and use ``http://localhost:8000/crudl-graphql/`` (step 5).
 
 ## CRUDL documentation
 There is currently no official CRUDL documentation available, but we tried to summarize the most important building blocks. You can read it [here](https://github.com/crudlio/crudl-example-express/blob/master/static/crudl-core/README.md).
@@ -384,16 +386,20 @@ You can only change the password of the currently logged-in _User_ (see collecti
 * Sorting with MongoDB is case sensitive. With aggregation, it is possible to implement case-insensitive sorting.
 
 ## Known issues
+We've been working on CRUDL for almost a year and (from our point of view) we've solved the most important and difficult issues. That said, there's still a lot to and here's an incomplete list of some upcoming features:
+
+* Tests.
 * Submitting forms (and filters) with enter.
 * Image fields.
 * Reordering items within tabs.
 * Intermediate pages.
-* Bulk actions with ListView.
+* Bulk actions with listView.
 * Keyboard navigation.
 * Richtext editor.
-* ReadView.
+* readView.
 * Permissions.
 * Generic relations.
+* Better documentation.
 
 ## Credits & Links
 CRUDL and crudl-example-express is written and maintained by vonautomatisch (Patrick Kranzlmüller, Axel Swoboda).
