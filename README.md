@@ -419,6 +419,7 @@ You can only change the password of the currently logged-in _User_ (see collecti
 
 ## Limitations
 * Sorting with MongoDB is case sensitive. With aggregation, it is possible to implement case-insensitive sorting.
+* Searching is only possible on one field per ressource (this is an API limitation).
 
 ## Known issues
 We've been working on CRUDL for almost a year and (from our point of view) we've solved the most important and difficult issues. That said, there's still a lot to and here's an incomplete list of some upcoming features:
