@@ -10,6 +10,7 @@ PLEASE NOTE that CRUDL is not yet finished. Your kind feedback will help us to o
     * [Installation (REST)](#installation-rest)
     * [Installation (GraphQL)](#installation-graphql)
 * [CRUDL documentation](#crudl-documentation)
+* [Interface](#interface)
 * [Notes](#notes)
     * [Connectors and Descriptors](#connectors-and-descriptors)
     * [Authentication](#authentication)
@@ -88,6 +89,23 @@ Steps 1 to 3 are equal to [Installation (REST)](#installation-rest).
 
 ## CRUDL documentation
 There is currently no official CRUDL documentation available, but we tried to summarize the most important building blocks. You can read it [here](https://github.com/crudlio/crudl-example-express/blob/master/static/crudl-core/README.md).
+
+## Interface
+What you get with CRUDL is an administration interface which mainly consists of these elements:
+
+**Dashboard**
+* The main entry page (currently just contains a description).
+
+**listView** (per ressource)
+* A sortable table with all objects per ressource.
+* The objects are usually paginated (either numbered or continuous).
+* Includes a sidebar with search and filters.
+
+**changeView** (per object)
+* The form (fields and fieldsets) for adding/updating an object.
+* Optionally with tabs for complex relations (e.g. links with entries).
+
+Moreover, you'll have a **Menu/Navigation** (on the left hand side), a **Login/Logout** page and **Messages**.
 
 ## Notes
 While this example is simple, there's still a couple of more advanced features in order to represent a real-world scenario.
