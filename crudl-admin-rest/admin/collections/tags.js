@@ -56,9 +56,12 @@ listView.fields = [
 listView.filters = {
     fields: [
         {
-            name: 'search',
+            name: 'name',
             label: 'Search',
             field: 'Search',
+            props: {
+                helpText: 'Search for Name'
+            }
         },
     ]
 }
