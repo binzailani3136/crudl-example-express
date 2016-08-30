@@ -99,7 +99,7 @@ listView.filters = {
             label: 'Search',
             field: 'Search',
             props: {
-                helpText: 'Search for Title'
+                helpText: 'Title'
             }
         },
         {
