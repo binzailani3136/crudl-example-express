@@ -10,10 +10,10 @@ PLEASE NOTE that CRUDL is not yet finished. Your kind feedback will help us to o
     * [Installation (REST)](#installation-rest)
     * [Installation (GraphQL)](#installation-graphql)
 * [CRUDL documentation](#crudl-documentation)
-* [Connectors & Collections](#connectors-collections)
+* [Interface](#interface)
+* [Connectors & Collections](#connectors--collections)
     * [Connectors](#connectors)
     * [Collections](#collections)
-* [Interface](#interface)
 * [Notes](#notes)
     * [Authentication](#authentication)
     * [Field dependency](#field-dependency)
@@ -28,7 +28,6 @@ PLEASE NOTE that CRUDL is not yet finished. Your kind feedback will help us to o
     * [Filtering with listView](#filtering-with-listview)
     * [Change password](#change-password)
 * [Limitations](#limitations)
-* [Known issues](#known-issues)
 * [Credits & Links](#credits--links)
 
 ## About
@@ -93,7 +92,7 @@ Steps 1 to 3 are equal to [Installation (REST)](#installation-rest).
 There is currently no official CRUDL documentation available, but we tried to summarize the most important building blocks. You can read it [here](https://github.com/crudlio/crudl-example-express/blob/master/static/crudl-core/README.md).
 
 ## Interface
-What you get with CRUDL is an administration interface which mainly consists of these elements:
+What you get with CRUDL is an administration interface which consists of these elements:
 
 **Dashboard**
 * The main entry page (currently just contains a description).
@@ -103,7 +102,7 @@ What you get with CRUDL is an administration interface which mainly consists of 
 * The objects are usually paginated (either numbered or continuous).
 * Includes a sidebar with search and filters.
 
-**changeView** (per object)
+**change/addView** (per object)
 * The form (fields and fieldsets) for adding/updating an object.
 * Optionally with tabs for complex relations (e.g. links with entries).
 
@@ -451,22 +450,6 @@ You can only change the password of the currently logged-in _User_ (see collecti
 ## Limitations
 * Sorting with MongoDB is case sensitive. With aggregation, it is possible to implement case-insensitive sorting.
 * Searching is only possible on one field per ressource (this is an API limitation). If someome comes up with a decent solution on searching within multiple fiels (including nested fields), please let us know.
-
-## Known issues
-We've been working on CRUDL for almost a year and (from our point of view) we've solved the most important and difficult issues. That said, there's still a lot to do and here's an incomplete list of some upcoming features:
-
-* Tests.
-* Submitting forms (and filters) with enter.
-* Image fields.
-* Reordering items within tabs.
-* Intermediate pages.
-* Bulk actions with listView.
-* Keyboard navigation.
-* Richtext editor.
-* readView.
-* Permissions.
-* Generic relations.
-* Better documentation.
 
 ## Credits & Links
 CRUDL and crudl-example-express is written and maintained by vonautomatisch (Patrick Kranzlmüller, Axel Swoboda, Václav Pfeifer-Mikolášek).
