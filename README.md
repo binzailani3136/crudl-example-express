@@ -1,4 +1,4 @@
-# crudl express example
+# CRUDL express example
 DISCLAIMER: This is a preliminary, sketchy and incomplete documentation. This example mainly shows how to use CRUDL. It is not intended for development on CRUDL itself.
 
 PLEASE NOTE that CRUDL is not yet finished. Your kind feedback will help us to optimize CRUDL – so please use the issue tracker if you find a bug or if you think there's something we should improve.
