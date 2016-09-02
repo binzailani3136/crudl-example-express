@@ -30,7 +30,7 @@ PLEASE NOTE that CRUDL is not yet finished. Your kind feedback will help us to o
 * [Credits & Links](#credits--links)
 
 ## About
-This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/) and a REST-API as well as GraphQL.
+This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/), [MongoDB](https://docs.mongodb.com/manual/) and a REST-API as well as GraphQL.
 
 * CRUDL is still under development and the syntax might change (esp. with connectors and descriptors).
 * The relevant part for your admin interface is within the folder crudl-admin-rest/admin/ (resp. crudl-admin-graphql/admin/). All other files and folders are generally given when using CRUDL.
@@ -38,7 +38,7 @@ This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/
 
 ## Requirements
 * Node.js 5+
-* MongoDB
+* MongoDB 2.6+
 
 ## Installation
 In order to use this example, you need to setup the API and serve the CRUDL admin interface (either REST or GraphQL or both).
