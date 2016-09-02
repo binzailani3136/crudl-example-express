@@ -10,9 +10,11 @@ PLEASE NOTE that CRUDL is not yet finished. Your kind feedback will help us to o
     * [Installation (REST)](#installation-rest)
     * [Installation (GraphQL)](#installation-graphql)
 * [CRUDL documentation](#crudl-documentation)
+* [Connectors & Collections](#connectors-collections)
+    * [Connectors](#connectors)
+    * [Collections](#collections)
 * [Interface](#interface)
 * [Notes](#notes)
-    * [Connectors and Descriptors](#connectors-and-descriptors)
     * [Authentication](#authentication)
     * [Field dependency](#field-dependency)
     * [Foreign Key, Many-to-Many](#foreign-key-many-to-many)
@@ -32,7 +34,7 @@ PLEASE NOTE that CRUDL is not yet finished. Your kind feedback will help us to o
 ## About
 This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/), [MongoDB](https://docs.mongodb.com/manual/) and a REST-API as well as GraphQL.
 
-* CRUDL is still under development and the syntax might change (esp. with connectors and descriptors).
+* CRUDL is still under development and the syntax might change (esp. with connectors and collections).
 * The relevant part for your admin interface is within the folder crudl-admin-rest/admin/ (resp. crudl-admin-graphql/admin/). All other files and folders are generally given when using CRUDL.
 * The collections are intentionally verbose in order to illustrate the possibilites with CRUDL.
 
@@ -110,8 +112,11 @@ Moreover, you'll have a **Menu/Navigation** (on the left hand side), a **Login/L
 ## Notes
 While this example is simple, there's still a couple of more advanced features in order to represent a real-world scenario.
 
-### Connectors and Descriptors
-In order for CRUDL to work, you need to define _connectors_ (API endpoints) and a _descriptor_ (visual representation). The _descriptor_ mainly consists of _collections_ and the _authentification_.
+## Connectors & Collections
+In order for CRUDL to work, you mainly need to define _connectors_ and _collections_.
+
+### Connectors
+The _connectors_ provide the views with a unified access to different APIs like REST or GraphQL. Each _connector_ usually represents a single API endpoint and implements the CRUD methods (create, read, update, delete). Moreover, the _connector_ handles pagination and transforms the request/response.
 
 Here is the basic structure of a REST connector:
 ```javascript
@@ -139,15 +144,41 @@ And here is a similar connector with GraphQL:
 },
 ```
 
+### Collections
 With collections, you create the visual representation by defining the _listView_, _changeView_ and _addView_ of each object:
+
 ```javascript
-var listView = {}
-listView.fields = []
-listView.filters = []
-var changeView = {}
-changeView.fields = []
-changeView.tabs = []
-var addView = {}
+var listView = {
+    // Required
+    path: "",
+    title: "",
+    actions: {
+        list: function (req) { return crudl.connectors.entries.read(req) }
+    }
+    fields: [],
+    // Optional
+    filters: [],
+    normalize: (data) => { },
+}
+
+var changeView = {
+    // Required
+    path: "",
+    title: "",
+    actions: {
+        get: function (req) { return crudl.connectors.entries(crudl.path.id).read(req) },
+        delete: function (req) { return crudl.connectors.entries(crudl.path.id).delete(req) },
+        save: function (req) { return crudl.connectors.entries(crudl.path.id).update(req) },
+    },
+    // Either fields or fieldsets
+    fields: [],
+    fieldsets: [],
+    // Optional
+    tabs: [],
+    normalize: (data) => { },
+    denormalize: (data) => { },
+    validate: function (values) { },
+}
 ```
 
 ### Authentication
