@@ -11,9 +11,9 @@ PLEASE NOTE that CRUDL is not yet finished. Your kind feedback will help us to o
     * [Installation (GraphQL)](#installation-graphql)
 * [CRUDL documentation](#crudl-documentation)
 * [Interface](#interface)
-* [Connectors & Collections](#connectors--collections)
+* [Connectors & Descriptors](#connectors--descriptors)
     * [Connectors](#connectors)
-    * [Collections](#collections)
+    * [Descriptors](#descriptors)
 * [Notes](#notes)
     * [Authentication](#authentication)
     * [Field dependency](#field-dependency)
@@ -33,9 +33,9 @@ PLEASE NOTE that CRUDL is not yet finished. Your kind feedback will help us to o
 ## About
 This is a [CRUDL](http://crudl.io/) example with [Express](http://expressjs.com/), [MongoDB](https://docs.mongodb.com/manual/) and a REST-API as well as GraphQL.
 
-* CRUDL is still under development and the syntax might change (esp. with connectors and collections).
+* CRUDL is still under development and the syntax might change (esp. with connectors and descriptors).
 * The relevant part for your admin interface is within the folder crudl-admin-rest/admin/ (resp. crudl-admin-graphql/admin/). All other files and folders are generally given when using CRUDL.
-* The collections are intentionally verbose in order to illustrate the possibilites with CRUDL.
+* The descriptors are intentionally verbose in order to illustrate the possibilites with CRUDL.
 
 ## Requirements
 * Node.js 5+
@@ -111,8 +111,8 @@ Moreover, you'll have a **Menu/Navigation** (on the left hand side), a **Login/L
 ## Notes
 While this example is simple, there's still a couple of more advanced features in order to represent a real-world scenario.
 
-## Connectors & Collections
-In order for CRUDL to work, you mainly need to define _connectors_ and _collections_.
+## Connectors & Descriptors
+In order for CRUDL to work, you mainly need to define _connectors_ and _descriptors_.
 
 ### Connectors
 The _connectors_ provide the views with a unified access to different APIs like REST or GraphQL. Each _connector_ usually represents a single API endpoint and implements the CRUD methods (create, read, update, delete). Moreover, the _connector_ handles pagination and transforms the request/response.
@@ -143,8 +143,8 @@ And here is a similar connector with GraphQL:
 },
 ```
 
-### Collections
-With collections, you create the visual representation by defining the _listView_, _changeView_ and _addView_ of each object:
+### Descriptors
+With descriptors, you create the visual representation by defining the _listView_, _changeView_ and _addView_ options:
 
 ```javascript
 var listView = {
@@ -269,7 +269,7 @@ There are a couple of foreign keys being used (e.g. _Section_ or _Category_ with
 ```
 
 ### Relation with different endpoint
-The collection _Links_ is an example of related objects which are assigned through an intermediary table with additional fields.
+The descriptor _Links_ is an example of related objects which are assigned through an intermediary table with additional fields.
 
 ```javascript
 changeView.tabs = [
