@@ -1,3 +1,5 @@
+import React from 'react'
+import CustomDashboard from './dashboard'
 
 var users = require('./collections/users')
 var sections = require('./collections/sections')
@@ -7,11 +9,9 @@ var entries = require('./collections/entries')
 var connectors = require('./connectors/connectors')
 var { login, logout } = require('./auth')
 
-import dashboard from './dashboard'
-
 var descriptor = {
     title: 'crudl.io Express REST Example',
-    dashboard,
+    dashboard: <CustomDashboard />,
     connectors,
     collections: [],
     login,
