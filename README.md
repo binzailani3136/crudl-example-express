@@ -115,7 +115,7 @@ While this example is simple, there's still a couple of more advanced features i
 In order for CRUDL to work, you mainly need to define _connectors_ and _views_.
 
 ### Connectors
-The _connectors_ provide the views with a unified access to different APIs like REST or GraphQL. Each _connector_ usually represents a single API endpoint and implements the CRUD methods (create, read, update, delete). Moreover, the _connector_ handles pagination and transforms the request/response.
+The _connectors_ provide the views with a unified access to different APIs like REST or GraphQL. Each _connector_ usually represents a single API endpoint (or query) and implements the CRUD methods (create, read, update, delete). Moreover, the _connector_ handles pagination and transforms the request/response.
 
 Here is the basic structure of a REST connector:
 ```javascript
