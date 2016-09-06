@@ -8,10 +8,10 @@ class CustomDashboard extends React.Component {
                     <div className="box">
                         <h3>About</h3>
                         <p>
-                            This is a <a href="http://crudl.io/" target="_blank">crudl</a> example with <a href="http://expressjs.com/" target="_blank">Express</a> and a REST-API as well as GraphQL.
+                            This is a <a href="http://crudl.io/" target="_blank">crudl</a> example with <a href="https://nodejs.org" target="_blank">Node.js</a>, <a href="http://expressjs.com/" target="_blank">Express</a> (REST and GraphQL) and <a href="https://www.mongodb.com/" target="_blank">MongoDB</a>.
                         </p>
                         <p>
-                            crudl is a backend agnostic React application in order to rapidly build a beautiful administration interface based on your API (REST or GraphQL).
+                            crudl is a backend agnostic React/Redux application in order to rapidly build a beautiful administration interface based on your API (REST or GraphQL).
                         </p>
                         <p>
                             Please note that crudl is still under development and not production ready.
@@ -19,7 +19,7 @@ class CustomDashboard extends React.Component {
                         </p>
                     </div>
                     <div className="box">
-                        <h3>Credits & Links</h3>
+                        <h3>Links</h3>
                         <ul>
                             <li><a href="http://crudl.io" target="_blank">crudl.io</a></li>
                             <li><a href="https://twitter.com/crudlio" target="_blank">Twitter</a></li>
