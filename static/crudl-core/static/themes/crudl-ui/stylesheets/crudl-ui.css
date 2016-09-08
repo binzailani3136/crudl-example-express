@@ -298,7 +298,7 @@ input, select {
 [role=button].action-expand-all:before, button.action-collapse-all:before,
 [role=button].action-collapse-all:before, .fieldset-container-header h3:before, .fieldset-container-group-header h2:before, .type-checkbox .field[role=checkbox][aria-checked=true]:before, tbody td.boolean.true:before,
 tbody th.boolean.true:before, tbody td.boolean.false:before,
-tbody th.boolean.false:before, thead th ul.sort-options li.sort-remove:before, thead th[aria-sort=ascending] .sort-icon:before, thead th[aria-sort=descending] .sort-icon:before, ol.pagination li.show-more:before, #breadcrumbs li + li:before, #navigation h2 button#toggle-navigation:before, #navigation ul li a:before, #navigation ul.account .user:before, #navigation ul.account .logout:before {
+tbody th.boolean.false:before, thead th ul.sort-options li.sort-remove:before, thead th[aria-sort=ascending] .sort-icon:before, thead th[aria-sort=descending] .sort-icon:before, #breadcrumbs li + li:before, #navigation h2 button#toggle-navigation:before, #navigation ul li a:before, #navigation ul.account .user:before, #navigation ul.account .logout:before {
   position: relative;
   top: 0.25em;
   font-family: 'Material Icons';
@@ -418,7 +418,7 @@ input[type=reset], .fieldset-container-header h3, .fieldset-container-group-head
   font-weight: normal;
 }
 
-.font-family-bold, strong, b, label, .inlines-tools button {
+.font-family-bold, strong, b, label, th, .inlines-tools button {
   font-family: "Roboto-Bold", Arial, sans-serif;
   font-weight: normal;
 }
@@ -492,7 +492,7 @@ input[type=reset], .fieldset-container-header h3, .fieldset-container-group-head
   font-weight: normal;
 }
 
-.font-family-mono-bold, p.error-message, #app.dashboard .box h3 {
+.font-family-mono-bold, p.error-message, #app.dashboard strong, #app.dashboard b, #app.dashboard .box h3 {
   font-family: "RobotoMono-Bold", Arial, sans-serif;
   font-weight: normal;
 }
@@ -1662,7 +1662,7 @@ button.icon-only .material-icons, button.icon-only button.action-add:before, but
 tbody th.boolean.true:before,
 tbody button.icon-only th.boolean.true:before, button.icon-only tbody td.boolean.false:before, tbody button.icon-only td.boolean.false:before, button.icon-only
 tbody th.boolean.false:before,
-tbody button.icon-only th.boolean.false:before, button.icon-only thead th ul.sort-options li.sort-remove:before, thead th ul.sort-options button.icon-only li.sort-remove:before, button.icon-only thead th[aria-sort=ascending] .sort-icon:before, thead th[aria-sort=ascending] button.icon-only .sort-icon:before, button.icon-only thead th[aria-sort=descending] .sort-icon:before, thead th[aria-sort=descending] button.icon-only .sort-icon:before, button.icon-only ol.pagination li.show-more:before, ol.pagination button.icon-only li.show-more:before, button.icon-only #breadcrumbs li + li:before, #breadcrumbs button.icon-only li + li:before, button.icon-only #navigation h2 button#toggle-navigation:before, #navigation h2 button.icon-only button#toggle-navigation:before, button.icon-only #navigation ul li a:before, #navigation ul li button.icon-only a:before, button.icon-only #navigation ul.account .user:before, #navigation ul.account button.icon-only .user:before, button.icon-only #navigation ul.account .logout:before, #navigation ul.account button.icon-only .logout:before,
+tbody button.icon-only th.boolean.false:before, button.icon-only thead th ul.sort-options li.sort-remove:before, thead th ul.sort-options button.icon-only li.sort-remove:before, button.icon-only thead th[aria-sort=ascending] .sort-icon:before, thead th[aria-sort=ascending] button.icon-only .sort-icon:before, button.icon-only thead th[aria-sort=descending] .sort-icon:before, thead th[aria-sort=descending] button.icon-only .sort-icon:before, button.icon-only #breadcrumbs li + li:before, #breadcrumbs button.icon-only li + li:before, button.icon-only #navigation h2 button#toggle-navigation:before, #navigation h2 button.icon-only button#toggle-navigation:before, button.icon-only #navigation ul li a:before, #navigation ul li button.icon-only a:before, button.icon-only #navigation ul.account .user:before, #navigation ul.account button.icon-only .user:before, button.icon-only #navigation ul.account .logout:before, #navigation ul.account button.icon-only .logout:before,
 [role=button].icon-only .material-icons,
 [role=button].icon-only button.action-add:before,
 [role=button].icon-only
@@ -1751,8 +1751,6 @@ tbody
 [role=button].icon-only .sort-icon:before,
 [role=button].icon-only thead th[aria-sort=descending] .sort-icon:before, thead th[aria-sort=descending]
 [role=button].icon-only .sort-icon:before,
-[role=button].icon-only ol.pagination li.show-more:before, ol.pagination
-[role=button].icon-only li.show-more:before,
 [role=button].icon-only #breadcrumbs li + li:before, #breadcrumbs
 [role=button].icon-only li + li:before,
 [role=button].icon-only #navigation h2 button#toggle-navigation:before, #navigation h2
@@ -1797,7 +1795,7 @@ button.boundless .material-icons, button.boundless button.action-add:before, but
 tbody th.boolean.true:before,
 tbody button.boundless th.boolean.true:before, button.boundless tbody td.boolean.false:before, tbody button.boundless td.boolean.false:before, button.boundless
 tbody th.boolean.false:before,
-tbody button.boundless th.boolean.false:before, button.boundless thead th ul.sort-options li.sort-remove:before, thead th ul.sort-options button.boundless li.sort-remove:before, button.boundless thead th[aria-sort=ascending] .sort-icon:before, thead th[aria-sort=ascending] button.boundless .sort-icon:before, button.boundless thead th[aria-sort=descending] .sort-icon:before, thead th[aria-sort=descending] button.boundless .sort-icon:before, button.boundless ol.pagination li.show-more:before, ol.pagination button.boundless li.show-more:before, button.boundless #breadcrumbs li + li:before, #breadcrumbs button.boundless li + li:before, button.boundless #navigation h2 button#toggle-navigation:before, #navigation h2 button.boundless button#toggle-navigation:before, button.boundless #navigation ul li a:before, #navigation ul li button.boundless a:before, button.boundless #navigation ul.account .user:before, #navigation ul.account button.boundless .user:before, button.boundless #navigation ul.account .logout:before, #navigation ul.account button.boundless .logout:before,
+tbody button.boundless th.boolean.false:before, button.boundless thead th ul.sort-options li.sort-remove:before, thead th ul.sort-options button.boundless li.sort-remove:before, button.boundless thead th[aria-sort=ascending] .sort-icon:before, thead th[aria-sort=ascending] button.boundless .sort-icon:before, button.boundless thead th[aria-sort=descending] .sort-icon:before, thead th[aria-sort=descending] button.boundless .sort-icon:before, button.boundless #breadcrumbs li + li:before, #breadcrumbs button.boundless li + li:before, button.boundless #navigation h2 button#toggle-navigation:before, #navigation h2 button.boundless button#toggle-navigation:before, button.boundless #navigation ul li a:before, #navigation ul li button.boundless a:before, button.boundless #navigation ul.account .user:before, #navigation ul.account button.boundless .user:before, button.boundless #navigation ul.account .logout:before, #navigation ul.account button.boundless .logout:before,
 [role=button].boundless .material-icons,
 [role=button].boundless button.action-add:before,
 [role=button].boundless
@@ -1886,8 +1884,6 @@ tbody
 [role=button].boundless .sort-icon:before,
 [role=button].boundless thead th[aria-sort=descending] .sort-icon:before, thead th[aria-sort=descending]
 [role=button].boundless .sort-icon:before,
-[role=button].boundless ol.pagination li.show-more:before, ol.pagination
-[role=button].boundless li.show-more:before,
 [role=button].boundless #breadcrumbs li + li:before, #breadcrumbs
 [role=button].boundless li + li:before,
 [role=button].boundless #navigation h2 button#toggle-navigation:before, #navigation h2
@@ -1931,7 +1927,7 @@ button .material-icons, button button.action-add:before, button
 tbody th.boolean.true:before,
 tbody button th.boolean.true:before, button tbody td.boolean.false:before, tbody button td.boolean.false:before, button
 tbody th.boolean.false:before,
-tbody button th.boolean.false:before, button thead th ul.sort-options li.sort-remove:before, thead th ul.sort-options button li.sort-remove:before, button thead th[aria-sort=ascending] .sort-icon:before, thead th[aria-sort=ascending] button .sort-icon:before, button thead th[aria-sort=descending] .sort-icon:before, thead th[aria-sort=descending] button .sort-icon:before, button ol.pagination li.show-more:before, ol.pagination button li.show-more:before, button #breadcrumbs li + li:before, #breadcrumbs button li + li:before, button #navigation h2 button#toggle-navigation:before, #navigation h2 button button#toggle-navigation:before, button #navigation ul li a:before, #navigation ul li button a:before, button #navigation ul.account .user:before, #navigation ul.account button .user:before, button #navigation ul.account .logout:before, #navigation ul.account button .logout:before,
+tbody button th.boolean.false:before, button thead th ul.sort-options li.sort-remove:before, thead th ul.sort-options button li.sort-remove:before, button thead th[aria-sort=ascending] .sort-icon:before, thead th[aria-sort=ascending] button .sort-icon:before, button thead th[aria-sort=descending] .sort-icon:before, thead th[aria-sort=descending] button .sort-icon:before, button #breadcrumbs li + li:before, #breadcrumbs button li + li:before, button #navigation h2 button#toggle-navigation:before, #navigation h2 button button#toggle-navigation:before, button #navigation ul li a:before, #navigation ul li button a:before, button #navigation ul.account .user:before, #navigation ul.account button .user:before, button #navigation ul.account .logout:before, #navigation ul.account button .logout:before,
 [role=button] .material-icons,
 [role=button] button.action-add:before,
 [role=button]
@@ -2020,8 +2016,6 @@ tbody
 [role=button] .sort-icon:before,
 [role=button] thead th[aria-sort=descending] .sort-icon:before, thead th[aria-sort=descending]
 [role=button] .sort-icon:before,
-[role=button] ol.pagination li.show-more:before, ol.pagination
-[role=button] li.show-more:before,
 [role=button] #breadcrumbs li + li:before, #breadcrumbs
 [role=button] li + li:before,
 [role=button] #navigation h2 button#toggle-navigation:before, #navigation h2
@@ -2804,12 +2798,14 @@ input:focus, textarea:focus, select:focus, .selected-items div.selected-item:foc
 
 input[readonly], textarea[readonly], select[readonly], .selected-items div[readonly].selected-item {
   color: #232424 !important;
+  -webkit-text-fill-color: #232424 !important;
   border-color: #e8e8e8 !important;
   background: #e8e8e8 !important;
 }
 
 input[disabled], textarea[disabled], select[disabled], .selected-items div[disabled].selected-item {
   color: #7D7F80 !important;
+  -webkit-text-fill-color: #7D7F80 !important;
   border-color: #e8e8e8 !important;
   background: repeating-linear-gradient(45deg, #f2f2f2, #f2f2f2 4px, #eaeaea 4px, #eaeaea 8px) !important;
 }
@@ -3506,6 +3502,7 @@ table {
 th,
 td {
   padding: 10px 20px 10px 20px;
+  font-weight: normal;
   text-align: left;
   white-space: nowrap;
 }
@@ -3513,6 +3510,11 @@ td {
 th div,
 td div {
   display: inline-block;
+}
+
+th:first-child,
+td:first-child {
+  padding-left: 24px !important;
 }
 
 thead tr {
@@ -3907,6 +3909,7 @@ thead th.sortable[aria-sort=ascending] > div, thead th.sortable[aria-sort=descen
 }
 
 .toolbar {
+  left: 48px;
   height: 48px;
   color: #fff;
   background: #00A4B3;
@@ -4051,19 +4054,6 @@ ol.pagination li.page:last-child {
 
 ol.pagination li.show-more {
   padding: 12px 16px;
-}
-
-ol.pagination li.show-more:before {
-  content: "autorenew";
-  line-height: 0em;
-  margin: 0 -8px;
-}
-
-ol.pagination li.show-more.loading:before {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-animation: load8 2s infinite linear;
-  animation: load8 2s infinite linear;
 }
 
 ol.pagination li.current, ol.pagination li.current:hover {
@@ -4304,6 +4294,7 @@ ol.pagination li.current, ol.pagination li.current:hover {
 #viewport-footer {
   position: fixed;
   z-index: 970;
+  left: 48px;
   bottom: 0;
   transition: margin-left 0.3s cubic-bezier(0.2, 0.3, 0.25, 0.9), padding 0.3s cubic-bezier(0.2, 0.3, 0.25, 0.9);
   margin: 48px -48px 0 -48px;
@@ -4628,13 +4619,7 @@ ol.pagination li.current, ol.pagination li.current:hover {
   overflow: hidden;
 }
 
-.navigation-open #viewport-header .toolbar {
-  margin-left: -368px !important;
-  padding-left: 368px !important;
-}
-
 .navigation-open #viewport-footer {
-  margin-left: -368px !important;
   padding-left: 368px !important;
 }
 
