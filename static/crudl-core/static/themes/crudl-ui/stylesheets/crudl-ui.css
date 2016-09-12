@@ -2541,9 +2541,9 @@ button.action-collapse-all:before,
 }
 
 .field-button-group .field {
-  -webkit-flex: 1 100%;
-      -ms-flex: 1 100%;
-          flex: 1 100%;
+  -webkit-flex: 1 auto;
+      -ms-flex: 1 auto;
+          flex: 1 auto;
 }
 
 .field-button-group [role=group].buttons {
@@ -4245,7 +4245,7 @@ ol.pagination li.current, ol.pagination li.current:hover {
 #breadcrumbs li + li:before {
   content: "keyboard_arrow_right";
   float: left;
-  top: 1px;
+  top: 0;
   padding: 0 0.25rem;
   color: #99dbe1;
 }
@@ -4427,7 +4427,7 @@ ol.pagination li.current, ol.pagination li.current:hover {
   position: relative;
   top: 0;
   left: 2px;
-  padding-top: 5px;
+  padding-top: 4px;
   min-width: 48px;
   height: 48px;
   transition: all 0.15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
