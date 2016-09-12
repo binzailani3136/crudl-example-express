@@ -1,6 +1,6 @@
 {
   "name": "crudl-express-rest",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "crudl example express (rest)",
   "main": "index.js",
   "scripts": {
