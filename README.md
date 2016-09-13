@@ -67,6 +67,8 @@ In order to use this example, you need to setup the API and serve the CRUDL admi
     blog $ npm run start
     ```
 
+    If nodemon is not yet installed, you need to run ``npm install -g nodemon`` before starting the server.
+
 4. Open a new terminal window/tab and build the CRUDL admin file. Go to /crudl-admin-rest/ and type:
 
     ```shell
