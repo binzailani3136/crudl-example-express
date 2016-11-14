@@ -11,7 +11,6 @@ var { login, logout } = require('./auth')
 
 var admin = {
     title: 'crudl.io Express REST Example',
-    dashboard: <CustomDashboard />,
     connectors,
     views: {
         users,
@@ -24,6 +23,9 @@ var admin = {
         login,
         logout,
     },
+    custom: {
+        dashboard: <CustomDashboard />,
+    }
 }
 
 export default admin

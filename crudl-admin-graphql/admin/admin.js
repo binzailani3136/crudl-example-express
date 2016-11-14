@@ -11,7 +11,6 @@ var { login, logout } = require('./auth')
 
 var admin = {
     title: 'crudl.io Express GraphQL Example',
-    dashboard: <CustomDashboard />,
     connectors,
     views: {
         users,
@@ -23,6 +22,9 @@ var admin = {
     auth: {
         login,
         logout,
+    },
+    custom: {
+        dashboard: <CustomDashboard />,
     },
 }
 
