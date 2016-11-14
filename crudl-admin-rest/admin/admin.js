@@ -8,6 +8,7 @@ var tags = require('./collections/tags')
 var entries = require('./collections/entries')
 var connectors = require('./connectors/connectors')
 var { login, logout } = require('./auth')
+var options = require('./options')
 
 var admin = {
     title: 'crudl.io Express REST Example',
@@ -25,7 +26,8 @@ var admin = {
     },
     custom: {
         dashboard: <CustomDashboard />,
-    }
+    },
+    options,
 }
 
 export default admin
