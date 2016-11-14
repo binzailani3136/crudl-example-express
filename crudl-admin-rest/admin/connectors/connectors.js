@@ -27,67 +27,58 @@ function transform(readResponseData, other) {
 }
 
 
-module.exports = [
+module.exports = {
 
     // USERS
-    {
-        id: 'users',
+    users: {
         url: 'users',
         urlQuery,
         pagination: numberedPagination,
         transform: transform(data => data.docs),
     },
-    {
-        id: 'user',
+    user: {
         url: 'users/:id',
         transform: transform(),
     },
 
     // SECTIONS
-    {
-        id: 'sections',
+    sections: {
         url: 'sections',
         urlQuery,
         pagination: numberedPagination,
         transform: transform(data => data.docs),
     },
-    {
-        id: 'section',
+    section: {
         url: 'sections/:id',
         transform: transform(),
     },
 
     // CATEGORIES
-    {
-        id: 'categories',
+    categories: {
         url: 'categories',
         urlQuery,
         pagination: numberedPagination,
         enableDepagination: true,
         transform: transform(data => data.docs),
     },
-    {
-        id: 'category',
+    category: {
         url: 'categories/:id',
         transform: transform(),
     },
     // TAGS
-    {
-        id: 'tags',
+    tags: {
         url: 'tags',
         urlQuery,
         pagination: numberedPagination,
         transform: transform(data => data.docs),
     },
-    {
-        id: 'tag',
+    tag: {
         url: 'tags/:id',
         transform: transform(),
     },
 
     // ENTRIES
-    {
-        id: 'entries',
+    entries: {
         url: 'entries',
         urlQuery,
         pagination: numberedPagination,
@@ -100,22 +91,19 @@ module.exports = [
             }
         })
     },
-    {
-        id: 'entry',
+    entry: {
         url: 'entries/:id',
         transform: transform(),
     },
 
     // ENTRIELINKS
-    {
-        id: 'links',
+    links: {
         url: 'entrylinks',
         pagination: numberedPagination,
         enableDepagination: true,
         transform: transform(data => data.docs),
     },
-    {
-        id: 'link',
+    link: {
         url: 'entrylinks/:id',
         transform: transform(),
     },
@@ -124,8 +112,7 @@ module.exports = [
 
     // sections_options
     // a helper for retrieving the sections used with select fields
-    {
-        id: 'sections_options',
+    sections_options: {
         url: 'sections',
         urlQuery,
         transform: transform(data => ({
@@ -137,8 +124,7 @@ module.exports = [
 
     // category_options
     // a helper for retrieving the categories used with select fields
-    {
-        id: 'categories_options',
+    categories_options: {
         url: 'categories',
         urlQuery,
         transform: transform(data => ({
@@ -150,8 +136,7 @@ module.exports = [
 
     // tags_options
     // a helper for retrieving the tags used with select fields
-    {
-        id: 'tags_options',
+    tags_options: {
         url: 'tags',
         urlQuery,
         transform: transform(data => ({
@@ -162,8 +147,7 @@ module.exports = [
     },
 
     // AUTHENTICATION
-    {
-        id: 'login',
+    login: {
         url: '/rest-api/login/',
         mapping: { read: 'post', },
         transform: transform(data => ({
@@ -172,4 +156,4 @@ module.exports = [
         })),
     },
 
-]
+}

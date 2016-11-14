@@ -1,11 +1,10 @@
 import { continuousPagination, listQuery, transformErrors } from '../utils'
 
 
-module.exports = [
+module.exports = {
 
     // USERS
-    {
-        id: 'users',
+    users: {
         query: {
             read: listQuery({
                 name: 'allUsers',
@@ -30,8 +29,7 @@ module.exports = [
             },
         },
     },
-    {
-        id: 'user',
+    user: {
         query: {
             read: `{user(id: "%_id"){_id, username, first_name, last_name, email, is_active, is_staff, date_joined}}`,
             update: `mutation ($input: UserInput!) {
@@ -61,8 +59,7 @@ module.exports = [
     },
 
     // SECTIONS
-    {
-        id: 'sections',
+    sections: {
         query: {
             read: listQuery({
                 name: 'allSections',
@@ -87,8 +84,7 @@ module.exports = [
             },
         },
     },
-    {
-        id: 'section',
+    section: {
         query: {
             read: `{section(id: "%_id"){_id, name, slug, position}}`,
             update: `mutation ($input: SectionInput!) {
@@ -118,8 +114,7 @@ module.exports = [
     },
 
     // CATEGORIES
-    {
-        id: 'categories',
+    categories: {
         query: {
             read: listQuery({
                 name: 'allCategories',
@@ -144,8 +139,7 @@ module.exports = [
             },
         },
     },
-    {
-        id: 'category',
+    category: {
         query: {
             read: `{category(id: "%_id"){_id, section{_id, name}, name, slug, position}}`,
             update: `mutation ($input: CategoryInput!) {
@@ -175,8 +169,7 @@ module.exports = [
     },
 
     // TAGS
-    {
-        id: 'tags',
+    tags: {
         query: {
             read: listQuery({
                 name: 'allTags',
@@ -201,8 +194,7 @@ module.exports = [
             },
         },
     },
-    {
-        id: 'tag',
+    tag: {
         query: {
             read: `{tag(id: "%_id"){_id, name, slug}}`,
             update: `mutation ($input: TagInput!) {
@@ -232,8 +224,7 @@ module.exports = [
     },
 
     // ENTRIES
-    {
-        id: 'entries',
+    entries: {
         query: {
             read: listQuery({
                 name: 'allEntries',
@@ -264,8 +255,7 @@ module.exports = [
             },
         },
     },
-    {
-        id: 'entry',
+    entry: {
         query: {
             read: `{entry(id: "%_id"){_id, title, status, date, sticky, section{_id, name}, category{_id, name}, tags{_id, name}, summary, body, owner{_id, username}, createdate, updatedate}}`,
             update: `mutation ($input: EntryInput!) {
@@ -295,8 +285,7 @@ module.exports = [
     },
 
     // ENTRYLINKS
-    {
-        id: 'links',
+    links: {
         query: {
             read: listQuery({
                 name: 'allEntryLinks',
@@ -319,8 +308,7 @@ module.exports = [
             },
         },
     },
-    {
-        id: 'link',
+    link: {
         query: {
             read: `{entrylink(id: "%_id"){_id, entry{_id}, url, title, description, position}}`,
             update: `mutation ($input: EntryLinkInput!) {
@@ -353,8 +341,7 @@ module.exports = [
 
     // sections_options
     // a helper for retrieving the sections used with select fields
-    {
-        id: 'sections_options',
+    sections_options: {
         query: {
             read: `{allSections{edges{node{_id, name}}}}`,
         },
@@ -369,8 +356,7 @@ module.exports = [
 
     // category_options
     // a helper for retrieving the categories used with select fields
-    {
-        id: 'categories_options',
+    categories_options: {
         query: {
             read: listQuery({
                 name: 'allCategories',
@@ -388,8 +374,7 @@ module.exports = [
 
     // tags_options
     // a helper for retrieving the tags used with select fields
-    {
-        id: 'tags_options',
+    tags_options: {
         query: {
             read: listQuery({
                 name: 'allTags',
@@ -406,8 +391,7 @@ module.exports = [
     },
 
     // AUTHENTICATION
-    {
-        id: 'login',
+    login: {
         url: '/rest-api/login/',
         mapping: { read: 'post', },
         transform: {
@@ -423,4 +407,4 @@ module.exports = [
             })
         }
     }
-]
+}

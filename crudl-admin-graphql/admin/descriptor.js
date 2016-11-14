@@ -13,15 +13,15 @@ var descriptor = {
     title: 'crudl.io Express GraphQL Example',
     dashboard: <CustomDashboard />,
     connectors,
-    collections: [],
+    views: {
+        users,
+        sections,
+        categories,
+        tags,
+        entries,
+    },
     login,
     logout,
 }
-
-descriptor.collections.push(users)
-descriptor.collections.push(sections)
-descriptor.collections.push(categories)
-descriptor.collections.push(tags)
-descriptor.collections.push(entries)
 
 export default descriptor
