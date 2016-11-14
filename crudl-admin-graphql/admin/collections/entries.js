@@ -123,7 +123,7 @@ listView.filters = {
             onChange: [
                 {
                     in: 'section',
-                    setValue: (section) => (section.dirty && !section.touched) || !section.value ? '' : undefined,
+                    setValue: (section) => (section.value !== section.initialValue) ? '' : undefined,
                     setProps: (section) => {
                         if (!section.value) {
                             return {
