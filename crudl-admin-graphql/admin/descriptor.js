@@ -20,8 +20,10 @@ var descriptor = {
         tags,
         entries,
     },
-    login,
-    logout,
+    auth: {
+        login,
+        logout,
+    },
 }
 
 export default descriptor

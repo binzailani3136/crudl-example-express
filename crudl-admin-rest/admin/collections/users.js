@@ -98,7 +98,7 @@ changeView.fieldsets = [
         title: 'Roles',
         expanded: true,
         description: () => {
-            if (crudl.auth.user == crudl.path._id) {
+            if (crudl.auth.user === crudl.path._id) {
                 return <span style={{color: '#CC293C'}}>WARNING: If you remove crudl access for the currently logged-in user, you will be logged out and unable to login with this user again.</span>
             }
         },
