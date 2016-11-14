@@ -9,7 +9,7 @@ var entries = require('./collections/entries')
 var connectors = require('./connectors/connectors')
 var { login, logout } = require('./auth')
 
-var descriptor = {
+var admin = {
     title: 'crudl.io Express GraphQL Example',
     dashboard: <CustomDashboard />,
     connectors,
@@ -26,4 +26,4 @@ var descriptor = {
     },
 }
 
-export default descriptor
+export default admin

@@ -1,6 +1,6 @@
 import options from './admin/options'
-import descriptor from './admin/descriptor'
+import admin from './admin/admin'
 import SplitDateTimeField from './admin/fields/SplitDateTimeField'
 
 crudl.addField('SplitDateTime', SplitDateTimeField)
-crudl.render(descriptor, options)
+crudl.render(admin, options)
