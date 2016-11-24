@@ -1,4 +1,5 @@
 import React from 'react'
+import SplitDateTimeField from '../fields/SplitDateTimeField'
 
 //-------------------------------------------------------------------
 var listView = {
@@ -131,7 +132,7 @@ changeView.fieldsets = [
                 name: 'date_joined',
                 label: 'Date joined',
                 readOnly: true,
-                field: 'SplitDateTime',
+                field: SplitDateTimeField,
                 props: {
                     getTime: (date) => {
                         let T = date.indexOf('T')
