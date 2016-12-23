@@ -8,7 +8,7 @@ function transform(readResponseData, other) {
 
     function transformResponse(res) {
         if (res.status === 400) {
-            throw transformErrors(res.data)
+            throw new crudl.ValidationError(transformErrors(res.data))
         }
         if (!res.data) {
             throw new crudl.NotFoundError(`Couldn't find ${res.url}`)

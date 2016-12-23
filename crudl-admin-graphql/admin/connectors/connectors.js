@@ -23,7 +23,7 @@ module.exports = {
             readResponseData: data => data.data.allUsers.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addUser.errors) {
-                    throw transformErrors(data.data.addUser.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.addUser.errors))
                 }
                 return data.data.addUser.user
             },
@@ -49,7 +49,7 @@ module.exports = {
             },
             updateResponseData: data => {
                 if (data.data.changeUser.errors) {
-                    throw transformErrors(data.data.changeUser.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.changeUser.errors))
                 }
                 return data.data.changeUser.user
             },
@@ -78,7 +78,7 @@ module.exports = {
             readResponseData: data => data.data.allSections.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addSection.errors) {
-                    throw transformErrors(data.data.addSection.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.addSection.errors))
                 }
                 return data.data.addSection.section
             },
@@ -104,7 +104,7 @@ module.exports = {
             },
             updateResponseData: data => {
                 if (data.data.changeSection.errors) {
-                    throw transformErrors(data.data.changeSection.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.changeSection.errors))
                 }
                 return data.data.changeSection.section
             },
@@ -133,7 +133,7 @@ module.exports = {
             readResponseData: data => data.data.allCategories.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addCategory.errors) {
-                    throw transformErrors(data.data.addCategory.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.addCategory.errors))
                 }
                 return data.data.addCategory.category
             },
@@ -159,7 +159,7 @@ module.exports = {
             },
             updateResponseData: data => {
                 if (data.data.changeCategory.errors) {
-                    throw transformErrors(data.data.changeCategory.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.changeCategory.errors))
                 }
                 return data.data.changeCategory.category
             },
@@ -188,7 +188,7 @@ module.exports = {
             readResponseData: data => data.data.allTags.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addTag.errors) {
-                    throw transformErrors(data.data.addTag.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.addTag.errors))
                 }
                 return data.data.addTag.tag
             },
@@ -214,7 +214,7 @@ module.exports = {
             },
             updateResponseData: data => {
                 if (data.data.changeTag.errors) {
-                    throw transformErrors(data.data.changeTag.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.changeTag.errors))
                 }
                 return data.data.changeTag.tag
             },
@@ -249,7 +249,7 @@ module.exports = {
             },
             createResponseData: data => {
                 if (data.data.addEntry.errors) {
-                    throw transformErrors(data.data.addEntry.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.addEntry.errors))
                 }
                 return data.data.addEntry.entry
             },
@@ -275,7 +275,7 @@ module.exports = {
             },
             updateResponseData: data => {
                 if (data.data.changeEntry.errors) {
-                    throw transformErrors(data.data.changeEntry.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.changeEntry.errors))
                 }
                 return data.data.changeEntry.entry
             },
@@ -302,7 +302,7 @@ module.exports = {
             readResponseData: data => data.data.allEntryLinks.edges.map(e => e.node),
             createResponseData: data => {
                 if (data.data.addEntryLink.errors) {
-                    throw transformErrors(data.data.addEntryLink.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.addEntryLink.errors))
                 }
                 return data.data.addEntryLink.entrylink
             },
@@ -328,7 +328,7 @@ module.exports = {
             },
             updateResponseData: data => {
                 if (data.data.changeEntryLink.errors) {
-                    throw transformErrors(data.data.changeEntryLink.errors)
+                    throw new crudl.ValidationError(transformErrors(data.data.changeEntryLink.errors))
                 }
                 return data.data.changeEntryLink.entrylink
             },
@@ -397,7 +397,7 @@ module.exports = {
         transform: {
             readResponse: res => {
                 if (res.status >= 400) {
-                    throw res.data
+                    throw new crudl.ValidationError(res.data)
                 }
                 return res
             },
