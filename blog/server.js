@@ -49,14 +49,14 @@ mongoose.connection.once('open', function () {
     app.use('/crudl/crudl.js', express.static(__dirname + '/../static/crudl-core/crudl.min.js'))
     app.use('/crudl/', express.static(__dirname + '/../static/crudl-core/'))
     // crudl-rest
-    app.use('/crudl-admin-rest/', express.static(__dirname + '/../crudl-admin-rest/static/crudl-admin-rest/'))
+    app.use('/crudl-admin-rest/', express.static(__dirname + '/../crudl-admin-rest/static/'))
     app.get('/crudl-rest/*', function (request, response){
-        response.sendFile(path.resolve(__dirname, '../crudl-admin-rest/templates/', 'index.html'))
+        response.sendFile(path.resolve(__dirname, '../crudl-admin-rest/static/', 'index.html'))
     })
     // crudl-graphql
-    app.use('/crudl-admin-graphql/', express.static(__dirname + '/../crudl-admin-graphql/static/crudl-admin-graphql/'))
+    app.use('/crudl-admin-graphql/', express.static(__dirname + '/../crudl-admin-graphql/static/'))
     app.get('/crudl-graphql/*', function (request, response){
-        response.sendFile(path.resolve(__dirname, '../crudl-admin-graphql/templates/', 'index.html'))
+        response.sendFile(path.resolve(__dirname, '../crudl-admin-graphql/static/', 'index.html'))
     })
     // rest
     app.use(paginate.middleware(20, 50));
