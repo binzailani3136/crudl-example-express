@@ -46,8 +46,10 @@ mongoose.connection.once('open', function () {
     // crudl core
     app.use('/crudl/crudl.js', express.static(__dirname + '/../static/crudl/crudl.js'))
     app.use('/crudl/', express.static(__dirname + '/../static/crudl/'))
-    app.use('/crudl/crudl.js', express.static(__dirname + '/../static/crudl-core/crudl.min.js'))
-    app.use('/crudl/', express.static(__dirname + '/../static/crudl-core/'))
+    app.use('/crudl/crudl.js', (req, res) =>
+        res.redirect('http://cdn.crudl.io/static/releases/0.2.0/crudl.min.js'))
+    app.use('/crudl/crudl-ui/css/crudl-ui.css', (req, res) =>
+        res.redirect('http://cdn.crudl.io/static/releases/0.2.0/crudl-ui/css/crudl-ui.css'))
     // crudl-rest
     app.use('/crudl-admin-rest/', express.static(__dirname + '/../crudl-admin-rest/static/'))
     app.get('/crudl-rest/*', function (request, response){
