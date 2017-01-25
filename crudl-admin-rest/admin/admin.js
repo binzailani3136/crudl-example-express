@@ -1,17 +1,21 @@
 import React from 'react'
-import CustomDashboard from './dashboard'
+import CustomDashboard from './custom/Dashboard'
 
-var users = require('./collections/users')
-var sections = require('./collections/sections')
-var categories = require('./collections/categories')
-var tags = require('./collections/tags')
-var entries = require('./collections/entries')
+var users = require('./views/users')
+var sections = require('./views/sections')
+var categories = require('./views/categories')
+var tags = require('./views/tags')
+var entries = require('./views/entries')
 var connectors = require('./connectors/connectors')
 var { login, logout } = require('./auth')
-var options = require('./options')
 
 var admin = {
     title: 'crudl.io Express REST Example',
+    options: {
+        debug: false,
+        basePath: '/crudl-rest/',
+        baseURL: '/rest-api/',
+    },
     connectors,
     views: {
         users,
@@ -27,7 +31,6 @@ var admin = {
     custom: {
         dashboard: <CustomDashboard />,
     },
-    options,
 }
 
 export default admin

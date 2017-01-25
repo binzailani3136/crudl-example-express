@@ -23,4 +23,5 @@ login.fields = [
 //-------------------------------------------------------------------
 module.exports = {
     login,
+    logout: undefined, // Logout is optional
 }

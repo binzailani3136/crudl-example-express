@@ -447,7 +447,7 @@ The _listView_ supports ordering by multiple columns (see entries.js).
 Filtering is done by defining fields with _listView.filters_ (see entries.js). You have all the options available with the _changeView_ (e.g. initial values, field dependency, autocompletes, ...).
 
 ### Change password
-You can only change the password of the currently logged-in _User_ (see collections/users.js)
+You can only change the password of the currently logged-in _User_ (see views/users.js)
 
 ## Limitations
 * Sorting with MongoDB is case sensitive. With aggregation, it is possible to implement case-insensitive sorting.
