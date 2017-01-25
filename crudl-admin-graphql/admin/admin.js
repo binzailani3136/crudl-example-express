@@ -31,6 +31,12 @@ var admin = {
     custom: {
         dashboard: <CustomDashboard />,
     },
+    messages: {
+        'login.button': 'Sign in',
+        'logout.button': 'Sign out',
+        'logout.affirmation': 'Have a nice day!',
+        'pageNotFound': 'Sorry, page not found.',
+    },
 }
 
 export default admin
