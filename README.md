@@ -1,7 +1,9 @@
 # CRUDL express example
-DISCLAIMER: This is a preliminary, sketchy and incomplete documentation. This example mainly shows how to use CRUDL. It is not intended for development on CRUDL itself.
+This is a [CRUDL](http://crudl.io/) example with [Node.js](https://nodejs.org), [Express](http://expressjs.com/) (REST and GraphQL) and [MongoDB](https://mongodb.com).
 
-PLEASE NOTE that CRUDL is not yet finished. Your kind feedback will help us to optimize CRUDL – so please use the issue tracker if you find a bug or if you think there's something we should improve.
+* CRUDL is still under development and the syntax might change (esp. with connectors and views).
+* The relevant part for your admin interface is within the folder crudl-admin-rest/admin/ (resp. crudl-admin-graphql/admin/). All other files and folders are generally given when using CRUDL.
+* The views are intentionally verbose in order to illustrate the possibilites with CRUDL.
 
 ## Contents
 * [About](#about)
@@ -29,13 +31,6 @@ PLEASE NOTE that CRUDL is not yet finished. Your kind feedback will help us to o
     * [Change password](#change-password)
 * [Limitations](#limitations)
 * [Credits & Links](#credits--links)
-
-## About
-This is a [CRUDL](http://crudl.io/) example with [Node.js](https://nodejs.org), [Express](http://expressjs.com/) (REST and GraphQL) and [MongoDB](https://mongodb.com).
-
-* CRUDL is still under development and the syntax might change (esp. with connectors and views).
-* The relevant part for your admin interface is within the folder crudl-admin-rest/admin/ (resp. crudl-admin-graphql/admin/). All other files and folders are generally given when using CRUDL.
-* The views are intentionally verbose in order to illustrate the possibilites with CRUDL.
 
 ## Requirements
 * Node.js 5+
@@ -91,7 +86,7 @@ Steps 1 to 3 are equal to [Installation (REST)](#installation-rest).
 5. Open your browser, go to ``http://localhost:3000/crudl-graphql/`` and login with the demo user (demo/demo).
 
 ## CRUDL documentation
-There is currently no official CRUDL documentation available, but we tried to summarize the most important building blocks. You can read it [here](https://github.com/crudlio/crudl-example-express/blob/master/static/crudl-core/README.md).
+https://github.com/crudlio/crudl
 
 ## Interface
 What you get with CRUDL is an administration interface which consists of these elements:
@@ -447,7 +442,7 @@ The _listView_ supports ordering by multiple columns (see entries.js).
 Filtering is done by defining fields with _listView.filters_ (see entries.js). You have all the options available with the _changeView_ (e.g. initial values, field dependency, autocompletes, ...).
 
 ### Change password
-You can only change the password of the currently logged-in _User_ (see collections/users.js)
+You can only change the password of the currently logged-in _User_ (see views/users.js)
 
 ## Limitations
 * Sorting with MongoDB is case sensitive. With aggregation, it is possible to implement case-insensitive sorting.

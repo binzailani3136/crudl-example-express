@@ -1,11 +1,11 @@
 {
   "name": "crudl-express-graphql",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "crudl example express (graphql)",
   "main": "index.js",
   "scripts": {
-    "browserify": "mkdir -p ./static/crudl-admin-graphql/js && browserify . --extension=.jsx > ./static/crudl-admin-graphql/js/admin.js",
-    "watchify": "mkdir -p ./static/crudl-admin-graphql/js && watchify . --extension=.jsx -o ./static/crudl-admin-graphql/js/admin.js -v"
+    "browserify": "mkdir -p ./static && browserify . --extension=.jsx > ./static/admin.js",
+    "watchify": "mkdir -p ./static && watchify . --extension=.jsx -o ./static/admin.js -v"
   },
   "browserify": {
     "presets": [

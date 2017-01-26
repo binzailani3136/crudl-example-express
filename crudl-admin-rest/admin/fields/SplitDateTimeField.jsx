@@ -17,7 +17,7 @@ class SplitDateTimeField extends React.Component {
             display: 'inline-block',
             width: '24%'
         }
-        const { desc, formField, disabled, getTime, getDate } = this.props
+        const { desc, input, disabled, getTime, getDate } = this.props
         return (
             <div className="field">
                 <input
@@ -26,7 +26,7 @@ class SplitDateTimeField extends React.Component {
                     autoComplete="off"
                     readOnly={true}
                     disabled={disabled}
-                    value={getDate(formField.value)}
+                    value={getDate(input.value)}
                     style={customDateFieldStyle}
                     />
                 <input
@@ -35,10 +35,10 @@ class SplitDateTimeField extends React.Component {
                     autoComplete="off"
                     readOnly={true}
                     disabled={disabled}
-                    value={getTime(formField.value)}
+                    value={getTime(input.value)}
                     style={customTimeFieldStyle}
                     />
-                <input type="hidden" readOnly={true} {...formField} />
+                <input type="hidden" readOnly={true} {...input} />
             </div>
         )
     }
