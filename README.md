@@ -6,7 +6,6 @@ This is a [CRUDL](http://crudl.io/) example with [Node.js](https://nodejs.org), 
 * The views are intentionally verbose in order to illustrate the possibilites with CRUDL.
 
 ## Contents
-* [About](#about)
 * [Requirements](#requirements)
 * [Installation](#installation)
     * [Installation (REST)](#installation-rest)
