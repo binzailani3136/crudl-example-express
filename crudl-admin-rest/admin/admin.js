@@ -11,8 +11,8 @@ var { login, logout } = require('./auth')
 
 const OPTIONS = {
     debug: true,
-    basePath: '/crudl-graphql/',
-    baseURL: '/graphql-api/',
+    basePath: '/crudl-rest/',
+    baseURL: '/rest-api/',
 }
 
 var admin = {}
