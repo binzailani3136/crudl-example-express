@@ -109,17 +109,13 @@ changeView.fieldsets = [
                 label: 'Active',
                 field: 'Checkbox',
                 initialValue: true,
-                props: {
-                    helpText: 'Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'
-                },
+                helpText: 'Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'
             },
             {
                 name: 'is_staff',
                 label: 'Staff member',
                 field: 'Checkbox',
-                props: {
-                    helpText: 'Designates whether the user can log into crudl.'
-                },
+                helpText: 'Designates whether the user can log into crudl.'
             },
         ],
     },
@@ -133,16 +129,14 @@ changeView.fieldsets = [
                 label: 'Date joined',
                 readOnly: true,
                 field: SplitDateTimeField,
-                props: {
-                    getTime: (date) => {
-                        let T = date.indexOf('T')
-                        return date.slice(T+1, T+6)
-                    },
-                    getDate: (date) => {
-                        let T = date.indexOf('T')
-                        return date.slice(0, T)
-                    },
-                }
+                getTime: (date) => {
+                    let T = date.indexOf('T')
+                    return date.slice(T+1, T+6)
+                },
+                getDate: (date) => {
+                    let T = date.indexOf('T')
+                    return date.slice(0, T)
+                },
             },
         ],
     },
@@ -219,17 +213,13 @@ addView.fieldsets = [
                 label: 'Active',
                 field: 'Checkbox',
                 initialValue: true,
-                props: {
-                    helpText: 'Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'
-                },
+                helpText: 'Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'
             },
             {
                 name: 'is_staff',
                 label: 'Staff member',
                 field: 'Checkbox',
-                props: {
-                    helpText: 'Designates whether the user can log into crudl.'
-                },
+                helpText: 'Designates whether the user can log into crudl.'
             },
         ],
     },

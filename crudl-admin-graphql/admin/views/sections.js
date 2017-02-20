@@ -75,10 +75,8 @@ changeView.fields = [
             in: 'name',
             setInitialValue: (name) => slugify(name.value),
         },
-        props: {
-            helpText: <span>If left blank, the slug will be automatically generated.
+        helpText: <span>If left blank, the slug will be automatically generated.
             More about slugs <a href="http://en.wikipedia.org/wiki/Slug" target="_blank">here</a>.</span>,
-        }
     }
 ]
 

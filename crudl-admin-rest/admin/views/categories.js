@@ -1,4 +1,4 @@
-import { slugify } from '../utils'
+import { slugify, select } from '../utils'
 import React from 'react'
 
 //-------------------------------------------------------------------
@@ -36,7 +36,7 @@ listView.fields = [
     },
     {
         name: 'section',
-        key: 'section.name',
+        getValue: select('section.name'),
         label: 'Section',
         sortable: true,
         sorted: 'ascending',
@@ -68,15 +68,13 @@ listView.filters = {
             name: 'search',
             label: 'Search',
             field: 'Search',
-            props: {
-                helpText: 'Name'
-            }
+            helpText: 'Name'
         },
         {
             name: 'section',
             label: 'Section',
             field: 'Select',
-            props: () => crudl.connectors.sections_options.read(crudl.req()).then(res => res.data),
+            lazy: () => crudl.connectors.sections_options.read(crudl.req()).then(res => res.data),
             initialValue: '',
         },
     ]
@@ -99,7 +97,7 @@ changeView.fields = [
         label: 'Section',
         field: 'Select',
         required: true,
-        props: () => crudl.connectors.sections_options.read(crudl.req()).then(res => res.data),
+        lazy: () => crudl.connectors.sections_options.read(crudl.req()).then(res => res.data),
         add: {
             path: 'sections/new',
             returnValue: data => data._id,
@@ -122,10 +120,8 @@ changeView.fields = [
             in: 'name',
             setInitialValue: (name) => slugify(name.value),
         },
-        props: {
-            helpText: <span>If left blank, the slug will be automatically generated.
+        helpText: <span>If left blank, the slug will be automatically generated.
             More about slugs <a href="http://en.wikipedia.org/wiki/Slug" target="_blank">here</a>.</span>,
-        }
     },
 ]
 
